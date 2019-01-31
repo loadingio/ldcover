@@ -5,12 +5,16 @@ var slice$ = [].slice;
   ldCover = function(opt){
     var ret, cls, this$ = this;
     opt == null && (opt = {});
-    this.root = opt.root;
-    this.root = !this.root
+    this.opt = import$({
+      delay: 300,
+      autoZ: true,
+      baseZ: 1000
+    }, opt);
+    this.root = !opt.root
       ? (ret = document.createElement("div"), ret.innerHTML = "<div class=\"base\"></div>", ret)
-      : typeof this.root === 'string'
-        ? document.querySelector(this.root)
-        : this.root;
+      : typeof opt.root === 'string'
+        ? document.querySelector(opt.root)
+        : opt.root;
     cls = typeof opt.type === 'string'
       ? opt.type.split(' ')
       : opt.type;
@@ -53,26 +57,42 @@ var slice$ = [].slice;
       }
     },
     toggle: function(v){
-      var this$ = this;
-      if (this.root.classList.contains('running')) {
+      var isActive, z, ref$, idx, this$ = this;
+      if (!(v != null) && this.root.classList.contains('running')) {
         return;
       }
-      this.root.classList.remove('shown');
       this.root.classList.add('running');
       if (v != null) {
         this.root.classList[v ? 'add' : 'remove']('active');
       } else {
         this.root.classList.toggle('active');
       }
+      isActive = this.root.classList.contains('active');
+      if (this.opt.autoZ) {
+        if (isActive) {
+          this.root.style.zIndex = this.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this.opt.baseZ;
+          ldCover.zstack.push(z);
+        } else {
+          if ((idx = ldCover.zstack.indexOf(this.z)) < 0) {
+            return;
+          }
+          this.root.style.zIndex = "";
+          ldCover.zstack.splice(idx, 1);
+        }
+      }
+      if (this.opt.transformFix && !isActive) {
+        this.root.classList.remove('shown');
+      }
       setTimeout(function(){
         this$.root.classList.remove('running');
-        if (this$.root.classList.contains('active')) {
+        if (this$.opt.transformFix && isActive) {
           return this$.root.classList.add('shown');
         }
-      }, 100);
-      if (this.promises.length && !this.root.classList.contains('active')) {
-        return this.set(undefined, false);
+      }, this.opt.delay);
+      if (this.promises.length && !isActive) {
+        this.set(undefined, false);
       }
+      return this.fire("toggle." + (isActive ? 'on' : 'off'));
     },
     on: function(n, cb){
       var ref$;
@@ -87,6 +107,9 @@ var slice$ = [].slice;
       }
       return results$;
     }
+  });
+  import$(ldCover, {
+    zstack: []
   });
   if (typeof module != 'undefined' && module !== null) {
     module.exports = ldCover;

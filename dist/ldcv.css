@@ -2,12 +2,12 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: -1;
   width: 100%;
   height: 100%;
   opacity: 0;
   perspective: 1024px;
-  transition: all 0.2s ease-in-out;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
   visibility: hidden;
 }
 .ldcv:before {
@@ -20,20 +20,13 @@
   height: 100%;
   background: rgba(0,0,0,0.5);
 }
+.ldcv.running,
+.ldcv.active {
+  z-index: 1;
+}
 .ldcv.no-shadow:before,
 .ldcv.bare:before {
   display: none;
-}
-.ldcv.bare {
-  position: absolute;
-  width: auto;
-  height: auto;
-}
-.ldcv.bare > .base {
-  transform: initial;
-}
-.ldcv.running {
-  visibility: visible;
 }
 .ldcv.active {
   visibility: visible;
@@ -79,11 +72,21 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+.ldcv.bare {
+  position: absolute;
+  width: auto;
+  height: auto;
+}
 .ldcv.bare > .base {
   width: auto;
   height: auto;
   max-width: initial;
   max-height: initial;
+  transform: initial;
+  top: initial;
+  left: initial;
+  right: initial;
+  bottom: initial;
 }
 .ldcv.bare > .base > .inner {
   overflow: visible;

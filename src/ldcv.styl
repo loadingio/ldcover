@@ -3,14 +3,14 @@ order = 1 2 3 ldcv ldcv-bg ldcv-base ldcv-inner
   position: fixed
   top: 0
   left: 0
-  //- ? even with visibility: hidden, sometimes nodes under ldcv are still not clickable
-  //- ? if there are content inside ldcv. so, we use z-index too to control it's z order
-  z-index: 999
+  //- Even with visibility: hidden, nodes under ldcv are still covered by ldcv and thus not clickable
+  //- if there are content inside ldcv. so, we use z-index too to control it's z order.
+  z-index: -1
   width: 100%
   height: 100%
   opacity: 0
   perspective: 1024px
-  transition: all 0.2s ease-in-out
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out
   visibility: hidden
   &:before
     content: " "
@@ -22,20 +22,12 @@ order = 1 2 3 ldcv ldcv-bg ldcv-base ldcv-inner
     height: 100%
     background: rgba(0,0,0,.5)
 
+//- z-index will be update by script. we ensure it will be greater than 0 here.
+.ldcv.running, .ldcv.active
+  z-index: 1
+
 .ldcv.no-shadow:before, .ldcv.bare:before
   display: none
-
-
-.ldcv.bare
-  position: absolute
-  width: auto
-  height: auto
-
-.ldcv.bare > .base
-  transform: initial
-
-.ldcv.running
-  visibility: visible
 
 .ldcv.active
   visibility: visible
@@ -57,8 +49,10 @@ order = 1 2 3 ldcv ldcv-bg ldcv-base ldcv-inner
     margin-top: 15px
     border-top: 1px solid #ddd
 
-// transform might lead to blurry ontent;
-// we force remove it since when shown there should be no transform over .inner.
+// transform might lead to blurry content;
+// we can force remove it since when shown there should be no transform over .inner.
+// to enable, pass transform-fix: true in config
+// this might lead to glitch during transition in chrome. be careful.
 .ldcv.shown > .base > .inner
   transform: none!important
 
@@ -82,11 +76,21 @@ order = 1 2 3 ldcv ldcv-bg ldcv-base ldcv-inner
   top: 50%
   transform: translate(-50%,-50%)
 
+.ldcv.bare
+  position: absolute
+  width: auto
+  height: auto
+
 .ldcv.bare > .base
   width: auto
   height: auto
   max-width: initial
   max-height: initial
+  transform: initial
+  top: initial
+  left: initial
+  right: initial
+  bottom: initial
 
 .ldcv.bare > .base > .inner
   overflow: visible
