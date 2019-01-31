@@ -33,7 +33,6 @@
       if v? => @root.classList[if v => \add else \remove](\active)
       else @root.classList.toggle \active
       is-active = @root.classList.contains(\active)
-
       if @opt.auto-z =>
         if is-active =>
           @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or 0) + @opt.base-z
@@ -42,8 +41,6 @@
           if (idx = ldCover.zstack.indexOf(@z)) < 0 => return
           @root.style.zIndex = ""
           ldCover.zstack.splice(idx, 1)
-
-
       if @opt.transform-fix and !is-active => @root.classList.remove \shown
       setTimeout (~>
         @root.classList.remove \running
@@ -51,6 +48,7 @@
       ), @opt.delay
       if @promises.length and !is-active => @set undefined, false
       @fire "toggle.#{if is-active => \on else \off}"
+
     on: (n, cb) -> @evt-handler.[][n].push cb
     fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
 

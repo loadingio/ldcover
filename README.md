@@ -46,11 +46,13 @@ one can decorate ldCover widgets by adding classes over the outmost element. fol
    - custom position for .ldcv > .base
    - overflow: visible for .ldcv > .base > .inner (why?)
 
- * .ldcv.transform-center
-   - by default .base is centered with margin: auto. this needs us to provide width/height for .base.
-   - with transform-center, .base is centered with left: 50%, top: 50% + transform: translate(-50%,-50%), which don't need width/height to be provided anymore.
-   - NOTE: this might causes content to be blur, so use it carefully.
-
+ * centering
+   - by default .base is centered with vertical-align + ::after pseudo class. instead you can choose different methods, described below:
+   - .ldcv.margin-centered
+     - center with margin: auto + left/right/top/bottom: 0 and position: absolute. need width/height to be provided.
+   - .ldcv.transform-centered
+     - with transform-center, .base is centered with left: 50%, top: 50% + transform: translate(-50%,-50%), which don't need width/height to be provided anymore.
+     - NOTE: this might causes content to be blur, so use it carefully.
 
 ## Todo
 
