@@ -43,11 +43,14 @@ var slice$ = [].slice;
         return this$.toggle(true);
       });
     },
-    set: function(v){
+    set: function(v, hide){
+      hide == null && (hide = true);
       this.promises.splice(0).map(function(p){
         return p.res(v);
       });
-      return this.toggle(false);
+      if (hide) {
+        return this.toggle(false);
+      }
     },
     toggle: function(v){
       var this$ = this;
@@ -68,7 +71,7 @@ var slice$ = [].slice;
         }
       }, 100);
       if (this.promises.length && !this.root.classList.contains('active')) {
-        return this.set();
+        return this.set(undefined, false);
       }
     },
     on: function(n, cb){
