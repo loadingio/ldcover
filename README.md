@@ -25,6 +25,7 @@ Methods:
  * toggle(state): toggle on/off ldCover.
  * get(): toggle on ldCover and return a promise, which will only be resolved when ldCover.set is called.
  * set(v, hide=true): set value, which resolve promises from get, and hide ldCover if hide = true.
+   - use data-ldcv-set on elements to automatically set value when elements are clicked.
  * on(event, cb): listen to certain event. evnets:
    - toggle.on: when ldCover is toggled on.
    - toggle.off: when ldCover is toggled off.
@@ -53,6 +54,24 @@ one can decorate ldCover widgets by adding classes over the outmost element. fol
    - .ldcv.transform-centered
      - with transform-center, .base is centered with left: 50%, top: 50% + transform: translate(-50%,-50%), which don't need width/height to be provided anymore.
      - NOTE: this might causes content to be blur, so use it carefully.
+
+## Action
+
+Simple popup could be configured with automatically set invocation to resolve promises waited by get. use ```data-ldcv-set``` attribute on elements to indicate what values to be passed into set:
+
+```
+  <div class="ldcv">
+    <button data-ldcv-set="1"> OK </button>
+    <button data-ldcv-set="0"> Cancel </button>
+  </div>
+```
+
+use get function to wait for the return value:
+
+```
+ldcv.get!then -> if it == "1" => "OK" else "Cancel"
+```
+
 
 ## Todo
 

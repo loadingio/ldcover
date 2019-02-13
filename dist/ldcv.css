@@ -64,12 +64,14 @@
 .ldcv > .base {
   text-align: left;
   z-index: 5;
-  width: 640px;
-  height: 600px;
   max-width: 80%;
   max-height: 90%;
   display: inline-block;
   vertical-align: middle;
+}
+.ldcv.default-size > .base {
+  width: 640px;
+  height: 600px;
 }
 .ldcv.margin-centered > .base {
   position: absolute;

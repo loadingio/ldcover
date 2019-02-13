@@ -21,8 +21,13 @@ var slice$ = [].slice;
     this.base = this.root.querySelector('.base');
     this.root.classList.add.apply(this.root.classList, ['ldcv'].concat(cls || []));
     this.root.addEventListener('click', function(e){
+      var action;
       if (e.target === this$.root || e.target.classList.contains('close-btn')) {
-        return this$.toggle(false);
+        this$.toggle(false);
+      }
+      action = e.target.getAttribute("data-ldcv-set");
+      if (action != null) {
+        return this$.set(action);
       }
     });
     this.evtHandler = {};
