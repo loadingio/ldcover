@@ -29,6 +29,7 @@ Methods:
  * on(event, cb): listen to certain event. evnets:
    - toggle.on: when ldCover is toggled on.
    - toggle.off: when ldCover is toggled off.
+ * isOn: is this modal active ( opened ). return true or false
 
 
 ## Spec. and structure

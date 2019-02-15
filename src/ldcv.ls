@@ -29,6 +29,7 @@
     set: (v, hide = true) ->
       @promises.splice 0 .map (p) -> p.res v
       if hide => @toggle false
+    is-on: -> return @root.classList.contains(\active)
     toggle: (v) ->
       if !(v?) and @root.classList.contains \running => return
       @root.classList.add \running

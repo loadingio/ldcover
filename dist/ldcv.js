@@ -61,6 +61,9 @@ var slice$ = [].slice;
         return this.toggle(false);
       }
     },
+    isOn: function(){
+      return this.root.classList.contains('active');
+    },
     toggle: function(v){
       var isActive, z, ref$, idx, this$ = this;
       if (!(v != null) && this.root.classList.contains('running')) {
