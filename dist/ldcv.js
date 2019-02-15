@@ -22,9 +22,6 @@ var slice$ = [].slice;
     this.root.classList.add.apply(this.root.classList, ['ldcv'].concat(cls || []));
     this.root.addEventListener('click', function(e){
       var action;
-      if (e.target === this$.root || e.target.classList.contains('closebtn')) {
-        this$.toggle(false);
-      }
       action = e.target.getAttribute("data-ldcv-set");
       if (action != null) {
         return this$.set(action);
