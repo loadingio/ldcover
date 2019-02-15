@@ -10,7 +10,7 @@
     @base = @root.querySelector '.base'
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
     @root.addEventListener \click, (e) ~>
-      if e.target == @root or e.target.classList.contains \close-btn => @toggle false
+      if e.target == @root or e.target.classList.contains \closebtn => @toggle false
       action = e.target.getAttribute("data-ldcv-set")
       if action? => @set action
     @evt-handler = {}
