@@ -11,8 +11,8 @@
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
     @root.addEventListener \click, (e) ~>
       if e.target == @root => return @toggle false
-      action = e.target.getAttribute("data-ldcv-set")
-      if action? => @set action
+      tgt = ld$.parent(e.target, '*[data-ldcv-set]', @root)
+      if tgt and (action = tgt.getAttribute("data-ldcv-set")) => @set action
     @evt-handler = {}
     @
 
