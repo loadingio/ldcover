@@ -12,7 +12,8 @@
     @root.addEventListener \click, (e) ~>
       if e.target == @root => return @toggle false
       tgt = ld$.parent(e.target, '*[data-ldcv-set]', @root)
-      if tgt and (action = tgt.getAttribute("data-ldcv-set")) => @set action
+      if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
+        if !ld$.parent(tgt, '.disabled', @root) => @set action
     @evt-handler = {}
     @
 

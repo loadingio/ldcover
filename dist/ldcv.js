@@ -26,8 +26,10 @@ var slice$ = [].slice;
         return this$.toggle(false);
       }
       tgt = ld$.parent(e.target, '*[data-ldcv-set]', this$.root);
-      if (tgt && (action = tgt.getAttribute("data-ldcv-set"))) {
-        return this$.set(action);
+      if (tgt && (action = tgt.getAttribute("data-ldcv-set")) != null) {
+        if (!ld$.parent(tgt, '.disabled', this$.root)) {
+          return this$.set(action);
+        }
       }
     });
     this.evtHandler = {};
