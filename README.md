@@ -12,7 +12,7 @@ configurations:
  * root: container.
  * type: additional class to add. default: ''. space seprated. 
  * transform-fix: true/false. default: false.
-   add a 'shown' class after ldCover is shown, which remove transform from .inner block.
+   add a 'shown' class after ldCover is shown, which removes transform from .inner block.
    useful when content is blurred due to transform, but might lead to glitches when doing transition. use it carefully.
  * delay: milliseconds. default 300. should be aligned with transition duration. use to control 'shown' and 'running' classes.
  * auto-z: update root's z-index automatically. default true.
@@ -79,6 +79,8 @@ ldcv.get!then -> if it == "1" => "OK" else "Cancel"
  * implement all this nice transitional effect:
    - https://tympanus.net/Development/ModalWindowEffects/
    - https://tympanus.net/Development/PageTransitions/
+ 
+ * remove dependency to ldQuery ( only two function call )
 
 
 ## License
