@@ -18,6 +18,9 @@ configurations:
  * auto-z: update root's z-index automatically. default true.
  * base-z: the minimal z-index of root. default 1000.
    - with auto-z, ldCover keeps track of all cover' z-index and always use larger z-index for newly toggled covers. base-z is then used as a base value for all auto-z covers.
+ * animation: optional space separated class list.
+   - will be added to .inner node when toggling on, and removed when toggling off.
+   - handy for adding customized animation from libraries like transition.css or animate.css.
 
 
 
@@ -55,6 +58,27 @@ one can decorate ldCover widgets by adding classes over the outmost element. fol
    - .ldcv.transform-centered
      - with transform-center, .base is centered with left: 50%, top: 50% + transform: translate(-50%,-50%), which don't need width/height to be provided anymore.
      - NOTE: this might causes content to be blur, so use it carefully.
+
+ * alternative transition
+   - you can use alternative transition by adding additional class in .ldcv, including following classes:
+     - ldcv-scale
+     - ldcv-zoom
+     - ldcv-vortex
+     - ldcv-slide-rtl
+     - ldcv-slide-ltr
+     - ldcv-slide-ttb
+     - ldcv-slide-btt
+     - ldcv-flip-h-left
+     - ldcv-flip-h-right
+     - ldcv-flip-v-top
+     - ldcv-flip-v-bottom
+     - ldcv-fade
+   - example of setting a alternative transition:
+
+```
+    <div class="ldcv ldcv-scale"> ... </div>
+```
+
 
 ## Action
 

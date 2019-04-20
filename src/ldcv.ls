@@ -1,4 +1,11 @@
 (->
+  parent = (r, s, e = document) ->
+    n = r; while n and n != e => n = n.parentNode # must under e
+    if n != e => return null
+    n = r; while n and n != e and n.matches and !n.matches(s) => n = n.parentNode # must match s selector
+    if n == e and (!e.matches or !e.matches(s)) => return null
+    return n
+
   ldCover = (opt={}) ->
     @opt = {delay: 300, auto-z: true, base-z: 1000} <<< opt
     @root = if !opt.root =>
@@ -7,13 +14,14 @@
       ret
     else if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
     cls = if typeof(opt.type) == \string => opt.type.split ' ' else opt.type
+    @inner = @root.querySelector '.inner'
     @base = @root.querySelector '.base'
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
     @root.addEventListener \click, (e) ~>
       if e.target == @root => return @toggle false
-      tgt = ld$.parent(e.target, '*[data-ldcv-set]', @root)
+      tgt = parent(e.target, '*[data-ldcv-set]', @root)
       if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
-        if !ld$.parent(tgt, '.disabled', @root) => @set action
+        if !parent(tgt, '.disabled', @root) => @set action
     @evt-handler = {}
     @
 
@@ -37,6 +45,8 @@
       if v? => @root.classList[if v => \add else \remove](\active)
       else @root.classList.toggle \active
       is-active = @root.classList.contains(\active)
+      if @opt.animation and @inner =>
+        @inner.classList[if is-active => \add else \remove].apply @inner.classList, @opt.animation.split(' ')
       if @opt.auto-z =>
         if is-active =>
           @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or 0) + @opt.base-z

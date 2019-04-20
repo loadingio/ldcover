@@ -1,5 +1,5 @@
 
-ldcv = new ldCover {root: document.querySelector('.ldcv')}
-ldcv.toggle false
+ldcv = new ldCover {root: document.querySelector('.ldcv'), transition: "ld ld-bounce-in"}
 
-show = -> ldcv.get!then -> console.log \ok, it
+show = ->
+  ldcv.get!then -> console.log \ok, it
