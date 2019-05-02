@@ -7,7 +7,7 @@
     return n
 
   ldCover = (opt={}) ->
-    @opt = {delay: 300, auto-z: true, base-z: 1000} <<< opt
+    @opt = {delay: 300, auto-z: true, base-z: 1000, escape: true} <<< opt
     @root = if !opt.root =>
       ret = document.createElement("div")
       ret.innerHTML = """<div class="base"></div>"""
@@ -45,6 +45,11 @@
       if v? => @root.classList[if v => \add else \remove](\active)
       else @root.classList.toggle \active
       is-active = @root.classList.contains(\active)
+      if @opt.escape and is-active =>
+        esc = (e) ~> if e.keyCode == 27 =>
+          @toggle false
+          document.removeEventListener \keyup, esc
+        document.addEventListener \keyup, esc
       if @opt.animation and @inner =>
         @inner.classList[if is-active => \add else \remove].apply @inner.classList, @opt.animation.split(' ')
       if @opt.auto-z =>

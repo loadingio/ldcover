@@ -27,7 +27,8 @@ var slice$ = [].slice;
     this.opt = import$({
       delay: 300,
       autoZ: true,
-      baseZ: 1000
+      baseZ: 1000,
+      escape: true
     }, opt);
     this.root = !opt.root
       ? (ret = document.createElement("div"), ret.innerHTML = "<div class=\"base\"></div>", ret)
@@ -87,7 +88,7 @@ var slice$ = [].slice;
       return this.root.classList.contains('active');
     },
     toggle: function(v){
-      var isActive, z, ref$, idx, this$ = this;
+      var isActive, esc, z, ref$, idx, this$ = this;
       if (!(v != null) && this.root.classList.contains('running')) {
         return;
       }
@@ -98,6 +99,15 @@ var slice$ = [].slice;
         this.root.classList.toggle('active');
       }
       isActive = this.root.classList.contains('active');
+      if (this.opt.escape && isActive) {
+        esc = function(e){
+          if (e.keyCode === 27) {
+            this$.toggle(false);
+            return document.removeEventListener('keyup', esc);
+          }
+        };
+        document.addEventListener('keyup', esc);
+      }
       if (this.opt.animation && this.inner) {
         this.inner.classList[isActive ? 'add' : 'remove'].apply(this.inner.classList, this.opt.animation.split(' '));
       }
