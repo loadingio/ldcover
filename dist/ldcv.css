@@ -137,3 +137,6 @@
   max-width: 100%;
   max-height: 100%;
 }
+.ldcv.full > .base > .inner {
+  border-radius: 0;
+}

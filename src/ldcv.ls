@@ -57,7 +57,7 @@
           @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or 0) + @opt.base-z
           ldCover.zstack.push z
         else
-          if (idx = ldCover.zstack.indexOf(@z)) < 0 => return
+          if (idx = ldCover.zstack.indexOf(@z)) < 0 => @root.classList.remove(\running); return
           @root.style.zIndex = ""
           ldCover.zstack.splice(idx, 1)
       if @opt.transform-fix and !is-active => @root.classList.remove \shown

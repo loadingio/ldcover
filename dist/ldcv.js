@@ -117,6 +117,7 @@ var slice$ = [].slice;
           ldCover.zstack.push(z);
         } else {
           if ((idx = ldCover.zstack.indexOf(this.z)) < 0) {
+            this.root.classList.remove('running');
             return;
           }
           this.root.style.zIndex = "";
