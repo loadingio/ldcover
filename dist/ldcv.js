@@ -43,7 +43,7 @@ var slice$ = [].slice;
     this.root.classList.add.apply(this.root.classList, ['ldcv'].concat(cls || []));
     this.root.addEventListener('click', function(e){
       var tgt, action;
-      if (e.target === this$.root) {
+      if (e.target === this$.root && !this$.opt.lock) {
         return this$.toggle(false);
       }
       tgt = parent(e.target, '*[data-ldcv-set]', this$.root);
@@ -99,7 +99,7 @@ var slice$ = [].slice;
         this.root.classList.toggle('active');
       }
       isActive = this.root.classList.contains('active');
-      if (this.opt.escape && isActive) {
+      if (!this.opt.lock && this.opt.escape && isActive) {
         esc = function(e){
           if (e.keyCode === 27) {
             this$.toggle(false);

@@ -18,7 +18,7 @@
     @base = @root.querySelector '.base'
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
     @root.addEventListener \click, (e) ~>
-      if e.target == @root => return @toggle false
+      if e.target == @root and !@opt.lock => return @toggle false
       tgt = parent(e.target, '*[data-ldcv-set]', @root)
       if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
         if !parent(tgt, '.disabled', @root) => @set action
@@ -45,7 +45,7 @@
       if v? => @root.classList[if v => \add else \remove](\active)
       else @root.classList.toggle \active
       is-active = @root.classList.contains(\active)
-      if @opt.escape and is-active =>
+      if !@opt.lock and @opt.escape and is-active =>
         esc = (e) ~> if e.keyCode == 27 =>
           @toggle false
           document.removeEventListener \keyup, esc

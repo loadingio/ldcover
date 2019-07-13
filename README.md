@@ -22,6 +22,7 @@ configurations:
    - will be added to .inner node when toggling on, and removed when toggling off.
    - handy for adding customized animation from libraries like transition.css or animate.css.
  * escape: should pressing escape key close the dialog. boolean, default true, optional.
+ * lock: default false. if set to true, only API or data-ldcv-set could close this modal.
 
 Methods:
  * toggle(state): toggle on/off ldCover.
