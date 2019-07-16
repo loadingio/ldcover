@@ -59,6 +59,9 @@ one can decorate ldCover widgets by adding classes over the outmost element. fol
      - with transform-center, .base is centered with left: 50%, top: 50% + transform: translate(-50%,-50%), which don't need width/height to be provided anymore.
      - NOTE: this might causes content to be blur, so use it carefully.
 
+ * .ldcv.scroll:
+   - add `scroll` class on the ldcv node when you expect the modal content to longer than a screen's height. It makes the modal scrollable by users.
+
  * alternative transition
    - you can use alternative transition by adding additional class in .ldcv, including following classes:
      - ldcv-scale

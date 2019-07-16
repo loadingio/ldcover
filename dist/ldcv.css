@@ -108,6 +108,18 @@
 .ldcv.bare > .base > .inner {
   overflow: visible;
 }
+.ldcv.scroll {
+  background: rgba(0,0,0,0.5);
+  overflow: scroll;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.ldcv.scroll:before {
+  display: none;
+}
+.ldcv.scroll > .base {
+  max-height: initial;
+}
 /*
 .ldcv > .base > .inner
   transform: scaleX(0.9) translateY(-40px)

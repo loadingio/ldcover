@@ -112,6 +112,16 @@ order = 1 2 3 ldcv ldcv-bg ldcv-base ldcv-inner
 .ldcv.bare > .base > .inner
   overflow: visible
 
+.ldcv.scroll
+  background: rgba(0,0,0,.5)
+  overflow: scroll
+  padding-top: 50px
+  padding-bottom: 50px
+  &:before
+    display: none
+  & > .base
+    max-height: initial
+
 // animation types
 // default
 /*
