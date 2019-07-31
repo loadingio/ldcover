@@ -22,7 +22,7 @@ var slice$ = [].slice;
     return n;
   };
   ldCover = function(opt){
-    var ret, cls, this$ = this;
+    var ret, cls, that, this$ = this;
     opt == null && (opt = {});
     this.opt = import$({
       delay: 300,
@@ -30,6 +30,7 @@ var slice$ = [].slice;
       baseZ: 1000,
       escape: true
     }, opt);
+    this.promises = [];
     this.root = !opt.root
       ? (ret = document.createElement("div"), ret.innerHTML = "<div class=\"base\"></div>", ret)
       : typeof opt.root === 'string'
@@ -38,6 +39,11 @@ var slice$ = [].slice;
     cls = typeof opt.type === 'string'
       ? opt.type.split(' ')
       : opt.type;
+    if (that = this.root.getAttribute('data-lock')) {
+      if (that === 'true') {
+        this.opt.lock = true;
+      }
+    }
     this.inner = this.root.querySelector('.inner');
     this.base = this.root.querySelector('.base');
     this.root.classList.add.apply(this.root.classList, ['ldcv'].concat(cls || []));
@@ -57,7 +63,6 @@ var slice$ = [].slice;
     return this;
   };
   ldCover.prototype = import$(Object.create(Object.prototype), {
-    promises: [],
     append: function(it){
       var base;
       base = this.root.childNodes[0];

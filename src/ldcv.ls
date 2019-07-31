@@ -8,12 +8,14 @@
 
   ldCover = (opt={}) ->
     @opt = {delay: 300, auto-z: true, base-z: 1000, escape: true} <<< opt
+    @promises = []
     @root = if !opt.root =>
       ret = document.createElement("div")
       ret.innerHTML = """<div class="base"></div>"""
       ret
     else if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
     cls = if typeof(opt.type) == \string => opt.type.split ' ' else opt.type
+    if @root.getAttribute(\data-lock) => if that == \true => @opt.lock = true
     @inner = @root.querySelector '.inner'
     @base = @root.querySelector '.base'
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
@@ -26,7 +28,6 @@
     @
 
   ldCover.prototype = Object.create(Object.prototype) <<< do
-    promises: []
     # append element into ldcv. should be used for ldcv created without providing root.
     append: ->
       base = @root.childNodes.0
