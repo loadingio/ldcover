@@ -120,6 +120,12 @@
 .ldcv.scroll > .base {
   max-height: initial;
 }
+.ldcv.light:before {
+  background: rgba(255,255,255,0.8);
+}
+.ldcv.scroll.light {
+  background: rgba(255,255,255,0.8);
+}
 /*
 .ldcv > .base > .inner
   transform: scaleX(0.9) translateY(-40px)
