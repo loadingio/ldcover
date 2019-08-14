@@ -46,6 +46,7 @@
       # why setTimeout?
       # it seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse move over them might
       # still makes animation slow down.
+      # set z-index to -1 seems to work but if ldcv is in another div with greater z-index, it then won't work.
       # to maximize performance, we set display: none for nonactive ldcv element, and set it to block when active.
       # but, when ldcv is visible ( by set to block ) along with active class, all other styles ( such as
       # opacity, transform etc ) will be inited as the active value, instead of the non-active value too.
