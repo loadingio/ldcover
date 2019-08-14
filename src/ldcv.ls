@@ -43,6 +43,17 @@
     toggle: (v) ->
       if !(v?) and @root.classList.contains \running => return
       @root.classList.add \running
+      # why setTimeout?
+      # it seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse move over them might
+      # still makes animation slow down.
+      # to maximize performance, we set display: none for nonactive ldcv element, and set it to block when active.
+      # but, when ldcv is visible ( by set to block ) along with active class, all other styles ( such as
+      # opacity, transform etc ) will be inited as the active value, instead of the non-active value too.
+      # this makes entering transition not work, unless we set animation manually via css animation.
+      # thus, use running to enable block, break it here and return immediately to make style transition works.
+      # if we want to remove this - either we have to use css animation to force animation, or we just
+      # setTimeout for adding active class only.
+      <~ setTimeout _, 0
       if v? => @root.classList[if v => \add else \remove](\active)
       else @root.classList.toggle \active
       is-active = @root.classList.contains(\active)

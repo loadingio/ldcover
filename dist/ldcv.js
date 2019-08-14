@@ -93,55 +93,58 @@ var slice$ = [].slice;
       return this.root.classList.contains('active');
     },
     toggle: function(v){
-      var isActive, esc, z, ref$, idx, this$ = this;
+      var this$ = this;
       if (!(v != null) && this.root.classList.contains('running')) {
         return;
       }
       this.root.classList.add('running');
-      if (v != null) {
-        this.root.classList[v ? 'add' : 'remove']('active');
-      } else {
-        this.root.classList.toggle('active');
-      }
-      isActive = this.root.classList.contains('active');
-      if (!this.opt.lock && this.opt.escape && isActive) {
-        esc = function(e){
-          if (e.keyCode === 27) {
-            this$.toggle(false);
-            return document.removeEventListener('keyup', esc);
-          }
-        };
-        document.addEventListener('keyup', esc);
-      }
-      if (this.opt.animation && this.inner) {
-        this.inner.classList[isActive ? 'add' : 'remove'].apply(this.inner.classList, this.opt.animation.split(' '));
-      }
-      if (this.opt.autoZ) {
-        if (isActive) {
-          this.root.style.zIndex = this.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this.opt.baseZ;
-          ldCover.zstack.push(z);
+      return setTimeout(function(){
+        var isActive, esc, z, ref$, idx;
+        if (v != null) {
+          this$.root.classList[v ? 'add' : 'remove']('active');
         } else {
-          if ((idx = ldCover.zstack.indexOf(this.z)) < 0) {
-            this.root.classList.remove('running');
-            return;
+          this$.root.classList.toggle('active');
+        }
+        isActive = this$.root.classList.contains('active');
+        if (!this$.opt.lock && this$.opt.escape && isActive) {
+          esc = function(e){
+            if (e.keyCode === 27) {
+              this$.toggle(false);
+              return document.removeEventListener('keyup', esc);
+            }
+          };
+          document.addEventListener('keyup', esc);
+        }
+        if (this$.opt.animation && this$.inner) {
+          this$.inner.classList[isActive ? 'add' : 'remove'].apply(this$.inner.classList, this$.opt.animation.split(' '));
+        }
+        if (this$.opt.autoZ) {
+          if (isActive) {
+            this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this$.opt.baseZ;
+            ldCover.zstack.push(z);
+          } else {
+            if ((idx = ldCover.zstack.indexOf(this$.z)) < 0) {
+              this$.root.classList.remove('running');
+              return;
+            }
+            this$.root.style.zIndex = "";
+            ldCover.zstack.splice(idx, 1);
           }
-          this.root.style.zIndex = "";
-          ldCover.zstack.splice(idx, 1);
         }
-      }
-      if (this.opt.transformFix && !isActive) {
-        this.root.classList.remove('shown');
-      }
-      setTimeout(function(){
-        this$.root.classList.remove('running');
-        if (this$.opt.transformFix && isActive) {
-          return this$.root.classList.add('shown');
+        if (this$.opt.transformFix && !isActive) {
+          this$.root.classList.remove('shown');
         }
-      }, this.opt.delay);
-      if (this.promises.length && !isActive) {
-        this.set(undefined, false);
-      }
-      return this.fire("toggle." + (isActive ? 'on' : 'off'));
+        setTimeout(function(){
+          this$.root.classList.remove('running');
+          if (this$.opt.transformFix && isActive) {
+            return this$.root.classList.add('shown');
+          }
+        }, this$.opt.delay);
+        if (this$.promises.length && !isActive) {
+          this$.set(undefined, false);
+        }
+        return this$.fire("toggle." + (isActive ? 'on' : 'off'));
+      }, 0);
     },
     on: function(n, cb){
       var ref$;
