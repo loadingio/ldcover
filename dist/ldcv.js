@@ -28,7 +28,8 @@ var slice$ = [].slice;
       delay: 300,
       autoZ: true,
       baseZ: 1000,
-      escape: true
+      escape: true,
+      byDisplay: true
     }, opt);
     this.promises = [];
     this.root = !opt.root
@@ -47,6 +48,9 @@ var slice$ = [].slice;
     this.inner = this.root.querySelector('.inner');
     this.base = this.root.querySelector('.base');
     this.root.classList.add.apply(this.root.classList, ['ldcv'].concat(cls || []));
+    if (this.opt.byDisplay) {
+      this.root.style.display = 'none';
+    }
     this.root.addEventListener('click', function(e){
       var tgt, action;
       if (e.target === this$.root && !this$.opt.lock) {
@@ -98,6 +102,9 @@ var slice$ = [].slice;
         return;
       }
       this.root.classList.add('running');
+      if (this.opt.byDisplay) {
+        this.root.style.display = 'block';
+      }
       return setTimeout(function(){
         var isActive, esc, z, ref$, idx;
         if (v != null) {
@@ -137,7 +144,10 @@ var slice$ = [].slice;
         setTimeout(function(){
           this$.root.classList.remove('running');
           if (this$.opt.transformFix && isActive) {
-            return this$.root.classList.add('shown');
+            this$.root.classList.add('shown');
+          }
+          if (!isActive && this$.opt.byDisplay) {
+            return this$.root.style.display = 'none';
           }
         }, this$.opt.delay);
         if (this$.promises.length && !isActive) {

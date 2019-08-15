@@ -7,7 +7,7 @@
     return n
 
   ldCover = (opt={}) ->
-    @opt = {delay: 300, auto-z: true, base-z: 1000, escape: true} <<< opt
+    @opt = {delay: 300, auto-z: true, base-z: 1000, escape: true, by-display: true} <<< opt
     @promises = []
     @root = if !opt.root =>
       ret = document.createElement("div")
@@ -19,6 +19,7 @@
     @inner = @root.querySelector '.inner'
     @base = @root.querySelector '.base'
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
+    if @opt.by-display => @root.style.display = \none
     @root.addEventListener \click, (e) ~>
       if e.target == @root and !@opt.lock => return @toggle false
       tgt = parent(e.target, '*[data-ldcv-set]', @root)
@@ -43,16 +44,22 @@
     toggle: (v) ->
       if !(v?) and @root.classList.contains \running => return
       @root.classList.add \running
+      if @opt.by-display => @root.style.display = \block
       # why setTimeout?
-      # it seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse move over them might
+      # It seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse moving over them might
       # still makes animation slow down.
       # set z-index to -1 seems to work but if ldcv is in another div with greater z-index, it then won't work.
-      # to maximize performance, we set display: none for nonactive ldcv element, and set it to block when active.
-      # but, when ldcv is visible ( by set to block ) along with active class, all other styles ( such as
-      # opacity, transform etc ) will be inited as the active value, instead of the non-active value too.
-      # this makes entering transition not work, unless we set animation manually via css animation.
-      # thus, use running to enable block, break it here and return immediately to make style transition works.
-      # if we want to remove this - either we have to use css animation to force animation, or we just
+      #
+      # To maximize performance, we set `display` style to `none` for nonactive ldcv element, and set it to
+      # `block` when we need to activate it.
+      #
+      # But when ldcv is visible by setting `display` to `block` and adding 'active' at the same time,
+      # all visual styles ( such as opacity, transform etc ) will be inited by active class instead of
+      # the non-active value. This makes entering transition not work.
+      #
+      # Thus, we first set `block` here, give it a break by `setTimeout`, then set `active` class immediately
+      #
+      # if we want to remove thie setTimeout, either we have to use css animation to force animation, or we just
       # setTimeout for adding active class only.
       <~ setTimeout _, 0
       if v? => @root.classList[if v => \add else \remove](\active)
@@ -77,6 +84,7 @@
       setTimeout (~>
         @root.classList.remove \running
         if @opt.transform-fix and is-active => @root.classList.add \shown
+        if !is-active and @opt.by-display => @root.style.display = \none
       ), @opt.delay
       if @promises.length and !is-active => @set undefined, false
       @fire "toggle.#{if is-active => \on else \off}"

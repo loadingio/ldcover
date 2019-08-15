@@ -158,12 +158,3 @@
 .ldcv.full > .base > .inner {
   border-radius: 0;
 }
-.ldcv {
-  display: none;
-}
-.ldcv.active {
-  display: block;
-}
-.ldcv.running {
-  display: block !important;
-}
