@@ -61,7 +61,9 @@
       #
       # if we want to remove thie setTimeout, either we have to use css animation to force animation, or we just
       # setTimeout for adding active class only.
-      <~ setTimeout _, 0
+      #
+      # Additionally, we should check if quickly toggle on / off will cause problem due to setTimeout.
+      <~ setTimeout _, 50
       if v? => @root.classList[if v => \add else \remove](\active)
       else @root.classList.toggle \active
       is-active = @root.classList.contains(\active)
@@ -77,9 +79,11 @@
           @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or 0) + @opt.base-z
           ldCover.zstack.push z
         else
-          if (idx = ldCover.zstack.indexOf(@z)) < 0 => @root.classList.remove(\running); return
+          idx = ldCover.zstack.indexOf(@z)
+          delete @z # must delete z to prevent some modal being toggled off twice.
+          if idx < 0 => @root.classList.remove(\running); return
           @root.style.zIndex = ""
-          ldCover.zstack.splice(idx, 1)
+          r = ldCover.zstack.splice(idx, 1)
       if @opt.transform-fix and !is-active => @root.classList.remove \shown
       setTimeout (~>
         @root.classList.remove \running

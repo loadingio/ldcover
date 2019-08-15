@@ -106,7 +106,7 @@ var slice$ = [].slice;
         this.root.style.display = 'block';
       }
       return setTimeout(function(){
-        var isActive, esc, z, ref$, idx;
+        var isActive, esc, z, ref$, idx, r;
         if (v != null) {
           this$.root.classList[v ? 'add' : 'remove']('active');
         } else {
@@ -130,12 +130,14 @@ var slice$ = [].slice;
             this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this$.opt.baseZ;
             ldCover.zstack.push(z);
           } else {
-            if ((idx = ldCover.zstack.indexOf(this$.z)) < 0) {
+            idx = ldCover.zstack.indexOf(this$.z);
+            delete this$.z;
+            if (idx < 0) {
               this$.root.classList.remove('running');
               return;
             }
             this$.root.style.zIndex = "";
-            ldCover.zstack.splice(idx, 1);
+            r = ldCover.zstack.splice(idx, 1);
           }
         }
         if (this$.opt.transformFix && !isActive) {
@@ -154,7 +156,7 @@ var slice$ = [].slice;
           this$.set(undefined, false);
         }
         return this$.fire("toggle." + (isActive ? 'on' : 'off'));
-      }, 0);
+      }, 50);
     },
     on: function(n, cb){
       var ref$;
