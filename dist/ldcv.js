@@ -98,65 +98,68 @@ var slice$ = [].slice;
     },
     toggle: function(v){
       var this$ = this;
-      if (!(v != null) && this.root.classList.contains('running')) {
-        return;
-      }
-      this.root.classList.add('running');
-      if (this.opt.byDisplay) {
-        this.root.style.display = 'block';
-      }
-      return setTimeout(function(){
-        var isActive, esc, z, ref$, idx, r;
-        if (v != null) {
-          this$.root.classList[v ? 'add' : 'remove']('active');
-        } else {
-          this$.root.classList.toggle('active');
+      return new Promise(function(res, rej){
+        if (!(v != null) && this$.root.classList.contains('running')) {
+          return res();
         }
-        isActive = this$.root.classList.contains('active');
-        if (!this$.opt.lock && this$.opt.escape && isActive) {
-          esc = function(e){
-            if (e.keyCode === 27) {
-              this$.toggle(false);
-              return document.removeEventListener('keyup', esc);
-            }
-          };
-          document.addEventListener('keyup', esc);
+        this$.root.classList.add('running');
+        if (this$.opt.byDisplay) {
+          this$.root.style.display = 'block';
         }
-        if (this$.opt.animation && this$.inner) {
-          this$.inner.classList[isActive ? 'add' : 'remove'].apply(this$.inner.classList, this$.opt.animation.split(' '));
-        }
-        if (this$.opt.autoZ) {
-          if (isActive) {
-            this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this$.opt.baseZ;
-            ldCover.zstack.push(z);
+        return setTimeout(function(){
+          var isActive, esc, z, ref$, idx, r;
+          if (v != null) {
+            this$.root.classList[v ? 'add' : 'remove']('active');
           } else {
-            idx = ldCover.zstack.indexOf(this$.z);
-            delete this$.z;
-            if (idx < 0) {
-              this$.root.classList.remove('running');
-              return;
+            this$.root.classList.toggle('active');
+          }
+          isActive = this$.root.classList.contains('active');
+          if (!this$.opt.lock && this$.opt.escape && isActive) {
+            esc = function(e){
+              if (e.keyCode === 27) {
+                this$.toggle(false);
+                return document.removeEventListener('keyup', esc);
+              }
+            };
+            document.addEventListener('keyup', esc);
+          }
+          if (this$.opt.animation && this$.inner) {
+            this$.inner.classList[isActive ? 'add' : 'remove'].apply(this$.inner.classList, this$.opt.animation.split(' '));
+          }
+          if (this$.opt.autoZ) {
+            if (isActive) {
+              this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this$.opt.baseZ;
+              ldCover.zstack.push(z);
+            } else {
+              idx = ldCover.zstack.indexOf(this$.z);
+              delete this$.z;
+              if (idx < 0) {
+                this$.root.classList.remove('running');
+                return res();
+              }
+              this$.root.style.zIndex = "";
+              r = ldCover.zstack.splice(idx, 1);
             }
-            this$.root.style.zIndex = "";
-            r = ldCover.zstack.splice(idx, 1);
           }
-        }
-        if (this$.opt.transformFix && !isActive) {
-          this$.root.classList.remove('shown');
-        }
-        setTimeout(function(){
-          this$.root.classList.remove('running');
-          if (this$.opt.transformFix && isActive) {
-            this$.root.classList.add('shown');
+          if (this$.opt.transformFix && !isActive) {
+            this$.root.classList.remove('shown');
           }
-          if (!isActive && this$.opt.byDisplay) {
-            return this$.root.style.display = 'none';
+          setTimeout(function(){
+            this$.root.classList.remove('running');
+            if (this$.opt.transformFix && isActive) {
+              this$.root.classList.add('shown');
+            }
+            if (!isActive && this$.opt.byDisplay) {
+              return this$.root.style.display = 'none';
+            }
+          }, this$.opt.delay);
+          if (this$.promises.length && !isActive) {
+            this$.set(undefined, false);
           }
-        }, this$.opt.delay);
-        if (this$.promises.length && !isActive) {
-          this$.set(undefined, false);
-        }
-        return this$.fire("toggle." + (isActive ? 'on' : 'off'));
-      }, 50);
+          this$.fire("toggle." + (isActive ? 'on' : 'off'));
+          return res();
+        }, 50);
+      });
     },
     on: function(n, cb){
       var ref$;

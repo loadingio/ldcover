@@ -41,8 +41,8 @@
       @promises.splice 0 .map (p) -> p.res v
       if hide => @toggle false
     is-on: -> return @root.classList.contains(\active)
-    toggle: (v) ->
-      if !(v?) and @root.classList.contains \running => return
+    toggle: (v) -> new Promise (res, rej) ~>
+      if !(v?) and @root.classList.contains \running => return res!
       @root.classList.add \running
       if @opt.by-display => @root.style.display = \block
       # why setTimeout?
@@ -81,7 +81,7 @@
         else
           idx = ldCover.zstack.indexOf(@z)
           delete @z # must delete z to prevent some modal being toggled off twice.
-          if idx < 0 => @root.classList.remove(\running); return
+          if idx < 0 => @root.classList.remove(\running); return res!
           @root.style.zIndex = ""
           r = ldCover.zstack.splice(idx, 1)
       if @opt.transform-fix and !is-active => @root.classList.remove \shown
@@ -92,6 +92,7 @@
       ), @opt.delay
       if @promises.length and !is-active => @set undefined, false
       @fire "toggle.#{if is-active => \on else \off}"
+      return res!
 
     on: (n, cb) -> @evt-handler.[][n].push cb
     fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
