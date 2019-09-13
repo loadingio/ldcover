@@ -22,7 +22,7 @@ var slice$ = [].slice;
     return n;
   };
   ldCover = function(opt){
-    var ret, cls, that, this$ = this;
+    var ret, cls, that, clicksrc, this$ = this;
     opt == null && (opt = {});
     this.opt = import$({
       delay: 300,
@@ -51,9 +51,13 @@ var slice$ = [].slice;
     if (this.opt.byDisplay) {
       this.root.style.display = 'none';
     }
+    clicksrc = null;
+    this.root.addEventListener('mousedown', function(e){
+      return clicksrc = e.target;
+    });
     this.root.addEventListener('click', function(e){
       var tgt, action;
-      if (e.target === this$.root && !this$.opt.lock) {
+      if (clicksrc === this$.root && !this$.opt.lock) {
         return this$.toggle(false);
       }
       tgt = parent(e.target, '*[data-ldcv-set]', this$.root);

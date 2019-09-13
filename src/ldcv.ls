@@ -20,8 +20,16 @@
     @base = @root.querySelector '.base'
     @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
     if @opt.by-display => @root.style.display = \none
+
+    # keep mousedown element here to track if the following click is inside the black area.
+    # some modal might contain widgets for user to drag. user might drag outside the modal.
+    # if user drag and release in the black area, it might trigger a click event -
+    # but we don't want this event to be treated as a close signal.
+    # so, if clicksrc is not @root, we just don't close modal directly but do following check then.
+    clicksrc = null
+    @root.addEventListener \mousedown, (e) ~> clicksrc := e.target
     @root.addEventListener \click, (e) ~>
-      if e.target == @root and !@opt.lock => return @toggle false
+      if clicksrc == @root and !@opt.lock => return @toggle false
       tgt = parent(e.target, '*[data-ldcv-set]', @root)
       if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
         if !parent(tgt, '.disabled', @root) => @set action
