@@ -27,7 +27,7 @@ var slice$ = [].slice;
     this.opt = import$({
       delay: 300,
       autoZ: true,
-      baseZ: 1000,
+      baseZ: 3000,
       escape: true,
       byDisplay: true
     }, opt);

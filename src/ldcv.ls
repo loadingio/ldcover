@@ -7,7 +7,7 @@
     return n
 
   ldCover = (opt={}) ->
-    @opt = {delay: 300, auto-z: true, base-z: 1000, escape: true, by-display: true} <<< opt
+    @opt = {delay: 300, auto-z: true, base-z: 3000, escape: true, by-display: true} <<< opt
     @promises = []
     @root = if !opt.root =>
       ret = document.createElement("div")
