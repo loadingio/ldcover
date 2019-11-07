@@ -7,14 +7,23 @@ html
     +css("assets/lib/ldcv/ldcv.min.css")
     +css("css/index.css")
   body
-    .ldcv: .base: .inner.card: .card-body: .vertical-center
-      .text-center.w-100
+    .m-4
+      .btn.btn-outline-dark(onclick="fire()") Fire
+    .ldcv(data-name="root"): .base: .inner.card
+      .closebtn.lg(style="display:none",data-name="closebtn",data-ldcv-set="")
+      .card-body: .vertical-center: .text-center.w-100
         img(data-name="icon",src="assets/img/check.svg")
-        h1(data-name="title") Good Job!
-        p(data-name="desc") you clicked the button.
-        br
-        .btn.btn-lg.btn-primary.flex-grow-1.mr-2(data-name="confrim",data-ldcv-set="ok") OK
-        .btn.btn-lg.btn-outline-dark.flex-grow-1(data-name="cancel",data-ldcv-set="") Cancel
+        .py-2
+          h2.text-capitalize(data-name="title") Good Job!
+          p(data-name="desc") you clicked the button.
+        .py-2
+          .btn.btn-lg.btn-primary.flex-grow-1.mr-2(data-name="yes",data-ldcv-set="yes") Yes
+          .btn.btn-lg.btn-outline-dark.flex-grow-1.mr-2(style="display:none",data-name="no",data-ldcv-set="no") No
+          .btn.btn-lg.btn-outline-dark.flex-grow-1(style="display:none",data-name="cancel",data-ldcv-set="") Cancel
+        .d-none(data-name="footroot")
+          hr
+          p.my-0(data-name="foot")
     +script("assets/lib/ldui/ldui.min.js")
     +script("assets/lib/ldcv/ldcv.min.js")
+    +script("js/icon.js")
     +script("js/index.js")
