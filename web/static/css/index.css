@@ -1,0 +1,7 @@
+.ldcv .base {
+  width: 400px;
+  height: 360px;
+}
+.ldcv .base .btn {
+  min-width: 100px;
+}
