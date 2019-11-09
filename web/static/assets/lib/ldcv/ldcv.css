@@ -65,6 +65,7 @@
   text-align: left;
   z-index: 5;
   max-width: 80%;
+  max-height: 90%;
   display: inline-block;
   vertical-align: middle;
 }
@@ -167,7 +168,4 @@
 }
 .ldcv.full > .base > .inner {
   border-radius: 0;
-}
-body.ldcv-scrolllock {
-  overflow-y: hidden !important;
 }
