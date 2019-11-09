@@ -132,7 +132,7 @@ var slice$ = [].slice;
           }
           if (this$.opt.autoZ) {
             if (isActive) {
-              this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || 0) + this$.opt.baseZ;
+              this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || this$.opt.baseZ) + 1;
               ldCover.zstack.push(z);
             } else {
               idx = ldCover.zstack.indexOf(this$.z);

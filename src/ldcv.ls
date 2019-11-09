@@ -84,7 +84,7 @@
         @inner.classList[if is-active => \add else \remove].apply @inner.classList, @opt.animation.split(' ')
       if @opt.auto-z =>
         if is-active =>
-          @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or 0) + @opt.base-z
+          @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or @opt.base-z) + 1
           ldCover.zstack.push z
         else
           idx = ldCover.zstack.indexOf(@z)
