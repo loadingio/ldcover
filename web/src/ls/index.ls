@@ -1,9 +1,5 @@
-
-
-
 (->
   fire = (e,n) -> if e[n] => e[n]!
-
   ldcv = new ldCover root: '.ldcv'
   window.ldAlert = ldAlert = (...args) ->
     if typeof(args.0) == \object => opt = args.0
