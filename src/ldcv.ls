@@ -49,6 +49,8 @@
       @promises.splice 0 .map (p) -> p.res v
       if hide => @toggle false
     is-on: -> return @root.classList.contains(\active)
+    lock: ->
+      @opt.lock = true
     toggle: (v) -> new Promise (res, rej) ~>
       if !(v?) and @root.classList.contains \running => return res!
       @root.classList.add \running

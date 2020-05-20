@@ -100,6 +100,9 @@ var slice$ = [].slice;
     isOn: function(){
       return this.root.classList.contains('active');
     },
+    lock: function(){
+      return this.opt.lock = true;
+    },
     toggle: function(v){
       var this$ = this;
       return new Promise(function(res, rej){
