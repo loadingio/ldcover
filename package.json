@@ -3,24 +3,27 @@
   "name": "ldcover",
   "license": "MIT",
   "description": "tiny popup / dialog library",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "files": [
+    "dist/**/*"
+  ],
   "homepage": "https://loading.io/lib/modal/",
   "repository": {
     "type": "git",
     "url": "https://github.com/loadingio/ldCover"
   },
   "engines": {
-    "node": ">=0.12.6",
-    "npm": ">=1.2.2"
+    "node": ">=10.14.1",
+    "npm": ">=6.4.1"
   },
   "scripts": {
-    "start": "cd web; ../node_modules/.bin/lsc ../node_modules/template/server.ls"
+    "start": "npx server -r web"
   },
   "devDependencies": {
     "LiveScript": ">=1.2.0",
     "stylus": "^0.54.5",
     "uglify-js": "=3.2.0",
     "uglifycss": "0.0.29",
-    "template": "github:zbryikt/template#v2"
+    "template": "github:zbryikt/template#v2.1.3"
   }
 }
