@@ -114,7 +114,7 @@ var slice$ = [].slice;
           this$.root.style.display = 'block';
         }
         return setTimeout(function(){
-          var isActive, esc, z, ref$, idx, r;
+          var isActive, esc, idx, z, ref$, r;
           if (v != null) {
             this$.root.classList[v ? 'add' : 'remove']('active');
           } else {
@@ -123,7 +123,11 @@ var slice$ = [].slice;
           isActive = this$.root.classList.contains('active');
           if (!this$.opt.lock && this$.opt.escape && isActive) {
             esc = function(e){
+              var ref$;
               if (e.keyCode === 27) {
+                if ((ref$ = ldCover.popups)[ref$.length - 1] !== this$) {
+                  return;
+                }
                 this$.toggle(false);
                 return document.removeEventListener('keyup', esc);
               }
@@ -132,6 +136,14 @@ var slice$ = [].slice;
           }
           if (this$.opt.animation && this$.inner) {
             this$.inner.classList[isActive ? 'add' : 'remove'].apply(this$.inner.classList, this$.opt.animation.split(' '));
+          }
+          if (isActive) {
+            ldCover.popups.push(this$);
+          } else {
+            idx = ldCover.popups.indexOf(this$);
+            if (idx >= 0) {
+              ldCover.popups.splice(idx, 1);
+            }
           }
           if (this$.opt.autoZ) {
             if (isActive) {
@@ -183,7 +195,8 @@ var slice$ = [].slice;
     }
   });
   import$(ldCover, {
-    zstack: []
+    zstack: [],
+    popups: []
   });
   if (typeof module != 'undefined' && module !== null) {
     module.exports = ldCover;

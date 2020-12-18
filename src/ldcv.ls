@@ -79,11 +79,16 @@
       is-active = @root.classList.contains(\active)
       if !@opt.lock and @opt.escape and is-active =>
         esc = (e) ~> if e.keyCode == 27 =>
+          if ldCover.popups[* - 1] != @ => return
           @toggle false
           document.removeEventListener \keyup, esc
         document.addEventListener \keyup, esc
       if @opt.animation and @inner =>
         @inner.classList[if is-active => \add else \remove].apply @inner.classList, @opt.animation.split(' ')
+      if is-active => ldCover.popups.push @
+      else
+        idx = ldCover.popups.indexOf(@)
+        if idx >= 0 => ldCover.popups.splice idx, 1
       if @opt.auto-z =>
         if is-active =>
           @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or @opt.base-z) + 1
@@ -109,6 +114,7 @@
 
   ldCover <<< do
     zstack: []
+    popups: []
 
   if module? => module.exports = ldCover
   if window => window.ldCover = ldCover
