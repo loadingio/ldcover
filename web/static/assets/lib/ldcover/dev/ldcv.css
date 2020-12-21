@@ -169,3 +169,35 @@
 .ldcv.full > .base > .inner {
   border-radius: 0;
 }
+.ldcv.mini {
+  width: auto;
+  height: auto;
+  left: auto;
+  top: auto;
+  right: auto;
+  bottom: auto;
+}
+.ldcv.mini:before,
+.ldcv.mini:after {
+  display: none;
+}
+.ldcv.mini > .base {
+  max-width: initial;
+  max-height: initial;
+}
+.ldcv.mini > .base > .inner {
+  width: initial;
+  height: initial;
+}
+.ldcv.mini.left {
+  left: 1.25em;
+}
+.ldcv.mini.right {
+  right: 1.25em;
+}
+.ldcv.mini.top {
+  top: 1.25em;
+}
+.ldcv.mini.bottom {
+  bottom: 1.25em;
+}

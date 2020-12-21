@@ -3,7 +3,7 @@
   "name": "ldcover",
   "license": "MIT",
   "description": "tiny popup / dialog library",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "files": [
     "dist/**/*"
   ],

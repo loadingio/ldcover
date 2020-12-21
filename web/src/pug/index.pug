@@ -1,0 +1,16 @@
+doctype html
+include /../../static/assets/lib/bootstrap.ldui/main/index.pug
+html
+  head
+    +css("assets/lib/bootstrap/main/css/bootstrap.min.css")
+    +css("assets/lib/bootstrap.ldui/main/bootstrap.ldui.min.css")
+    +css("assets/lib/ldcover/dev/ldcv.min.css")
+    +css("css/index.css")
+  body
+    .ldcv.mini.left.bottom(ld="ldcv"): .base: .inner.d-flex.px-2.py-2.align-items-center
+      .flex-grow-1.mr-2 Mini ldCover.
+      .btn.btn-sm.btn-outline-primary(data-ldcv-set="") Dismiss
+    +script("assets/lib/ldview/main/ldview.min.js")
+    +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
+    +script("assets/lib/ldcover/dev/ldcv.min.js")
+    +script("js/index.js")

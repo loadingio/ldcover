@@ -5,6 +5,7 @@
  - add `ldview` and `ldquery` for development.
  - tweak build script
  - refactor web/
+ - add `mini` style ldcover.
 
 
 # 1.1.1

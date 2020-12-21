@@ -175,3 +175,28 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
   max-height: 100%
   & > .inner
     border-radius: 0
+
+.ldcv.mini
+  width: auto
+  height: auto
+  left: auto
+  top: auto
+  right: auto
+  bottom: auto
+  &:before, &:after
+    display: none
+  & > .base
+    max-width: initial
+    max-height: initial
+    & > .inner
+      width: initial
+      height: initial
+
+.ldcv.mini.left
+  left: 1.25em
+.ldcv.mini.right
+  right: 1.25em
+.ldcv.mini.top
+  top: 1.25em
+.ldcv.mini.bottom
+  bottom: 1.25em
