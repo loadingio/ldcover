@@ -1,4 +1,4 @@
-# 1.1.2 (upcoming)
+# 1.1.2
 
  - upgrade `template` and `livescript`
  - add `bootstrap.ldui` for development.
