@@ -1,3 +1,9 @@
+# 1.1.2 (upcoming)
+
+ - upgrade `template` and `livescript`
+ - add `bootstrap.ldui` for development.
+
+
 # 1.1.1
 
  - fix bug: escape should not close all modals, but only the topmost modal.
