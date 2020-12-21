@@ -2,6 +2,7 @@ doctype html
 include /../../static/assets/lib/ldui/pug/ldui.pug
 html
   head
+    base(href="..")
     +css("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
     +css("assets/lib/ldui/ldui.min.css")
     +css("assets/lib/ldcv/ldcv.min.css")
@@ -9,6 +10,8 @@ html
   body
     .m-4
       .btn.btn-outline-dark(onclick="fire()") Fire
+    .ldcv: .base: .inner
+      h1 hi
     .ldcv(data-name="root"): .base: .inner.card
       .closebtn.lg(style="display:none",data-name="closebtn",data-ldcv-set="")
       .card-body: .vertical-center: .text-center.w-100
@@ -25,5 +28,5 @@ html
           p.my-0(data-name="foot")
     +script("assets/lib/ldui/ldui.min.js")
     +script("assets/lib/ldcv/ldcv.min.js")
-    +script("js/icon.js")
-    +script("js/index.js")
+    +script("js/alert/icon.js")
+    +script("js/alert/index.js")
