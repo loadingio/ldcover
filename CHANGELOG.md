@@ -2,6 +2,9 @@
 
  - upgrade `template` and `livescript`
  - add `bootstrap.ldui` for development.
+ - add `ldview` and `ldquery` for development.
+ - tweak build script
+ - refactor web/
 
 
 # 1.1.1
