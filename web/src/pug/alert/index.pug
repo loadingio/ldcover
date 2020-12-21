@@ -1,21 +1,18 @@
 doctype html
-include /../../static/assets/lib/ldui/pug/ldui.pug
+include /../../static/assets/lib/bootstrap.ldui/main/index.pug
 html
   head
     base(href="..")
-    +css("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
-    +css("assets/lib/ldui/ldui.min.css")
-    +css("assets/lib/ldcv/ldcv.min.css")
+    +css("assets/lib/bootstrap/main/css/bootstrap.min.css")
+    +css("assets/lib/bootstrap.ldui/main/bootstrap.ldui.min.css")
+    +css("assets/lib/ldcover/dev/ldcv.min.css")
     +css("css/index.css")
   body
-    .m-4
-      .btn.btn-outline-dark(onclick="fire()") Fire
-    .ldcv: .base: .inner
-      h1 hi
+    .m-4: .btn.btn-outline-dark(onclick="fire()") Fire
     .ldcv(data-name="root"): .base: .inner.card
       .closebtn.lg(style="display:none",data-name="closebtn",data-ldcv-set="")
       .card-body: .vertical-center: .text-center.w-100
-        img(data-name="icon",src="assets/img/check.svg")
+        img(data-name="icon",src="assets/img/s/error.svg")
         .py-2
           h2.text-capitalize(data-name="title") Good Job!
           p(data-name="desc") you clicked the button.
@@ -26,7 +23,8 @@ html
         .d-none(data-name="footroot")
           hr
           p.my-0(data-name="foot")
-    +script("assets/lib/ldui/ldui.min.js")
-    +script("assets/lib/ldcv/ldcv.min.js")
+    +script("assets/lib/ldview/main/ldview.min.js")
+    +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
+    +script("assets/lib/ldcover/dev/ldcv.min.js")
     +script("js/alert/icon.js")
     +script("js/alert/index.js")
