@@ -204,11 +204,11 @@
     module.exports = ldCover;
   }
   if (window) {
-    return window.ldCover = ldCover;
+    window.ldCover = ldCover;
   }
-})();
-function import$(obj, src){
-  var own = {}.hasOwnProperty;
-  for (var key in src) if (own.call(src, key)) obj[key] = src[key];
-  return obj;
-}
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
+}).call(this);

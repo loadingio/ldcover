@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
+rm -rf dist
 mkdir -p dist
 echo "build src/ldcv.ls -> dist/ldcv.js ..."
-./node_modules/.bin/lsc -cbp src/ldcv.ls > dist/ldcv.js
+npx lsc -cp --no-header src/ldcv.ls > dist/ldcv.js
 echo "build src/ldcv.styl -> dist/ldcv.css ..."
-./node_modules/.bin/stylus -p src/ldcv.styl > dist/ldcv.css
+npx stylus -p src/ldcv.styl > dist/ldcv.css
 echo "build src/ldcv.effects.styl -> dist/ldcv.effects.css ..."
-./node_modules/.bin/stylus -p src/ldcv.effects.styl > dist/ldcv.effects.css
+npx stylus -p src/ldcv.effects.styl > dist/ldcv.effects.css
 echo "minifying ldcv.js ..."
-./node_modules/.bin/uglifyjs dist/ldcv.js > dist/ldcv.min.js
+npx uglifyjs dist/ldcv.js > dist/ldcv.min.js
 echo "minifying ldcv.css ..."
-./node_modules/.bin/uglifycss dist/ldcv.css > dist/ldcv.min.css
+npx uglifycss dist/ldcv.css > dist/ldcv.min.css
 echo "minifying ldcv.effects.css ..."
-./node_modules/.bin/uglifycss dist/ldcv.effects.css > dist/ldcv.effects.min.css
+npx uglifycss dist/ldcv.effects.css > dist/ldcv.effects.min.css
 echo "Copy pug mixin to dist/ ..."
 cp src/ldcv.pug dist/
 echo "Copy dist/ to web/ ..."
-mkdir -p web/static/assets/lib/ldcv/
-cp -R dist/* web/static/assets/lib/ldcv/
+rm -rf web/static/assets/lib/ldcover/dev/
+mkdir -p web/static/assets/lib/ldcover/dev/
+cp -R dist/* web/static/assets/lib/ldcover/dev/
 echo "done."
 
