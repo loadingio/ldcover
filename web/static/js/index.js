@@ -1,8 +1,19 @@
 var view, ldcv;
 view = new ldView({
-  root: document.body
+  root: document.body,
+  action: {
+    click: {
+      "show-tos": function(){
+        return ldcv.tos.toggle(true);
+      }
+    }
+  }
 });
-ldcv = new ldCover({
-  root: view.get('ldcv')
+ldcv = {};
+ldcv.tos = new ldCover({
+  root: view.get('ldcv-tos')
 });
-ldcv.toggle(true);
+ldcv.mini = new ldCover({
+  root: view.get('ldcv-mini')
+});
+ldcv.mini.toggle(true);

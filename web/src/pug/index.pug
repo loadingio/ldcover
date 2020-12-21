@@ -7,9 +7,19 @@ html
     +css("assets/lib/ldcover/dev/ldcv.min.css")
     +css("css/index.css")
   body
-    .ldcv.mini.left.bottom(ld="ldcv"): .base: .inner.d-flex.px-2.py-2.align-items-center
-      .flex-grow-1.mr-2 Mini ldCover.
-      .btn.btn-sm.btn-outline-primary(data-ldcv-set="") Dismiss
+    .ldcv.mini.left.bottom.right(ld="ldcv-mini"): .base: .inner.d-flex.px-3.py-2.align-items-center.bg-info.text-light
+      .flex-grow-1.mr-2 By continuing to browse, you agree to our use of cookies.
+      a.btn.btn-sm.btn-outline-light.mr-2(href="http://info.cern.ch") Not Agree
+      .btn.btn-sm.btn-light(data-ldcv-set="") I agree
+    .ldcv(ld="ldcv-tos"): .base.h-100.w-640.rwd: .inner.w-100.h-100.position-relative(style="padding-bottom:5em")
+      .p-4.h-100(style="overflow:scroll")
+        include tos.pug
+      .position-absolute.w-100.p-4.bg-white.border-top(style="bottom:0;box-shadow:0 -3px 6px rgba(0,0,0,.1)")
+        .d-flex
+          a.btn.btn-outline-primary.mr-2.flex-grow-1(href="http://info.cern.ch") I don't agree
+          .btn.btn-primary.ml-2.flex-grow-1(data-ldcv-set="") I agree
+    .w-100.h-100.d-flex.align-items-center.justify-content-center
+      .btn.btn-lg.btn-primary(ld="show-tos") Show Term of Use
     +script("assets/lib/ldview/main/ldview.min.js")
     +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
     +script("assets/lib/ldcover/dev/ldcv.min.js")

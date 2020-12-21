@@ -1,4 +1,7 @@
 view = new ldView do
   root: document.body
-ldcv = new ldCover root: view.get('ldcv')
-ldcv.toggle true
+  action: click: "show-tos": -> ldcv.tos.toggle true
+ldcv = {}
+ldcv.tos = new ldCover root: view.get('ldcv-tos')
+ldcv.mini = new ldCover root: view.get('ldcv-mini')
+ldcv.mini.toggle true
