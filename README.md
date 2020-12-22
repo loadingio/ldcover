@@ -34,6 +34,15 @@ Methods:
    - toggle.off: when ldCover is toggled off.
  * isOn: is this modal active ( opened ). return true or false
 
+## Class Method
+
+ * setZmgr(zmgr): set a shared z-index manager. useful to manager widget z-index globally.
+   this manager should provide following methods:
+   - add(baseVal, size): return actual added value.
+     - baseVal: hint value for the z-index we'd like to use
+     - size: hint size about how large the object we added is
+   - remove(val): remove val ( returned by add ) from this manager.
+
 
 ## Spec. and structure
 

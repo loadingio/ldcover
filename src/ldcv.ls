@@ -90,10 +90,13 @@ ldCover.prototype = Object.create(Object.prototype) <<< do
       if idx >= 0 => ldCover.popups.splice idx, 1
     if @opt.auto-z =>
       if is-active =>
-        @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or @opt.base-z) + 1
-        ldCover.zstack.push z
+        if ldCover.zmgr => @root.style.zIndex = @z = ldCover.zmgr.add @opt.base-z
+        else
+          @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or @opt.base-z) + 1
+          ldCover.zstack.push z
       else
-        idx = ldCover.zstack.indexOf(@z)
+        if ldCover.zmgr => ldCover.zmgr.remove @z
+        else idx = ldCover.zstack.indexOf(@z)
         delete @z # must delete z to prevent some modal being toggled off twice.
         if idx < 0 => @root.classList.remove(\running); return res!
         @root.style.zIndex = ""
@@ -114,6 +117,7 @@ ldCover.prototype = Object.create(Object.prototype) <<< do
 ldCover <<< do
   zstack: []
   popups: []
+  set-zmgr: -> @zmgr = it
 
 if module? => module.exports = ldCover
 if window => window.ldCover = ldCover

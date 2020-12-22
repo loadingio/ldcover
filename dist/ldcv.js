@@ -145,10 +145,18 @@
           }
           if (this$.opt.autoZ) {
             if (isActive) {
-              this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || this$.opt.baseZ) + 1;
-              ldCover.zstack.push(z);
+              if (ldCover.zmgr) {
+                this$.root.style.zIndex = this$.z = ldCover.zmgr.add(this$.opt.baseZ);
+              } else {
+                this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || this$.opt.baseZ) + 1;
+                ldCover.zstack.push(z);
+              }
             } else {
-              idx = ldCover.zstack.indexOf(this$.z);
+              if (ldCover.zmgr) {
+                ldCover.zmgr.remove(this$.z);
+              } else {
+                idx = ldCover.zstack.indexOf(this$.z);
+              }
               delete this$.z;
               if (idx < 0) {
                 this$.root.classList.remove('running');
@@ -198,7 +206,10 @@
   });
   import$(ldCover, {
     zstack: [],
-    popups: []
+    popups: [],
+    setZmgr: function(it){
+      return this.zmgr = it;
+    }
   });
   if (typeof module != 'undefined' && module !== null) {
     module.exports = ldCover;

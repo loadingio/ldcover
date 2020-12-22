@@ -1,4 +1,10 @@
-# 1.1.2
+# 1.3.0
+
+ - add `setZmgr` for managing z-index globally.
+ - update demo for testing `setZmgr`.
+
+
+# 1.2.0
 
  - upgrade `template` and `livescript`
  - add `bootstrap.ldui` for development.
