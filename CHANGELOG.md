@@ -1,3 +1,8 @@
+# 1.3.1
+
+ - bug fix: move transition to `.running, .active` classes so there won't be a initial flash of dialog content.
+
+
 # 1.3.0
 
  - add `setZmgr` for managing z-index globally.

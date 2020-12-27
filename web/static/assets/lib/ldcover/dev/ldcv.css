@@ -8,7 +8,6 @@
   opacity: 0;
   text-align: center;
   perspective: 1024px;
-  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
   visibility: hidden;
 }
 .ldcv:before {
@@ -32,6 +31,7 @@
 .ldcv.running,
 .ldcv.active {
   z-index: 1;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 .ldcv.no-shadow:before,
 .ldcv.bare:before {
