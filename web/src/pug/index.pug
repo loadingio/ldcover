@@ -1,5 +1,5 @@
 doctype html
-include /../../static/assets/lib/bootstrap.ldui/main/index.pug
+include @/bootstrap.ldui/dist/index.pug
 html
   head
     +css("assets/lib/bootstrap/main/css/bootstrap.min.css")
@@ -30,7 +30,7 @@ html
 
     .w-100.h-100.d-flex.align-items-center.justify-content-center
       .btn.btn-lg.btn-primary(ld="show-tos") Show Term of Use
-    +script("assets/lib/ldview/main/ldview.min.js")
+    +script("assets/lib/ldview/main/index.min.js")
     +script("assets/lib/ldloader/main/ldld.min.js")
     +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
     +script("assets/lib/@loadingio/debounce.js/main/debounce.min.js")

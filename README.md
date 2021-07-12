@@ -1,23 +1,23 @@
-# ldCover
+# ldcover
 
 vanilla popup / dialog library.
 
 
 ## Usage
 
-var ldcv = new ldCover({ ... });
+var ldcv = new ldcover({ ... });
 
 configurations:
 
  * root: container.
  * type: additional class to add. default: ''. space seprated. 
  * transform-fix: true/false. default: false.
-   add a 'shown' class after ldCover is shown, which removes transform from .inner block.
+   add a 'shown' class after ldcover is shown, which removes transform from .inner block.
    useful when content is blurred due to transform, but might lead to glitches when doing transition. use it carefully.
  * delay: milliseconds. default 300. should be aligned with transition duration. use to control 'shown' and 'running' classes.
  * auto-z: update root's z-index automatically. default true.
  * base-z: the minimal z-index of root. default 1000.
-   - with auto-z, ldCover keeps track of all cover' z-index and always use larger z-index for newly toggled covers. base-z is then used as a base value for all auto-z covers.
+   - with auto-z, ldcover keeps track of all cover' z-index and always use larger z-index for newly toggled covers. base-z is then used as a base value for all auto-z covers.
  * animation: optional space separated class list.
    - will be added to .inner node when toggling on, and removed when toggling off.
    - handy for adding customized animation from libraries like transition.css or animate.css.
@@ -25,13 +25,13 @@ configurations:
  * lock: default false. if set to true, only API or data-ldcv-set could close this modal.
 
 Methods:
- * toggle(state): toggle on/off ldCover.
- * get(): toggle on ldCover and return a promise, which will only be resolved when ldCover.set is called.
- * set(v, hide=true): set value, which resolve promises from get, and hide ldCover if hide = true.
+ * toggle(state): toggle on/off ldcover.
+ * get(): toggle on ldcover and return a promise, which will only be resolved when ldcover.set is called.
+ * set(v, hide=true): set value, which resolve promises from get, and hide ldcover if hide = true.
    - use data-ldcv-set on elements to automatically set value when elements are clicked.
  * on(event, cb): listen to certain event. evnets:
-   - toggle.on: when ldCover is toggled on.
-   - toggle.off: when ldCover is toggled off.
+   - toggle.on: when ldcover is toggled on.
+   - toggle.off: when ldcover is toggled off.
  * isOn: is this modal active ( opened ). return true or false
 
 ## Class Method
@@ -46,14 +46,14 @@ Methods:
 
 ## Spec. and structure
 
-A simple ldCover popup are built with following html structure:
+A simple ldcover popup are built with following html structure:
 
  * .ldcv          - topmost, fullscreen container
    * .base        - control the overall size and position for this box ( could be omit )
      *  .inner     - dialog container. constraint size. transition animation goes here
 
 
-one can decorate ldCover widgets by adding classes over the outmost element. following classes are defined by default:
+one can decorate ldcover widgets by adding classes over the outmost element. following classes are defined by default:
 
  * .ldcv.bare:
    - no covered bk.

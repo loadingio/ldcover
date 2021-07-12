@@ -5,7 +5,7 @@ parent = (r, s, e = document) ->
   if n == e and (!e.matches or !e.matches(s)) => return null
   return n
 
-ldCover = (opt={}) ->
+ldcover = (opt={}) ->
   @opt = {delay: 300, auto-z: true, base-z: 3000, escape: true, by-display: true} <<< opt
   @promises = []
   @root = if !opt.root =>
@@ -35,7 +35,7 @@ ldCover = (opt={}) ->
   @evt-handler = {}
   @
 
-ldCover.prototype = Object.create(Object.prototype) <<< do
+ldcover.prototype = Object.create(Object.prototype) <<< do
   # append element into ldcv. should be used for ldcv created without providing root.
   append: ->
     base = @root.childNodes.0
@@ -78,29 +78,29 @@ ldCover.prototype = Object.create(Object.prototype) <<< do
     is-active = @root.classList.contains(\active)
     if !@opt.lock and @opt.escape and is-active =>
       esc = (e) ~> if e.keyCode == 27 =>
-        if ldCover.popups[* - 1] != @ => return
+        if ldcover.popups[* - 1] != @ => return
         @toggle false
         document.removeEventListener \keyup, esc
       document.addEventListener \keyup, esc
     if @opt.animation and @inner =>
       @inner.classList[if is-active => \add else \remove].apply @inner.classList, @opt.animation.split(' ')
-    if is-active => ldCover.popups.push @
+    if is-active => ldcover.popups.push @
     else
-      idx = ldCover.popups.indexOf(@)
-      if idx >= 0 => ldCover.popups.splice idx, 1
+      idx = ldcover.popups.indexOf(@)
+      if idx >= 0 => ldcover.popups.splice idx, 1
     if @opt.auto-z =>
       if is-active =>
-        if ldCover.zmgr => @root.style.zIndex = @z = ldCover.zmgr.add @opt.base-z
+        if ldcover.zmgr => @root.style.zIndex = @z = ldcover.zmgr.add @opt.base-z
         else
-          @root.style.zIndex = @z = z = (ldCover.zstack[* - 1] or @opt.base-z) + 1
-          ldCover.zstack.push z
+          @root.style.zIndex = @z = z = (ldcover.zstack[* - 1] or @opt.base-z) + 1
+          ldcover.zstack.push z
       else
-        if ldCover.zmgr => ldCover.zmgr.remove @z
-        else idx = ldCover.zstack.indexOf(@z)
+        if ldcover.zmgr => ldcover.zmgr.remove @z
+        else idx = ldcover.zstack.indexOf(@z)
         delete @z # must delete z to prevent some modal being toggled off twice.
         if idx < 0 => @root.classList.remove(\running); return res!
         @root.style.zIndex = ""
-        r = ldCover.zstack.splice(idx, 1)
+        r = ldcover.zstack.splice(idx, 1)
     if @opt.transform-fix and !is-active => @root.classList.remove \shown
     setTimeout (~>
       @root.classList.remove \running
@@ -114,10 +114,10 @@ ldCover.prototype = Object.create(Object.prototype) <<< do
   on: (n, cb) -> @evt-handler.[][n].push cb
   fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
 
-ldCover <<< do
+ldcover <<< do
   zstack: []
   popups: []
   set-zmgr: -> @zmgr = it
 
-if module? => module.exports = ldCover
-if window => window.ldCover = ldCover
+if module? => module.exports = ldcover
+if window => window.ldCover = window.ldcover = ldcover

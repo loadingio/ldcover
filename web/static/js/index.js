@@ -6,7 +6,7 @@ ldld = new ldLoader({
   className: "full ldld",
   autoZ: true
 });
-view = new ldView({
+view = new ldview({
   root: document.body,
   action: {
     click: {
@@ -27,13 +27,13 @@ view = new ldView({
   }
 });
 ldcv = {};
-ldcv.confirm = new ldCover({
+ldcv.confirm = new ldcover({
   root: view.get('ldcv-confirm')
 });
-ldcv.tos = new ldCover({
+ldcv.tos = new ldcover({
   root: view.get('ldcv-tos')
 });
-ldcv.mini = new ldCover({
+ldcv.mini = new ldcover({
   root: view.get('ldcv-mini')
 });
 ldcv.mini.toggle(true);

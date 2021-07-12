@@ -46,7 +46,7 @@
   z-index: 1001;
 }
 .hover-tip.ghost,
-.cutom-tip.ghost {
+.custom-tip.ghost {
   pointer-events: none;
 }
 .hover-tip {
@@ -244,6 +244,56 @@
 .input-group .dropdown-menu {
   width: 100%;
 }
+.sep {
+  margin: 1em auto;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  width: 100%;
+  height: 0;
+}
+.sep:before,
+.sep:after {
+  border-top: 0px solid rgba(0,0,0,0.1);
+}
+.sep.sep-dashed {
+  border-top-style: dashed;
+}
+.sep.sep-dashed:before,
+.sep.sep-dashed:after {
+  border-top-style: dashed;
+}
+.sep.sep-light {
+  border-top-color: rgba(255,255,255,0.1);
+}
+.sep.sep-light:before,
+.sep.sep-light:after {
+  border-top-color: rgba(255,255,255,0.1);
+}
+.sep.sep-dark {
+  border-top-color: rgba(0,0,0,0.5);
+}
+.sep.sep-dark:before,
+.sep.sep-dark:after {
+  border-top-color: rgba(0,0,0,0.5);
+}
+.sep.sep-text {
+  display: flex;
+  flex-wrap: nowrap;
+  border: none;
+}
+.sep.sep-text span {
+  position: relative;
+  top: -0.76em;
+  padding: 0 0.5em;
+  display: inline-block;
+  white-space: nowrap;
+}
+.sep.sep-text:before,
+.sep.sep-text:after {
+  content: " ";
+  display: block;
+  border-top-width: 1px;
+  width: 50%;
+}
 .btn.btn-text {
   cursor: default;
 }
@@ -302,6 +352,42 @@
   height: 100%;
   border: 0;
 }
+.switch {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  padding: 1px;
+  border-radius: 1.75em;
+  width: 2.25em;
+  background: #edeeef;
+  transition: background 0.15s ease-in-out;
+}
+.switch:after {
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  width: 1em;
+  height: 1em;
+  background: #fff;
+  transition: all 0.15s ease-in-out;
+  left: 0%;
+  transform: translate(0%, 0);
+  position: relative;
+}
+.switch.on {
+  background: #00ff7b;
+}
+.switch.on:after {
+  left: 100%;
+  transform: translate(-100%, 0);
+}
+.switch.switch-lg {
+  width: 3.25em;
+}
+.switch.switch-lg:after {
+  width: 1.75em;
+  height: 1.75em;
+}
 .text-sm {
   font-size: 0.8em;
 }
@@ -321,6 +407,9 @@
 }
 .clickable {
   cursor: pointer !important;
+}
+.unclickable {
+  cursor: not-allowed !important;
 }
 .underdash {
   border-bottom: 1px dashed currentColor;
@@ -518,7 +607,7 @@ a.disabled {
   background-color: rgba(0,0,0,0.6);
 }
 .bg-no-repeat {
-  background-position: center center !important;
+  background-repeat: no-repeat;
 }
 .bg-center {
   background-position: center center !important;

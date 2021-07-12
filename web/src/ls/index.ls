@@ -4,7 +4,7 @@ ldCover.set-zmgr zmgr
 ldLoader.set-zmgr zmgr
 ldld = new ldLoader className: "full ldld", auto-z: true
 
-view = new ldView do
+view = new ldview do
   root: document.body
   action: click:
     "show-tos": -> ldcv.tos.toggle true
@@ -17,7 +17,7 @@ view = new ldView do
 
 
 ldcv = {}
-ldcv.confirm = new ldCover root: view.get('ldcv-confirm')
-ldcv.tos = new ldCover root: view.get('ldcv-tos')
-ldcv.mini = new ldCover root: view.get('ldcv-mini')
+ldcv.confirm = new ldcover root: view.get('ldcv-confirm')
+ldcv.tos = new ldcover root: view.get('ldcv-tos')
+ldcv.mini = new ldcover root: view.get('ldcv-mini')
 ldcv.mini.toggle true

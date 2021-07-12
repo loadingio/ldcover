@@ -1,5 +1,5 @@
 (function(){
-  var parent, ldCover;
+  var parent, ldcover;
   parent = function(r, s, e){
     var n;
     e == null && (e = document);
@@ -19,7 +19,7 @@
     }
     return n;
   };
-  ldCover = function(opt){
+  ldcover = function(opt){
     var ret, cls, that, clicksrc, this$ = this;
     opt == null && (opt = {});
     this.opt = import$({
@@ -68,7 +68,7 @@
     this.evtHandler = {};
     return this;
   };
-  ldCover.prototype = import$(Object.create(Object.prototype), {
+  ldcover.prototype = import$(Object.create(Object.prototype), {
     append: function(it){
       var base;
       base = this.root.childNodes[0];
@@ -123,7 +123,7 @@
             esc = function(e){
               var ref$;
               if (e.keyCode === 27) {
-                if ((ref$ = ldCover.popups)[ref$.length - 1] !== this$) {
+                if ((ref$ = ldcover.popups)[ref$.length - 1] !== this$) {
                   return;
                 }
                 this$.toggle(false);
@@ -136,26 +136,26 @@
             this$.inner.classList[isActive ? 'add' : 'remove'].apply(this$.inner.classList, this$.opt.animation.split(' '));
           }
           if (isActive) {
-            ldCover.popups.push(this$);
+            ldcover.popups.push(this$);
           } else {
-            idx = ldCover.popups.indexOf(this$);
+            idx = ldcover.popups.indexOf(this$);
             if (idx >= 0) {
-              ldCover.popups.splice(idx, 1);
+              ldcover.popups.splice(idx, 1);
             }
           }
           if (this$.opt.autoZ) {
             if (isActive) {
-              if (ldCover.zmgr) {
-                this$.root.style.zIndex = this$.z = ldCover.zmgr.add(this$.opt.baseZ);
+              if (ldcover.zmgr) {
+                this$.root.style.zIndex = this$.z = ldcover.zmgr.add(this$.opt.baseZ);
               } else {
-                this$.root.style.zIndex = this$.z = z = ((ref$ = ldCover.zstack)[ref$.length - 1] || this$.opt.baseZ) + 1;
-                ldCover.zstack.push(z);
+                this$.root.style.zIndex = this$.z = z = ((ref$ = ldcover.zstack)[ref$.length - 1] || this$.opt.baseZ) + 1;
+                ldcover.zstack.push(z);
               }
             } else {
-              if (ldCover.zmgr) {
-                ldCover.zmgr.remove(this$.z);
+              if (ldcover.zmgr) {
+                ldcover.zmgr.remove(this$.z);
               } else {
-                idx = ldCover.zstack.indexOf(this$.z);
+                idx = ldcover.zstack.indexOf(this$.z);
               }
               delete this$.z;
               if (idx < 0) {
@@ -163,7 +163,7 @@
                 return res();
               }
               this$.root.style.zIndex = "";
-              r = ldCover.zstack.splice(idx, 1);
+              r = ldcover.zstack.splice(idx, 1);
             }
           }
           if (this$.opt.transformFix && !isActive) {
@@ -204,7 +204,7 @@
       return results$;
     }
   });
-  import$(ldCover, {
+  import$(ldcover, {
     zstack: [],
     popups: [],
     setZmgr: function(it){
@@ -212,10 +212,10 @@
     }
   });
   if (typeof module != 'undefined' && module !== null) {
-    module.exports = ldCover;
+    module.exports = ldcover;
   }
   if (window) {
-    window.ldCover = ldCover;
+    window.ldCover = window.ldcover = ldcover;
   }
   function import$(obj, src){
     var own = {}.hasOwnProperty;
