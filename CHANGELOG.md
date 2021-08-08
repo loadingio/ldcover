@@ -1,5 +1,11 @@
 # Change Logs
 
+## v1.3.3
+
+ - add `cancel` api for canceling `get` call by promise rejection.
+ - add `data-ldcv-cancel` directive corresponding to `cancel` api.
+
+
 ## v1.3.2
 
  - upgrade modules

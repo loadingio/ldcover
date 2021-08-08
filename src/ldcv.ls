@@ -29,6 +29,7 @@ ldcover = (opt={}) ->
   @root.addEventListener \mousedown, (e) ~> clicksrc := e.target
   @root.addEventListener \click, (e) ~>
     if clicksrc == @root and !@opt.lock => return @toggle false
+    if parent(e.target, '*[data-ldcv-cancel]', @root) => return @cancel!
     tgt = parent(e.target, '*[data-ldcv-set]', @root)
     if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
       if !parent(tgt, '.disabled', @root) => @set action
@@ -43,6 +44,9 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
   get: -> new Promise (res, rej) ~>
     @promises.push {res, rej}
     @toggle true
+  cancel: (err, hide = true) ->
+    @promises.splice 0 .map (p) -> p.rej(err or (new Error! <<< {name: \lderror, id: 999}))
+    if hide => @toggle false
   # clear promises list and call res for each item
   set: (v, hide = true) ->
     @promises.splice 0 .map (p) -> p.res v

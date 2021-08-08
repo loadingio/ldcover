@@ -28,7 +28,11 @@ Methods:
  * toggle(state): toggle on/off ldcover.
  * get(): toggle on ldcover and return a promise, which will only be resolved when ldcover.set is called.
  * set(v, hide=true): set value, which resolve promises from get, and hide ldcover if hide = true.
-   - use data-ldcv-set on elements to automatically set value when elements are clicked.
+   - use `data-ldcv-set` on elements to automatically set value when elements are clicked.
+ * cancel(err, hide=true): reject promise returned by `get` with given error `err`.
+   - a default `Error` object with `{name: 'lderror', id: 999}` will be used if `err` is omitted.
+   - ldcover is hidden if `hide` = true. true by default.
+   - use `data-ldcv-cancel` on elements to automatically cancel when clicked.
  * on(event, cb): listen to certain event. evnets:
    - toggle.on: when ldcover is toggled on.
    - toggle.off: when ldcover is toggled off.

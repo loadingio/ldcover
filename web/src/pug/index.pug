@@ -20,6 +20,18 @@ html
       hr
       .btn.btn-lg.btn-primary(data-ldcv-set="") Dismiss
 
+    .ldcv(ld="ldcv-get-value"): .base.w-640.rwd: .inner.w-100.h-100
+      .d-flex.justify-content-around
+        .p-4
+          h2 resolve
+          div: :md resolving `get` call by `data-ldcv-set` or `set` api call.
+          .btn.btn-block.btn-lg.btn-outline-secondary(data-ldcv-set="ok") OK
+        .p-4
+          h2 reject
+          div: :md rejecting `get` call by `data-ldcv-cancel` or `cancel` api call
+          .btn.btn-block.btn-lg.btn-outline-secondary(data-ldcv-cancel) Cancel
+      .pb-4.px-4.text-muted You can check developer console for actual output.
+
     .ldcv(ld="ldcv-tos"): .base.h-100.w-640.rwd: .inner.w-100.h-100.position-relative(style="padding-bottom:5em")
       .p-4.h-100(style="overflow:scroll")
         include tos.pug
@@ -28,8 +40,9 @@ html
           a.btn.btn-outline-primary.mr-2.flex-grow-1(href="http://info.cern.ch") I don't agree
           .btn.btn-primary.ml-2.flex-grow-1(ld="agree") I agree
 
-    .w-100.h-100.d-flex.align-items-center.justify-content-center
-      .btn.btn-lg.btn-primary(ld="show-tos") Show Term of Use
+    .w-100.h-100.d-flex.align-items-center.justify-content-center.flex-column
+      .btn.btn-lg.btn-primary.m-4(ld="show-tos") Show Term of Use
+      .btn.btn-lg.btn-primary.m-4(ld="get-value") Get Value
     +script("assets/lib/ldview/main/index.min.js")
     +script("assets/lib/ldloader/main/ldld.min.js")
     +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")

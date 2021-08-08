@@ -58,6 +58,9 @@
       if (clicksrc === this$.root && !this$.opt.lock) {
         return this$.toggle(false);
       }
+      if (parent(e.target, '*[data-ldcv-cancel]', this$.root)) {
+        return this$.cancel();
+      }
       tgt = parent(e.target, '*[data-ldcv-set]', this$.root);
       if (tgt && (action = tgt.getAttribute("data-ldcv-set")) != null) {
         if (!parent(tgt, '.disabled', this$.root)) {
@@ -85,6 +88,16 @@
         });
         return this$.toggle(true);
       });
+    },
+    cancel: function(err, hide){
+      hide == null && (hide = true);
+      this.promises.splice(0).map(function(p){
+        var ref$;
+        return p.rej(err || (ref$ = new Error(), ref$.name = 'lderror', ref$.id = 999, ref$));
+      });
+      if (hide) {
+        return this.toggle(false);
+      }
     },
     set: function(v, hide){
       hide == null && (hide = true);
