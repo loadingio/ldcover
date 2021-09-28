@@ -8,6 +8,7 @@
  - update window object only if module is not available
  - rename `ldcv.*` to `index.*`
  - rename static method `set-zmgr` to `zmgr`
+ - support multiple event syntax
 
 
 ## v1.3.3
