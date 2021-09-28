@@ -196,8 +196,13 @@
       });
     },
     on: function(n, cb){
-      var ref$;
-      return ((ref$ = this.evtHandler)[n] || (ref$[n] = [])).push(cb);
+      var this$ = this;
+      return (Array.isArray(n)
+        ? n
+        : [n]).map(function(n){
+        var ref$;
+        return ((ref$ = this$.evtHandler)[n] || (ref$[n] = [])).push(cb);
+      });
     },
     fire: function(n){
       var v, res$, i$, to$, ref$, len$, cb, results$ = [];

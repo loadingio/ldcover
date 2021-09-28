@@ -110,7 +110,7 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     if @promises.length and !is-active => @set undefined, false
     @fire "toggle.#{if is-active => \on else \off}"
     return res!
-  on: (n, cb) -> @evt-handler.[][n].push cb
+  on: (n, cb) -> (if Array.isArray(n) => n else [n]).map (n) ~> @evt-handler.[][n].push cb
   fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
 
 ldcover <<< do
