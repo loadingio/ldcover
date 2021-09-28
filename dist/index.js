@@ -244,7 +244,7 @@
   if (typeof module != 'undefined' && module !== null) {
     module.exports = ldcover;
   } else if (window) {
-    window.ldCover = window.ldcover = ldcover;
+    window.ldcover = ldcover;
   }
   function import$(obj, src){
     var own = {}.hasOwnProperty;

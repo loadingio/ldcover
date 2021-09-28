@@ -121,4 +121,4 @@ ldcover <<< do
   zmgr: -> if it? => @_zmgr = it else @_zmgr
 
 if module? => module.exports = ldcover
-else if window => window.ldCover = window.ldcover = ldcover
+else if window => window.ldcover = ldcover
