@@ -4,14 +4,22 @@ html
   head
     +css("assets/lib/bootstrap/main/css/bootstrap.min.css")
     +css("assets/lib/bootstrap.ldui/main/bootstrap.ldui.min.css")
-    +css("assets/lib/ldloader/main/ldld.min.css")
-    +css("assets/lib/ldcover/dev/ldcv.min.css")
+    +css("assets/lib/ldloader/main/index.min.css")
+    +css("assets/lib/ldcover/dev/index.min.css")
     +css("css/index.css")
   body
     .ldcv.mini.left.bottom.right(ld="ldcv-mini"): .base: .inner.d-flex.px-3.py-2.align-items-center.bg-info.text-light
       .flex-grow-1.mr-2 By continuing to browse, you agree to our use of cookies.
       a.btn.btn-sm.btn-outline-light.mr-2(href="http://info.cern.ch") Not Agree
       .btn.btn-sm.btn-light(data-ldcv-set="") I agree
+
+    .ldcv(ld="ldcv-timeout"): .base: .inner.p-4: .p-4
+      h1 Timeout Popup
+      p this is a popup that will be triggered after you open this website.
+
+    .ldcv(ld="ldcv-hint"): .base: .inner.p-4: .p-4
+      h1 Just a Hint
+      p this is a hint with normal priority, which has the same priority with the timeout popup.
 
     .ldcv(ld="ldcv-confirm"): .base.rwd: .inner.w-100.h-100.position-relative.p-4(style="padding-bottom:5em")
       .text-center: h1 Confirmed.
@@ -43,10 +51,11 @@ html
     .w-100.h-100.d-flex.align-items-center.justify-content-center.flex-column
       .btn.btn-lg.btn-primary.m-4(ld="show-tos") Show Term of Use
       .btn.btn-lg.btn-primary.m-4(ld="get-value") Get Value
+      .btn.btn-lg.btn-primary.m-4(ld="show-hint") Show Hint
     +script("assets/lib/ldview/main/index.min.js")
-    +script("assets/lib/ldloader/main/ldld.min.js")
+    +script("assets/lib/ldloader/main/index.min.js")
     +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
     +script("assets/lib/@loadingio/debounce.js/main/debounce.min.js")
-    +script("assets/lib/ldcover/dev/ldcv.min.js")
+    +script("assets/lib/ldcover/dev/index.min.js")
     +script("assets/lib/zmgr/main/zmgr.min.js")
     +script("js/index.js")

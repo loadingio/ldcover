@@ -1,13 +1,15 @@
 
-zmgr = new zmgr!
-ldCover.set-zmgr zmgr
-ldLoader.set-zmgr zmgr
-ldld = new ldLoader className: "full ldld", auto-z: true
+zmgr-lower = new zmgr init: 100
+zmgr = new zmgr init: 1000
+ldcover.zmgr zmgr
+ldloader.zmgr zmgr
+ldld = new ldloader className: "full ldld", auto-z: true, zmgr: zmgr
 
 view = new ldview do
   root: document.body
   action: click:
     "show-tos": -> ldcv.tos.toggle true
+    "show-hint": -> ldcv.hint.toggle true
     "get-value": ->
       ldcv.get-value.get!
         .then -> console.log \ok
@@ -21,8 +23,12 @@ view = new ldview do
 
 
 ldcv = {}
-ldcv.confirm = new ldcover root: view.get('ldcv-confirm')
-ldcv.tos = new ldcover root: view.get('ldcv-tos')
-ldcv.get-value = new ldcover root: view.get('ldcv-get-value')
-ldcv.mini = new ldcover root: view.get('ldcv-mini')
-ldcv.mini.toggle true
+ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-lower
+ldcv.hint = new ldcover root: view.get('ldcv-hint'), zmgr: zmgr-lower
+ldcv.confirm = new ldcover root: view.get('ldcv-confirm'), zmgr: zmgr
+ldcv.tos = new ldcover root: view.get('ldcv-tos'), zmgr: zmgr
+ldcv.get-value = new ldcover root: view.get('ldcv-get-value'), zmgr: zmgr
+ldcv.mini = new ldcover root: view.get('ldcv-mini'), zmgr: zmgr
+ldcv.mini.toggle true, zmgr: zmgr
+
+setTimeout (-> ldcv.timeout.toggle! ), 1000

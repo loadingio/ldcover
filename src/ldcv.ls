@@ -7,6 +7,7 @@ parent = (r, s, e = document) ->
 
 ldcover = (opt={}) ->
   @opt = {delay: 300, auto-z: true, base-z: 3000, escape: true, by-display: true} <<< opt
+  if opt.zmgr => @zmgr opt.zmgr
   @promises = []
   @root = if !opt.root =>
     ret = document.createElement("div")
@@ -37,6 +38,7 @@ ldcover = (opt={}) ->
   @
 
 ldcover.prototype = Object.create(Object.prototype) <<< do
+  zmgr: -> if it? => @_zmgr = it else @_zmgr
   # append element into ldcv. should be used for ldcv created without providing root.
   append: ->
     base = @root.childNodes.0
@@ -94,17 +96,11 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
       if idx >= 0 => ldcover.popups.splice idx, 1
     if @opt.auto-z =>
       if is-active =>
-        if ldcover.zmgr => @root.style.zIndex = @z = ldcover.zmgr.add @opt.base-z
-        else
-          @root.style.zIndex = @z = z = (ldcover.zstack[* - 1] or @opt.base-z) + 1
-          ldcover.zstack.push z
+        @root.style.zIndex = @z = (@_zmgr or ldcover._zmgr).add @opt.base-z
       else
-        if ldcover.zmgr => ldcover.zmgr.remove @z
-        else idx = ldcover.zstack.indexOf(@z)
+        (@_zmgr or ldcover._zmgr).remove @z
         delete @z # must delete z to prevent some modal being toggled off twice.
-        if idx < 0 => @root.classList.remove(\running); return res!
         @root.style.zIndex = ""
-        r = ldcover.zstack.splice(idx, 1)
     if @opt.transform-fix and !is-active => @root.classList.remove \shown
     setTimeout (~>
       @root.classList.remove \running
@@ -114,14 +110,15 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     if @promises.length and !is-active => @set undefined, false
     @fire "toggle.#{if is-active => \on else \off}"
     return res!
-
   on: (n, cb) -> @evt-handler.[][n].push cb
   fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
 
 ldcover <<< do
-  zstack: []
   popups: []
-  set-zmgr: -> @zmgr = it
+  _zmgr: do
+    add: (v) -> @[]s.push(z = Math.max(v or 0, (@s[* - 1] or 0) + 1)); return z
+    remove: (v) -> if (i = @[]s.indexOf(v)) < 0 => return else @s.splice(i,1)
+  zmgr: -> if it? => @_zmgr = it else @_zmgr
 
 if module? => module.exports = ldcover
-if window => window.ldCover = window.ldcover = ldcover
+else if window => window.ldCover = window.ldcover = ldcover

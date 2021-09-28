@@ -1,5 +1,15 @@
 # Change Logs
 
+## v2.0.0
+
+ - support `zmgr` directly in ldcover constructor
+ - use zmgr fallback instead of zstack implementation to simplify code logic
+ - remove legacy `ldCover` definition
+ - update window object only if module is not available
+ - rename `ldcv.*` to `index.*`
+ - rename static method `set-zmgr` to `zmgr`
+
+
 ## v1.3.3
 
  - add `cancel` api for canceling `get` call by promise rejection.

@@ -29,6 +29,9 @@
       escape: true,
       byDisplay: true
     }, opt);
+    if (opt.zmgr) {
+      this.zmgr(opt.zmgr);
+    }
     this.promises = [];
     this.root = !opt.root
       ? (ret = document.createElement("div"), ret.innerHTML = "<div class=\"base\"></div>", ret)
@@ -72,6 +75,13 @@
     return this;
   };
   ldcover.prototype = import$(Object.create(Object.prototype), {
+    zmgr: function(it){
+      if (it != null) {
+        return this._zmgr = it;
+      } else {
+        return this._zmgr;
+      }
+    },
     append: function(it){
       var base;
       base = this.root.childNodes[0];
@@ -125,7 +135,7 @@
           this$.root.style.display = 'block';
         }
         return setTimeout(function(){
-          var isActive, esc, idx, z, ref$, r;
+          var isActive, esc, idx;
           if (v != null) {
             this$.root.classList[v ? 'add' : 'remove']('active');
           } else {
@@ -158,25 +168,11 @@
           }
           if (this$.opt.autoZ) {
             if (isActive) {
-              if (ldcover.zmgr) {
-                this$.root.style.zIndex = this$.z = ldcover.zmgr.add(this$.opt.baseZ);
-              } else {
-                this$.root.style.zIndex = this$.z = z = ((ref$ = ldcover.zstack)[ref$.length - 1] || this$.opt.baseZ) + 1;
-                ldcover.zstack.push(z);
-              }
+              this$.root.style.zIndex = this$.z = (this$._zmgr || ldcover._zmgr).add(this$.opt.baseZ);
             } else {
-              if (ldcover.zmgr) {
-                ldcover.zmgr.remove(this$.z);
-              } else {
-                idx = ldcover.zstack.indexOf(this$.z);
-              }
+              (this$._zmgr || ldcover._zmgr).remove(this$.z);
               delete this$.z;
-              if (idx < 0) {
-                this$.root.classList.remove('running');
-                return res();
-              }
               this$.root.style.zIndex = "";
-              r = ldcover.zstack.splice(idx, 1);
             }
           }
           if (this$.opt.transformFix && !isActive) {
@@ -218,16 +214,31 @@
     }
   });
   import$(ldcover, {
-    zstack: [],
     popups: [],
-    setZmgr: function(it){
-      return this.zmgr = it;
+    _zmgr: {
+      add: function(v){
+        var z, ref$;
+        (this.s || (this.s = [])).push(z = Math.max(v || 0, ((ref$ = this.s)[ref$.length - 1] || 0) + 1));
+        return z;
+      },
+      remove: function(v){
+        var i;
+        if ((i = (this.s || (this.s = [])).indexOf(v)) < 0) {} else {
+          return this.s.splice(i, 1);
+        }
+      }
+    },
+    zmgr: function(it){
+      if (it != null) {
+        return this._zmgr = it;
+      } else {
+        return this._zmgr;
+      }
     }
   });
   if (typeof module != 'undefined' && module !== null) {
     module.exports = ldcover;
-  }
-  if (window) {
+  } else if (window) {
     window.ldCover = window.ldcover = ldcover;
   }
   function import$(obj, src){

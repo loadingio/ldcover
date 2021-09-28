@@ -1,10 +1,16 @@
-var zmgr, ldld, view, ldcv;
-zmgr = new zmgr();
-ldCover.setZmgr(zmgr);
-ldLoader.setZmgr(zmgr);
-ldld = new ldLoader({
+var zmgrLower, zmgr, ldld, view, ldcv;
+zmgrLower = new zmgr({
+  init: 100
+});
+zmgr = new zmgr({
+  init: 1000
+});
+ldcover.zmgr(zmgr);
+ldloader.zmgr(zmgr);
+ldld = new ldloader({
   className: "full ldld",
-  autoZ: true
+  autoZ: true,
+  zmgr: zmgr
 });
 view = new ldview({
   root: document.body,
@@ -12,6 +18,9 @@ view = new ldview({
     click: {
       "show-tos": function(){
         return ldcv.tos.toggle(true);
+      },
+      "show-hint": function(){
+        return ldcv.hint.toggle(true);
       },
       "get-value": function(){
         return ldcv.getValue.get().then(function(){
@@ -34,16 +43,33 @@ view = new ldview({
   }
 });
 ldcv = {};
+ldcv.timeout = new ldcover({
+  root: view.get('ldcv-timeout'),
+  zmgr: zmgrLower
+});
+ldcv.hint = new ldcover({
+  root: view.get('ldcv-hint'),
+  zmgr: zmgrLower
+});
 ldcv.confirm = new ldcover({
-  root: view.get('ldcv-confirm')
+  root: view.get('ldcv-confirm'),
+  zmgr: zmgr
 });
 ldcv.tos = new ldcover({
-  root: view.get('ldcv-tos')
+  root: view.get('ldcv-tos'),
+  zmgr: zmgr
 });
 ldcv.getValue = new ldcover({
-  root: view.get('ldcv-get-value')
+  root: view.get('ldcv-get-value'),
+  zmgr: zmgr
 });
 ldcv.mini = new ldcover({
-  root: view.get('ldcv-mini')
+  root: view.get('ldcv-mini'),
+  zmgr: zmgr
 });
-ldcv.mini.toggle(true);
+ldcv.mini.toggle(true, {
+  zmgr: zmgr
+});
+setTimeout(function(){
+  return ldcv.timeout.toggle();
+}, 1000);
