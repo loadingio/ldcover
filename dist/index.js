@@ -20,8 +20,9 @@
     return n;
   };
   ldcover = function(opt){
-    var ret, cls, that, clicksrc, this$ = this;
+    var ret;
     opt == null && (opt = {});
+    this.evtHandler = {};
     this.opt = import$({
       delay: 300,
       autoZ: true,
@@ -33,48 +34,76 @@
       this.zmgr(opt.zmgr);
     }
     this.promises = [];
-    this.root = !opt.root
+    this._r = !opt.root
       ? (ret = document.createElement("div"), ret.innerHTML = "<div class=\"base\"></div>", ret)
       : typeof opt.root === 'string'
         ? document.querySelector(opt.root)
         : opt.root;
-    cls = typeof opt.type === 'string'
+    this.cls = typeof opt.type === 'string'
       ? opt.type.split(' ')
       : opt.type;
-    if (that = this.root.getAttribute('data-lock')) {
-      if (that === 'true') {
-        this.opt.lock = true;
-      }
+    this.resident = opt.resident != null ? opt.resident : false;
+    this.container = typeof opt.container === 'string'
+      ? document.querySelector(opt.container)
+      : opt.container;
+    if (!(this._r.content && this._r.content.nodeType === Element.DOCUMENT_FRAGMENT_NODE)) {
+      this.init();
     }
-    this.inner = this.root.querySelector('.inner');
-    this.base = this.root.querySelector('.base');
-    this.root.classList.add.apply(this.root.classList, ['ldcv'].concat(cls || []));
-    if (this.opt.byDisplay) {
-      this.root.style.display = 'none';
-    }
-    clicksrc = null;
-    this.root.addEventListener('mousedown', function(e){
-      return clicksrc = e.target;
-    });
-    this.root.addEventListener('click', function(e){
-      var tgt, action;
-      if (clicksrc === this$.root && !this$.opt.lock) {
-        return this$.toggle(false);
-      }
-      if (parent(e.target, '*[data-ldcv-cancel]', this$.root)) {
-        return this$.cancel();
-      }
-      tgt = parent(e.target, '*[data-ldcv-set]', this$.root);
-      if (tgt && (action = tgt.getAttribute("data-ldcv-set")) != null) {
-        if (!parent(tgt, '.disabled', this$.root)) {
-          return this$.set(action);
-        }
-      }
-    });
-    this.evtHandler = {};
     return this;
   };
   ldcover.prototype = import$(Object.create(Object.prototype), {
+    root: function(){
+      if (!this.inited) {
+        this.init();
+      }
+      return this._r;
+    },
+    init: function(){
+      var that, clicksrc, this$ = this;
+      if (this.inited) {
+        return;
+      }
+      this.inited = true;
+      if (!this.resident && this._r.parentNode) {
+        this._c = document.createComment(" ldcover placeholder ");
+        this._r.parentNode.insertBefore(this._c, this._r);
+        this._r.parentNode.removeChild(this._r);
+      }
+      if (this._r.content && this._r.content.nodeType === Element.DOCUMENT_FRAGMENT_NODE) {
+        this._r = this._r.content.cloneNode(true).childNodes[0];
+        this._r.parentNode.removeChild(this._r);
+      }
+      if (that = this._r.getAttribute('data-lock')) {
+        if (that === 'true') {
+          this.opt.lock = true;
+        }
+      }
+      this.inner = this._r.querySelector('.inner');
+      this.base = this._r.querySelector('.base');
+      this._r.classList.add.apply(this._r.classList, ['ldcv'].concat(this.cls || []));
+      if (this.opt.byDisplay) {
+        this._r.style.display = 'none';
+      }
+      clicksrc = null;
+      this._r.addEventListener('mousedown', function(e){
+        return clicksrc = e.target;
+      });
+      return this._r.addEventListener('click', function(e){
+        var tgt, action;
+        if (clicksrc === this$._r && !this$.opt.lock) {
+          return this$.toggle(false);
+        }
+        if (parent(e.target, '*[data-ldcv-cancel]', this$._r)) {
+          return this$.cancel();
+        }
+        tgt = parent(e.target, '*[data-ldcv-set]', this$._r);
+        if (tgt && (action = tgt.getAttribute("data-ldcv-set")) != null) {
+          if (!parent(tgt, '.disabled', this$._r)) {
+            return this$.set(action);
+          }
+        }
+      });
+    },
     zmgr: function(it){
       if (it != null) {
         return this._zmgr = it;
@@ -84,10 +113,10 @@
     },
     append: function(it){
       var base;
-      base = this.root.childNodes[0];
+      base = this._r.childNodes[0];
       return (base && base.classList.contains('base')
         ? base
-        : this.root).appendChild(it);
+        : this._r).appendChild(it);
     },
     get: function(){
       var this$ = this;
@@ -119,7 +148,7 @@
       }
     },
     isOn: function(){
-      return this.root.classList.contains('active');
+      return this._r.classList.contains('active');
     },
     lock: function(){
       return this.opt.lock = true;
@@ -127,21 +156,45 @@
     toggle: function(v){
       var this$ = this;
       return new Promise(function(res, rej){
-        if (!(v != null) && this$.root.classList.contains('running')) {
+        var isActive;
+        if (!this$.inited) {
+          this$.init();
+        }
+        if (!(v != null) && this$._r.classList.contains('running')) {
           return res();
         }
-        this$.root.classList.add('running');
+        if (v != null && this$._r.classList.contains('active') === !!v) {
+          return res();
+        }
+        isActive = v != null
+          ? v
+          : !this$._r.classList.contains('active');
+        if (isActive && !this$._r.parentNode) {
+          if (!(this$.container != null) && this$._c && this$._c.parentNode) {
+            this$._c.parentNode.insertBefore(this$._r, this$._c);
+          } else {
+            (this$.container || document.body).appendChild(this$._r);
+          }
+        }
+        this$._r.classList.add('running');
         if (this$.opt.byDisplay) {
-          this$.root.style.display = 'block';
+          this$._r.style.display = 'block';
+        }
+        if (this$._r.classList.contains('inline')) {
+          if (isActive) {
+            this$.h = function(e){
+              if (this$._r.contains(e.target)) {} else {
+                return this$.toggle(false);
+              }
+            };
+            window.addEventListener('click', this$.h);
+          } else if (this$.h) {
+            window.removeEventListener('click', this$.h);
+          }
         }
         return setTimeout(function(){
-          var isActive, esc, idx;
-          if (v != null) {
-            this$.root.classList[v ? 'add' : 'remove']('active');
-          } else {
-            this$.root.classList.toggle('active');
-          }
-          isActive = this$.root.classList.contains('active');
+          var esc, idx;
+          this$._r.classList.toggle('active', isActive);
           if (!this$.opt.lock && this$.opt.escape && isActive) {
             esc = function(e){
               var ref$;
@@ -168,23 +221,26 @@
           }
           if (this$.opt.autoZ) {
             if (isActive) {
-              this$.root.style.zIndex = this$.z = (this$._zmgr || ldcover._zmgr).add(this$.opt.baseZ);
+              this$._r.style.zIndex = this$.z = (this$._zmgr || ldcover._zmgr).add(this$.opt.baseZ);
             } else {
               (this$._zmgr || ldcover._zmgr).remove(this$.z);
               delete this$.z;
-              this$.root.style.zIndex = "";
+              this$._r.style.zIndex = "";
             }
           }
           if (this$.opt.transformFix && !isActive) {
-            this$.root.classList.remove('shown');
+            this$._r.classList.remove('shown');
           }
           setTimeout(function(){
-            this$.root.classList.remove('running');
+            this$._r.classList.remove('running');
             if (this$.opt.transformFix && isActive) {
-              this$.root.classList.add('shown');
+              this$._r.classList.add('shown');
             }
             if (!isActive && this$.opt.byDisplay) {
-              return this$.root.style.display = 'none';
+              this$._r.style.display = 'none';
+            }
+            if (!isActive && this$._r.parentNode && !this$.resident) {
+              return this$._r.parentNode.removeChild(this$._r);
             }
           }, this$.opt.delay);
           if (this$.promises.length && !isActive) {

@@ -6,43 +6,61 @@ parent = (r, s, e = document) ->
   return n
 
 ldcover = (opt={}) ->
+  @evt-handler = {}
   @opt = {delay: 300, auto-z: true, base-z: 3000, escape: true, by-display: true} <<< opt
   if opt.zmgr => @zmgr opt.zmgr
   @promises = []
-  @root = if !opt.root =>
+  @_r = if !opt.root =>
     ret = document.createElement("div")
     ret.innerHTML = """<div class="base"></div>"""
     ret
   else if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
-  cls = if typeof(opt.type) == \string => opt.type.split ' ' else opt.type
-  if @root.getAttribute(\data-lock) => if that == \true => @opt.lock = true
-  @inner = @root.querySelector '.inner'
-  @base = @root.querySelector '.base'
-  @root.classList.add.apply @root.classList, <[ldcv]> ++ (cls or [])
-  if @opt.by-display => @root.style.display = \none
-
-  # keep mousedown element here to track if the following click is inside the black area.
-  # some modal might contain widgets for user to drag. user might drag outside the modal.
-  # if user drag and release in the black area, it might trigger a click event -
-  # but we don't want this event to be treated as a close signal.
-  # so, if clicksrc is not @root, we just don't close modal directly but do following check then.
-  clicksrc = null
-  @root.addEventListener \mousedown, (e) ~> clicksrc := e.target
-  @root.addEventListener \click, (e) ~>
-    if clicksrc == @root and !@opt.lock => return @toggle false
-    if parent(e.target, '*[data-ldcv-cancel]', @root) => return @cancel!
-    tgt = parent(e.target, '*[data-ldcv-set]', @root)
-    if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
-      if !parent(tgt, '.disabled', @root) => @set action
-  @evt-handler = {}
+  @cls = if typeof(opt.type) == \string => opt.type.split ' ' else opt.type
+  @resident = if opt.resident? => opt.resident else false
+  @container = if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
+  # for template type root, lazy init.
+  if !(@_r.content and @_r.content.nodeType == Element.DOCUMENT_FRAGMENT_NODE) => @init!
   @
 
 ldcover.prototype = Object.create(Object.prototype) <<< do
+  root: ->
+    if !@inited => @init!
+    @_r
+  init: ->
+    if @inited => return
+    @inited = true
+    if !@resident and @_r.parentNode =>
+      @_c = document.createComment " ldcover placeholder "
+      @_r.parentNode.insertBefore @_c, @_r
+      @_r.parentNode.removeChild @_r
+    if @_r.content and @_r.content.nodeType == Element.DOCUMENT_FRAGMENT_NODE =>
+      @_r = @_r.content.cloneNode(true).childNodes.0
+      @_r.parentNode.removeChild @_r
+
+    if @_r.getAttribute(\data-lock) => if that == \true => @opt.lock = true
+    @inner = @_r.querySelector '.inner'
+    @base = @_r.querySelector '.base'
+    @_r.classList.add.apply @_r.classList, <[ldcv]> ++ (@cls or [])
+    if @opt.by-display => @_r.style.display = \none
+    # keep mousedown element here to track if the following click is inside the black area.
+    # some modal might contain widgets for user to drag. user might drag outside the modal.
+    # if user drag and release in the black area, it might trigger a click event -
+    # but we don't want this event to be treated as a close signal.
+    # so, if clicksrc is not @_r, we just don't close modal directly but do following check then.
+    clicksrc = null
+    @_r.addEventListener \mousedown, (e) ~> clicksrc := e.target
+    @_r.addEventListener \click, (e) ~>
+      if clicksrc == @_r and !@opt.lock => return @toggle false
+      if parent(e.target, '*[data-ldcv-cancel]', @_r) => return @cancel!
+      tgt = parent(e.target, '*[data-ldcv-set]', @_r)
+      if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
+        if !parent(tgt, '.disabled', @_r) => @set action
+
   zmgr: -> if it? => @_zmgr = it else @_zmgr
   # append element into ldcv. should be used for ldcv created without providing root.
   append: ->
-    base = @root.childNodes.0
-    (if base and base.classList.contains('base') => base else @root).appendChild it
+    base = @_r.childNodes.0
+    (if base and base.classList.contains('base') => base else @_r).appendChild it
   get: -> new Promise (res, rej) ~>
     @promises.push {res, rej}
     @toggle true
@@ -53,13 +71,28 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
   set: (v, hide = true) ->
     @promises.splice 0 .map (p) -> p.res v
     if hide => @toggle false
-  is-on: -> return @root.classList.contains(\active)
-  lock: ->
-    @opt.lock = true
+  is-on: -> return @_r.classList.contains(\active)
+  lock: -> @opt.lock = true
   toggle: (v) -> new Promise (res, rej) ~>
-    if !(v?) and @root.classList.contains \running => return res!
-    @root.classList.add \running
-    if @opt.by-display => @root.style.display = \block
+    if !@inited => @init!
+    if !(v?) and @_r.classList.contains \running => return res!
+    if v? and @_r.classList.contains(\active) == !!v => return res!
+    is-active = if v? => v else !@_r.classList.contains(\active)
+    if is-active and !@_r.parentNode =>
+      # insert into original place if no container defined. default behavior ( `container` not provided )
+      if !(@container?) and @_c and @_c.parentNode => @_c.parentNode.insertBefore @_r, @_c
+      # insert into container - if container is explicitly set as `null`, use document.body
+      else (@container or document.body).appendChild @_r
+    @_r.classList.add \running
+    if @opt.by-display => @_r.style.display = \block
+
+    # for inline cover, click outside trigger dismissing.
+    if @_r.classList.contains \inline =>
+      if is-active =>
+        @h = (e) ~> if @_r.contains e.target => return else @toggle false
+        window.addEventListener \click, @h
+      else if @h => window.removeEventListener \click, @h
+
     # why setTimeout?
     # It seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse moving over them might
     # still makes animation slow down.
@@ -79,9 +112,7 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     #
     # Additionally, we should check if quickly toggle on / off will cause problem due to setTimeout.
     <~ setTimeout _, 50
-    if v? => @root.classList[if v => \add else \remove](\active)
-    else @root.classList.toggle \active
-    is-active = @root.classList.contains(\active)
+    @_r.classList.toggle \active, is-active
     if !@opt.lock and @opt.escape and is-active =>
       esc = (e) ~> if e.keyCode == 27 =>
         if ldcover.popups[* - 1] != @ => return
@@ -96,16 +127,17 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
       if idx >= 0 => ldcover.popups.splice idx, 1
     if @opt.auto-z =>
       if is-active =>
-        @root.style.zIndex = @z = (@_zmgr or ldcover._zmgr).add @opt.base-z
+        @_r.style.zIndex = @z = (@_zmgr or ldcover._zmgr).add @opt.base-z
       else
         (@_zmgr or ldcover._zmgr).remove @z
         delete @z # must delete z to prevent some modal being toggled off twice.
-        @root.style.zIndex = ""
-    if @opt.transform-fix and !is-active => @root.classList.remove \shown
+        @_r.style.zIndex = ""
+    if @opt.transform-fix and !is-active => @_r.classList.remove \shown
     setTimeout (~>
-      @root.classList.remove \running
-      if @opt.transform-fix and is-active => @root.classList.add \shown
-      if !is-active and @opt.by-display => @root.style.display = \none
+      @_r.classList.remove \running
+      if @opt.transform-fix and is-active => @_r.classList.add \shown
+      if !is-active and @opt.by-display => @_r.style.display = \none
+      if !is-active and @_r.parentNode and !@resident => @_r.parentNode.removeChild @_r
     ), @opt.delay
     if @promises.length and !is-active => @set undefined, false
     @fire "toggle.#{if is-active => \on else \off}"

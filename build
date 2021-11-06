@@ -8,7 +8,7 @@ echo "build src/ldcv.styl -> dist/index.css ..."
 echo "build src/ldcv.effects.styl -> dist/ldcv.effects.css ..."
 ./node_modules/.bin/stylus -p src/ldcv.effects.styl > dist/ldcv.effects.css
 echo "minifying index.js ..."
-./node_modules/.bin/uglifyjs dist/index.js > dist/index.min.js
+./node_modules/.bin/uglifyjs dist/index.js -m -c > dist/index.min.js
 echo "minifying index.css ..."
 ./node_modules/.bin/uglifycss dist/index.css > dist/index.min.css
 echo "minifying ldcv.effects.css ..."

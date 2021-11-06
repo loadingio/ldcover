@@ -1,5 +1,18 @@
 # Change Logs
 
+## v2.1.0
+
+ - support initializing DOM based on `template` tag for shadow DOM.
+ - only insert DOM when cover is active. behavior controlled by `resident` option.
+ - mangle + compress minimized js to optimize its size in advance.
+ - lazy initializing until toggling if `root` is a template.
+ - update document for undocumented features
+ - member `root` is now a function for accessing `_r` (formal `root`)
+ - support `inline` mode
+   - modal displayed inline yet not affect layout
+   - dismiss on clicking outside dialog
+
+
 ## v2.0.0
 
  - support `zmgr` directly in ldcover constructor

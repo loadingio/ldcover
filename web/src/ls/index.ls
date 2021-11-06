@@ -8,8 +8,10 @@ ldld = new ldloader className: "full ldld", auto-z: true, zmgr: zmgr
 view = new ldview do
   root: document.body
   action: click:
+    "show-editbox": -> ldcv.editbox.toggle true
     "show-tos": -> ldcv.tos.toggle true
     "show-hint": -> ldcv.hint.toggle true
+    "show-template": -> ldcv.template.toggle true
     "get-value": ->
       ldcv.get-value.get!
         .then -> console.log \ok
@@ -23,6 +25,8 @@ view = new ldview do
 
 
 ldcv = {}
+ldcv.editbox = new ldcover root: view.get('ldcv-editbox'), zmgr: zmgr-lower, resident: true
+ldcv.template = new ldcover root: view.get('ldcv-template'), zmgr: zmgr-lower
 ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-lower
 ldcv.hint = new ldcover root: view.get('ldcv-hint'), zmgr: zmgr-lower
 ldcv.confirm = new ldcover root: view.get('ldcv-confirm'), zmgr: zmgr

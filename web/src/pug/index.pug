@@ -21,6 +21,12 @@ html
       h1 Just a Hint
       p this is a hint with normal priority, which has the same priority with the timeout popup.
 
+    template(ld="ldcv-template"): .ldcv: .base: .inner.p-4: .p-4
+      h1 from template
+      p This modal is created based on a template tag as root. Since browser only parses but not renders tags inside template, this can effectively reduce DOM element count, thus improve performance.
+      br
+      .btn.btn-primary.btn-lg(data-ldcv-set="") OK, Got it
+
     .ldcv(ld="ldcv-confirm"): .base.rwd: .inner.w-100.h-100.position-relative.p-4(style="padding-bottom:5em")
       .text-center: h1 Confirmed.
       br
@@ -49,9 +55,16 @@ html
           .btn.btn-primary.ml-2.flex-grow-1(ld="agree") I agree
 
     .w-100.h-100.d-flex.align-items-center.justify-content-center.flex-column
+      .m-4
+        .btn.btn-lg.btn-primary(ld="show-editbox") Show Edit Box
+        .ldcv.inline(ld="ldcv-editbox"): .base: .inner.p-2
+          textarea.form-control.mb-2(rows="5")
+          .btn.btn-primary(data-ldcv-set="") OK
+
       .btn.btn-lg.btn-primary.m-4(ld="show-tos") Show Term of Use
       .btn.btn-lg.btn-primary.m-4(ld="get-value") Get Value
       .btn.btn-lg.btn-primary.m-4(ld="show-hint") Show Hint
+      .btn.btn-lg.btn-primary.m-4(ld="show-template") Show Template
     +script("assets/lib/ldview/main/index.min.js")
     +script("assets/lib/ldloader/main/index.min.js")
     +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")

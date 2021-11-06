@@ -169,7 +169,8 @@
 .ldcv.full > .base > .inner {
   border-radius: 0;
 }
-.ldcv.mini {
+.ldcv.mini,
+.ldcv.inline {
   width: auto;
   height: auto;
   left: auto;
@@ -178,14 +179,18 @@
   bottom: auto;
 }
 .ldcv.mini:before,
-.ldcv.mini:after {
+.ldcv.inline:before,
+.ldcv.mini:after,
+.ldcv.inline:after {
   display: none;
 }
-.ldcv.mini > .base {
+.ldcv.mini > .base,
+.ldcv.inline > .base {
   max-width: initial;
   max-height: initial;
 }
-.ldcv.mini > .base > .inner {
+.ldcv.mini > .base > .inner,
+.ldcv.inline > .base > .inner {
   width: initial;
   height: initial;
 }
@@ -200,4 +205,12 @@
 }
 .ldcv.mini.bottom {
   bottom: 1.25em;
+}
+.ldcv.inline {
+  position: relative;
+}
+.ldcv.inline > .base {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

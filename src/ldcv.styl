@@ -176,7 +176,7 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
   & > .inner
     border-radius: 0
 
-.ldcv.mini
+.ldcv.mini, .ldcv.inline
   width: auto
   height: auto
   left: auto
@@ -200,3 +200,10 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
   top: 1.25em
 .ldcv.mini.bottom
   bottom: 1.25em
+
+.ldcv.inline
+  position: relative
+  & > .base
+    position: absolute
+    top: 0
+    left: 0

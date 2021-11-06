@@ -16,11 +16,17 @@ view = new ldview({
   root: document.body,
   action: {
     click: {
+      "show-editbox": function(){
+        return ldcv.editbox.toggle(true);
+      },
       "show-tos": function(){
         return ldcv.tos.toggle(true);
       },
       "show-hint": function(){
         return ldcv.hint.toggle(true);
+      },
+      "show-template": function(){
+        return ldcv.template.toggle(true);
       },
       "get-value": function(){
         return ldcv.getValue.get().then(function(){
@@ -43,6 +49,15 @@ view = new ldview({
   }
 });
 ldcv = {};
+ldcv.editbox = new ldcover({
+  root: view.get('ldcv-editbox'),
+  zmgr: zmgrLower,
+  resident: true
+});
+ldcv.template = new ldcover({
+  root: view.get('ldcv-template'),
+  zmgr: zmgrLower
+});
 ldcv.timeout = new ldcover({
   root: view.get('ldcv-timeout'),
   zmgr: zmgrLower
