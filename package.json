@@ -4,7 +4,8 @@
   "license": "MIT",
   "description": "tiny popup / dialog library",
   "version": "2.1.0",
-  "main": "dist/index.js",
+  "browser": "dist/index.min.js",
+  "main": "dist/index.min.js",
   "files": [
     "dist/**/*"
   ],

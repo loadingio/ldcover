@@ -1,5 +1,10 @@
 # Change Logs
 
+## v2.1.1 (upcoming)
+
+ - use minimized dist file as main / browser default file
+
+
 ## v2.1.0
 
  - support initializing DOM based on `template` tag for shadow DOM.
