@@ -1,12 +1,14 @@
 doctype html
-include @/@loadingio/bootstrap.ext/dist/index.pug
 html
   head
-    +css("assets/lib/bootstrap/main/css/bootstrap.min.css")
-    +css("assets/lib/@loadingio/bootstrap.ext/main/index.min.css")
-    +css("assets/lib/ldloader/main/index.min.css")
-    +css("assets/lib/ldcover/dev/index.min.css")
-    +css("css/index.css")
+    include @/@loadingio/bootstrap.ext/dist/index.pug
+    +css([
+      {name: "bootstrap", version: "main", path: "dist/css/bootstrap.min.css"},
+      {name: "@loadingio/bootstrap.ext", version: "main", path: "dist/index.min.css"},
+      {name: "ldloader",version: "main", path: "dist/index.min.css"},
+      {name: "ldcover", version: "dev", path: "index.min.css"},
+      {url: "css/index.css"}
+    ])
   body
     .ldcv.mini.left.bottom.right(ld="ldcv-mini"): .base: .inner.d-flex.px-3.py-2.align-items-center.bg-info.text-light
       .flex-grow-1.mr-2 By continuing to browse, you agree to our use of cookies.
@@ -65,10 +67,12 @@ html
       .btn.btn-lg.btn-primary.m-4(ld="get-value") Get Value
       .btn.btn-lg.btn-primary.m-4(ld="show-hint") Show Hint
       .btn.btn-lg.btn-primary.m-4(ld="show-template") Show Template
-    +script("assets/lib/ldview/main/index.min.js")
-    +script("assets/lib/ldloader/main/index.min.js")
-    +script("assets/lib/@loadingio/ldquery/main/ldq.min.js")
-    +script("assets/lib/@loadingio/debounce.js/main/debounce.min.js")
-    +script("assets/lib/ldcover/dev/index.min.js")
-    +script("assets/lib/zmgr/main/index.min.js")
-    +script("js/index.js")
+    +script([
+      {name: "ldview", path: "dist/index.min.js" },
+      {name: "ldloader", path: "dist/index.min.js" },
+      {name: "@loadingio/ldquery", path: "dist/index.min.js" },
+      {name: "@loadingio/debounce.js", path: "dist/index.min.js" },
+      {name: "ldcover", version: "dev", path: "index.min.js" },
+      {name: "zmgr", path: "dist/index.min.js" },
+      "js/index.js"
+    ])

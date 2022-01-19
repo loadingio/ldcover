@@ -1,0 +1,22 @@
+{
+  "author": "zbryikt",
+  "name": "@loadingio/debounce.js",
+  "browser": "dist/index.min.js",
+  "main": "dist/index.min.js",
+  "license": "MIT",
+  "description": "Debouncing Function",
+  "version": "1.0.0",
+  "homepage": "https://github.com/loadingio/debounce.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loadingio/debounce.js"
+  },
+  "engines": {
+    "node": ">=0.12.6",
+    "npm": ">=1.2.2"
+  },
+  "devDependencies": {
+    "livescript": ">=1.6.0",
+    "uglify-js": "^3.13.1"
+  }
+}

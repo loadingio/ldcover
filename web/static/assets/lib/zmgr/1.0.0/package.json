@@ -1,0 +1,25 @@
+{
+  "author": "zbryikt",
+  "name": "zmgr",
+  "license": "MIT",
+  "description": "z-index manager",
+  "version": "1.0.0",
+  "files": [
+    "dist/**/*"
+  ],
+  "homepage": "https://github.com/loadingio/zmgr",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loadingio/zmgr"
+  },
+  "engines": {
+    "node": ">=10.14.1",
+    "npm": ">=6.4.1"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "stylus": "^0.55.0",
+    "livescript": "^1.6.0",
+    "uglify-js": "^3.2.0"
+  }
+}
