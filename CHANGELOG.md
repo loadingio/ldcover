@@ -3,6 +3,7 @@
 ## v2.1.1 (upcoming)
 
  - use minimized dist file as main / browser default file
+ - upgrade modules
 
 
 ## v2.1.0
