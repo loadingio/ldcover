@@ -2,7 +2,7 @@
 
 ## v3.0.1
 
- - remove unnecessary `fs-etra` dependency
+ - remove unnecessary `fs-extra` dependency
 
 
 ## v3.0.0
