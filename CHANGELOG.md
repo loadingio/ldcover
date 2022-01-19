@@ -1,5 +1,10 @@
 # Change Logs
 
+## v2.1.2
+
+ - add `style` field in `package.json`
+
+
 ## v2.1.1
 
  - use minimized dist file as main / browser default file
