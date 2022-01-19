@@ -1,6 +1,6 @@
 # Change Logs
 
-## v2.1.1 (upcoming)
+## v2.1.1
 
  - use minimized dist file as main / browser default file
  - upgrade modules
