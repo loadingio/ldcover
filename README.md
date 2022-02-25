@@ -53,6 +53,7 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
    - toggle.on: when ldcover is toggled on.
    - toggle.off: when ldcover is toggled off.
  - `isOn()`: is this modal active ( opened ). return true or false
+ - `lock()`: lock this cover. ( can't be dismissed by escaping )
  - `root()`: get cover root node.
  - `zmgr(mgr)`: set z-index manager for this cover. return the zmgr used if `mgr` is omitted.
  - `append(node)`: insert `node` in the base node of this cover.
