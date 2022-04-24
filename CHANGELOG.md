@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.0.2 (upcoming)
+
+ - upgrade modules to fix dependencies vulnerability
+
+
 ## v3.0.1
 
  - remove unnecessary `fs-extra` dependency
