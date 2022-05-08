@@ -17,6 +17,7 @@ ldcover = (opt={}) ->
   else if typeof(opt.root) == \string => document.querySelector(opt.root) else opt.root
   @cls = if typeof(opt.type) == \string => opt.type.split ' ' else opt.type
   @resident = if opt.resident? => opt.resident else false
+  @in-place = if opt.in-place? => opt.in-place else true
   @container = if typeof(opt.container) == \string => document.querySelector(opt.container) else opt.container
   # for template type root, lazy init.
   if !(@_r.content and @_r.content.nodeType == Element.DOCUMENT_FRAGMENT_NODE) => @init!
@@ -29,6 +30,9 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
   init: ->
     if @inited => return
     @inited = true
+    if !@in-place =>
+      @_r.parentNode.removeChild @_r
+      document.body.appendChild @_r
     if !@resident and @_r.parentNode =>
       @_c = document.createComment " ldcover placeholder "
       @_r.parentNode.insertBefore @_c, @_r

@@ -43,6 +43,7 @@
       ? opt.type.split(' ')
       : opt.type;
     this.resident = opt.resident != null ? opt.resident : false;
+    this.inPlace = opt.inPlace != null ? opt.inPlace : true;
     this.container = typeof opt.container === 'string'
       ? document.querySelector(opt.container)
       : opt.container;
@@ -64,6 +65,10 @@
         return;
       }
       this.inited = true;
+      if (!this.inPlace) {
+        this._r.parentNode.removeChild(this._r);
+        document.body.appendChild(this._r);
+      }
       if (!this.resident && this._r.parentNode) {
         this._c = document.createComment(" ldcover placeholder ");
         this._r.parentNode.insertBefore(this._c, this._r);
