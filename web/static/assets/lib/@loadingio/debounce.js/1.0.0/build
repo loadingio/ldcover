@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-rm -rf dist
-mkdir -p dist
-echo "build src/index.ls -> dist/index.js ..."
-./node_modules/.bin/lsc -cbp src/index.ls > dist/index.js
-echo "minifying index.js ..."
-./node_modules/.bin/uglifyjs dist/index.js -m -c > dist/index.min.js
-echo "done."
-
