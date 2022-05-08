@@ -33,6 +33,7 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
  - `lock`: default false. if set to true, only API or data-ldcv-set could close this modal.
  - `resident`: default false. if set to true, DOM for this cover will always attached under document. otherwise false.
    - not resident node will be attached under `container` or document.body.
+ - `inPlace`: default true. if set to false, root will be removed from original parent and re-added under body.
  - `container`: container for non-resident cover. by default parent of DOM or document.body
    - by default, non-resident cover is inserted to the location we find it. Set `container` to change this behavior.
      - when `container` is null, `root` is appended at the end of `document.body` when toggled.

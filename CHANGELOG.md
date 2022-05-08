@@ -1,8 +1,9 @@
 # Change Logs
 
-## v3.0.2 (upcoming)
+## v3.1.0
 
  - upgrade modules to fix dependencies vulnerability
+ - add `inPlace` mode to decide if DOM should be re-added under body.
 
 
 ## v3.0.1
