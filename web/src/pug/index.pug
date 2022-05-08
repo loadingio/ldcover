@@ -1,12 +1,12 @@
 doctype html
 html
   head
-    include @/@loadingio/bootstrap.ext/dist/index.pug
+    include @/@loadingio/bootstrap.ext/index.pug
     +css([
       {name: "bootstrap", version: "main", path: "dist/css/bootstrap.min.css"},
-      {name: "@loadingio/bootstrap.ext", version: "main", path: "dist/index.min.css"},
-      {name: "ldloader",version: "main", path: "dist/index.min.css"},
-      {name: "ldcover", version: "dev", path: "index.min.css"},
+      {name: "@loadingio/bootstrap.ext"},
+      {name: "ldloader",version: "main"},
+      {name: "ldcover", version: "dev"},
       {url: "css/index.css"}
     ])
   body
@@ -68,11 +68,11 @@ html
       .btn.btn-lg.btn-primary.m-4(ld="show-hint") Show Hint
       .btn.btn-lg.btn-primary.m-4(ld="show-template") Show Template
     +script([
-      {name: "ldview", path: "dist/index.min.js" },
-      {name: "ldloader", path: "dist/index.min.js" },
-      {name: "@loadingio/ldquery", path: "dist/index.min.js" },
-      {name: "@loadingio/debounce.js", path: "dist/index.min.js" },
-      {name: "ldcover", version: "dev", path: "index.min.js" },
-      {name: "zmgr", path: "dist/index.min.js" },
+      {name: "ldview"},
+      {name: "ldloader"},
+      {name: "@loadingio/ldquery"},
+      {name: "@loadingio/debounce.js"},
+      {name: "ldcover", version: "dev"},
+      {name: "zmgr"},
       "js/index.js"
     ])

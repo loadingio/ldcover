@@ -1,9 +1,14 @@
 
-zmgr-lower = new zmgr init: 100
-zmgr = new zmgr init: 1000
-ldcover.zmgr zmgr
-ldloader.zmgr zmgr
-ldld = new ldloader className: "full ldld", auto-z: true, zmgr: zmgr
+zmgr = new zmgr!
+zmgr-float = zmgr.scope 'float'
+zmgr-modal = zmgr.scope 'modal'
+zmgr-splash = zmgr.scope 'splash'
+
+#zmgr-lower = new zmgr init: 100
+#zmgr = new zmgr init: 1000
+ldcover.zmgr zmgr-modal
+ldloader.zmgr zmgr-splash
+ldld = new ldloader className: "full ldld", auto-z: true, zmgr: zmgr-splash
 
 view = new ldview do
   root: document.body
@@ -25,14 +30,14 @@ view = new ldview do
 
 
 ldcv = {}
-ldcv.editbox = new ldcover root: view.get('ldcv-editbox'), zmgr: zmgr-lower, resident: true
-ldcv.template = new ldcover root: view.get('ldcv-template'), zmgr: zmgr-lower
-ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-lower
-ldcv.hint = new ldcover root: view.get('ldcv-hint'), zmgr: zmgr-lower
-ldcv.confirm = new ldcover root: view.get('ldcv-confirm'), zmgr: zmgr
-ldcv.tos = new ldcover root: view.get('ldcv-tos'), zmgr: zmgr
-ldcv.get-value = new ldcover root: view.get('ldcv-get-value'), zmgr: zmgr
-ldcv.mini = new ldcover root: view.get('ldcv-mini'), zmgr: zmgr
-ldcv.mini.toggle true, zmgr: zmgr
+ldcv.editbox = new ldcover root: view.get('ldcv-editbox'), zmgr: zmgr-float, resident: true
+ldcv.template = new ldcover root: view.get('ldcv-template'), zmgr: zmgr-float, in-place: false
+ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-float, in-place: false
+ldcv.hint = new ldcover root: view.get('ldcv-hint'), zmgr: zmgr-float, in-place: false
+ldcv.confirm = new ldcover root: view.get('ldcv-confirm'), zmgr: zmgr-modal, in-place: false
+ldcv.tos = new ldcover root: view.get('ldcv-tos'), zmgr: zmgr-modal, in-place: false
+ldcv.get-value = new ldcover root: view.get('ldcv-get-value'), zmgr: zmgr-modal
+ldcv.mini = new ldcover root: view.get('ldcv-mini'), zmgr: zmgr-modal
+ldcv.mini.toggle true, zmgr: zmgr-modal
 
 setTimeout (-> ldcv.timeout.toggle! ), 1000

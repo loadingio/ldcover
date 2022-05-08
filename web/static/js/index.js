@@ -1,16 +1,14 @@
-var zmgrLower, zmgr, ldld, view, ldcv;
-zmgrLower = new zmgr({
-  init: 100
-});
-zmgr = new zmgr({
-  init: 1000
-});
-ldcover.zmgr(zmgr);
-ldloader.zmgr(zmgr);
+var zmgr, zmgrFloat, zmgrModal, zmgrSplash, ldld, view, ldcv;
+zmgr = new zmgr();
+zmgrFloat = zmgr.scope('float');
+zmgrModal = zmgr.scope('modal');
+zmgrSplash = zmgr.scope('splash');
+ldcover.zmgr(zmgrModal);
+ldloader.zmgr(zmgrSplash);
 ldld = new ldloader({
   className: "full ldld",
   autoZ: true,
-  zmgr: zmgr
+  zmgr: zmgrSplash
 });
 view = new ldview({
   root: document.body,
@@ -51,39 +49,44 @@ view = new ldview({
 ldcv = {};
 ldcv.editbox = new ldcover({
   root: view.get('ldcv-editbox'),
-  zmgr: zmgrLower,
+  zmgr: zmgrFloat,
   resident: true
 });
 ldcv.template = new ldcover({
   root: view.get('ldcv-template'),
-  zmgr: zmgrLower
+  zmgr: zmgrFloat,
+  inPlace: false
 });
 ldcv.timeout = new ldcover({
   root: view.get('ldcv-timeout'),
-  zmgr: zmgrLower
+  zmgr: zmgrFloat,
+  inPlace: false
 });
 ldcv.hint = new ldcover({
   root: view.get('ldcv-hint'),
-  zmgr: zmgrLower
+  zmgr: zmgrFloat,
+  inPlace: false
 });
 ldcv.confirm = new ldcover({
   root: view.get('ldcv-confirm'),
-  zmgr: zmgr
+  zmgr: zmgrModal,
+  inPlace: false
 });
 ldcv.tos = new ldcover({
   root: view.get('ldcv-tos'),
-  zmgr: zmgr
+  zmgr: zmgrModal,
+  inPlace: false
 });
 ldcv.getValue = new ldcover({
   root: view.get('ldcv-get-value'),
-  zmgr: zmgr
+  zmgr: zmgrModal
 });
 ldcv.mini = new ldcover({
   root: view.get('ldcv-mini'),
-  zmgr: zmgr
+  zmgr: zmgrModal
 });
 ldcv.mini.toggle(true, {
-  zmgr: zmgr
+  zmgr: zmgrModal
 });
 setTimeout(function(){
   return ldcv.timeout.toggle();
