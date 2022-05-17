@@ -1,6 +1,6 @@
 # Change Logs
 
-## v3.2.0 (upcoming)
+## v3.2.0
 
  - add `data` parameter in `toggle` and `get` api for passing data between caller / callee.
  - add `data` event to pass data to callee
