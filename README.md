@@ -42,8 +42,11 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
 
 ## Object Methods
 
- - `toggle(state)`: toggle on/off ldcover.
- - `get()`: toggle on ldcover and return a promise, which will only be resolved when ldcover.set is called.
+ - `toggle(state, data)`: toggle on/off ldcover.
+   - `data`: optional parameter, which will be sent in `data` event.
+     - program that manages the content of this cover can use this data to update its content.
+ - `get(data)`: toggle on ldcover and return a promise, which will only be resolved when ldcover.set is called.
+   - `data`: see `toggle` above.
  - `set(v, hide=true)`: set value, which resolve promises from get, and hide ldcover if hide = true.
    - use `data-ldcv-set` on elements to automatically set value when elements are clicked.
  - `cancel(err, hide=true)`: reject promise returned by `get` with given error `err`.
@@ -146,11 +149,9 @@ use get function to wait for the return value:
 
 ## Todo
 
- * implement all this nice transitional effect:
+ - implement all this nice transitional effect:
    - https://tympanus.net/Development/ModalWindowEffects/
    - https://tympanus.net/Development/PageTransitions/
- 
- * remove dependency to ldQuery ( only two function call )
 
 
 ## License

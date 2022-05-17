@@ -123,14 +123,14 @@
         ? base
         : this._r).appendChild(it);
     },
-    get: function(){
+    get: function(p){
       var this$ = this;
       return new Promise(function(res, rej){
         this$.promises.push({
           res: res,
           rej: rej
         });
-        return this$.toggle(true);
+        return this$.toggle(true, p);
       });
     },
     cancel: function(err, hide){
@@ -158,12 +158,15 @@
     lock: function(){
       return this.opt.lock = true;
     },
-    toggle: function(v){
+    toggle: function(v, p){
       var this$ = this;
       return new Promise(function(res, rej){
         var isActive;
         if (!this$.inited) {
           this$.init();
+        }
+        if (v && p != null) {
+          this$.fire('data', p);
         }
         if (!(v != null) && this$._r.classList.contains('running')) {
           return res();

@@ -65,9 +65,9 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
   append: ->
     base = @_r.childNodes.0
     (if base and base.classList.contains('base') => base else @_r).appendChild it
-  get: -> new Promise (res, rej) ~>
+  get: (p) -> new Promise (res, rej) ~>
     @promises.push {res, rej}
-    @toggle true
+    @toggle true, p
   cancel: (err, hide = true) ->
     @promises.splice 0 .map (p) -> p.rej(err or (new Error! <<< {name: \lderror, id: 999}))
     if hide => @toggle false
@@ -77,8 +77,10 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     if hide => @toggle false
   is-on: -> return @_r.classList.contains(\active)
   lock: -> @opt.lock = true
-  toggle: (v) -> new Promise (res, rej) ~>
+  toggle: (v, p) -> new Promise (res, rej) ~>
     if !@inited => @init!
+    # p is for passing additional parameter to ldcv host
+    if v and p? => @fire \data, p
     if !(v?) and @_r.classList.contains \running => return res!
     if v? and @_r.classList.contains(\active) == !!v => return res!
     is-active = if v? => v else !@_r.classList.contains(\active)
