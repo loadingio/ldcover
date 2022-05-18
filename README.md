@@ -23,9 +23,9 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
    add a 'shown' class after ldcover is shown, which removes transform from .inner block.
    useful when content is blurred due to transform, but might lead to glitches when doing transition. use it carefully.
  - `delay`: milliseconds. default 300. should be aligned with transition duration. use to control 'shown' and 'running' classes.
- - `auto-z`: update root's z-index automatically. default true.
- - `base-z`: the minimal z-index of root. default 1000.
-   - with auto-z, ldcover keeps track of all cover' z-index and always use larger z-index for newly toggled covers. base-z is then used as a base value for all auto-z covers.
+ - `autoZ`: update root's z-index automatically. default true.
+ - `baseZ`: the minimal z-index of root. default 3000.
+   - with autoZ, ldcover keeps track of all cover' z-index and always use larger z-index for newly toggled covers. baseZ is then used as a base value for all autoZ covers.
  - `animation`: optional space separated class list.
    - will be added to .inner node when toggling on, and removed when toggling off.
    - handy for adding customized animation from libraries like transition.css or animate.css.
