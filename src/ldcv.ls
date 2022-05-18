@@ -137,13 +137,16 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
       else
         (@_zmgr or ldcover._zmgr).remove @z
         delete @z # must delete z to prevent some modal being toggled off twice.
-        @_r.style.zIndex = ""
     if @opt.transform-fix and !is-active => @_r.classList.remove \shown
     setTimeout (~>
       @_r.classList.remove \running
       if @opt.transform-fix and is-active => @_r.classList.add \shown
       if !is-active and @opt.by-display => @_r.style.display = \none
       if !is-active and @_r.parentNode and !@resident => @_r.parentNode.removeChild @_r
+      # clear z-index until hidden so we can fade away smoothly
+      # otherwise if there are relative element with some z-index
+      # we will fall immediately behind them.
+      if !is-active and @opt.auto-z => @_r.style.zIndex = ""
     ), @opt.delay
     if @promises.length and !is-active => @set undefined, false
     @fire "toggle.#{if is-active => \on else \off}"

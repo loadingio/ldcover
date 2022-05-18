@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.2.1
+
+ - fix bug: when toggling off, z-index is updated too early, lead to unsmooth fading animaion sometimes.
+
+
 ## v3.2.0
 
  - add `data` parameter in `toggle` and `get` api for passing data between caller / callee.

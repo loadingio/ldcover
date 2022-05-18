@@ -233,7 +233,6 @@
             } else {
               (this$._zmgr || ldcover._zmgr).remove(this$.z);
               delete this$.z;
-              this$._r.style.zIndex = "";
             }
           }
           if (this$.opt.transformFix && !isActive) {
@@ -248,7 +247,10 @@
               this$._r.style.display = 'none';
             }
             if (!isActive && this$._r.parentNode && !this$.resident) {
-              return this$._r.parentNode.removeChild(this$._r);
+              this$._r.parentNode.removeChild(this$._r);
+            }
+            if (!isActive && this$.opt.autoZ) {
+              return this$._r.style.zIndex = "";
             }
           }, this$.opt.delay);
           if (this$.promises.length && !isActive) {
