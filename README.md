@@ -54,8 +54,10 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
    - ldcover is hidden if `hide` = true. true by default.
    - use `data-ldcv-cancel` on elements to automatically cancel when clicked.
  - `on(event, cb)`: listen to certain event. evnets:
-   - toggle.on: when ldcover is toggled on.
-   - toggle.off: when ldcover is toggled off.
+   - `toggle.on`: when ldcover is toggled on. may fired before shown.
+   - `toggle.off`: when ldcover is toggled off. may fired before hidden.
+   - `toggled.on`: when ldcover is toggled on. fired after shown.
+   - `toggled.off`: when ldcover is toggled off. fired after hidden.
  - `isOn()`: is this modal active ( opened ). return true or false
  - `lock()`: lock this cover. ( can't be dismissed by escaping )
    - alternatively, you can lock cover by adding `data-lock="true"` attribute to cover root.

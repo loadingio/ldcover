@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.3.0
+
+ - add `toggled.on` and `toggled.off` event for post toggle event
+
+
 ## v3.2.1
 
  - fix bug: when toggling off, z-index is updated too early, lead to unsmooth fading animaion sometimes.

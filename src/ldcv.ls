@@ -147,6 +147,7 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
       # otherwise if there are relative element with some z-index
       # we will fall immediately behind them.
       if !is-active and @opt.auto-z => @_r.style.zIndex = ""
+      @fire "toggled.#{if is-active => \on else \off}"
     ), @opt.delay
     if @promises.length and !is-active => @set undefined, false
     @fire "toggle.#{if is-active => \on else \off}"

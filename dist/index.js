@@ -250,8 +250,9 @@
               this$._r.parentNode.removeChild(this$._r);
             }
             if (!isActive && this$.opt.autoZ) {
-              return this$._r.style.zIndex = "";
+              this$._r.style.zIndex = "";
             }
+            return this$.fire("toggled." + (isActive ? 'on' : 'off'));
           }, this$.opt.delay);
           if (this$.promises.length && !isActive) {
             this$.set(undefined, false);
