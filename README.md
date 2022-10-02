@@ -25,7 +25,9 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
  - `delay`: milliseconds. default 300. should be aligned with transition duration. use to control 'shown' and 'running' classes.
  - `autoZ`: update root's z-index automatically. default true.
  - `baseZ`: the minimal z-index of root. default 3000.
-   - with autoZ, ldcover keeps track of all cover' z-index and always use larger z-index for newly toggled covers. baseZ is then used as a base value for all autoZ covers.
+   - with autoZ, ldcover keeps track of all cover' z-index and always use larger z-index for newly toggled covers.
+     baseZ is then used as a base value for all autoZ covers.
+     however, this may conflict with customized zmgr.
  - `animation`: optional space separated class list.
    - will be added to .inner node when toggling on, and removed when toggling off.
    - handy for adding customized animation from libraries like transition.css or animate.css.
@@ -63,6 +65,8 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
    - alternatively, you can lock cover by adding `data-lock="true"` attribute to cover root.
  - `root()`: get cover root node.
  - `zmgr(mgr)`: set z-index manager for this cover. return the zmgr used if `mgr` is omitted.
+   - `baseZ` will be used to call zmgr, which set a lower bound of `z-index`.
+     set `baseZ` to 0 for zmgr to correct work with lower values.
  - `append(node)`: insert `node` in the base node of this cover.
    - useful if this ldcover is created without root.
 
