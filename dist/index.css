@@ -26,6 +26,10 @@
   height: 100%;
   width: 0px;
   vertical-align: middle;
+/*
+      `margin-right` seems to lead to a small gap in the left of the cover,
+      but we don't know why we added this. evaluate this before removing it.
+    */
   margin-right: -0.25em;
 }
 .ldcv.running,
