@@ -52,8 +52,8 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     # but we don't want this event to be treated as a close signal.
     # so, if clicksrc is not @_r, we just don't close modal directly but do following check then.
     clicksrc = null
-    @_r.addEventListener \mousedown, (e) ~> clicksrc := e.target
-    @_r.addEventListener \click, (e) ~>
+    @_r.addEventListener \mousedown, @el_md = (e) ~> clicksrc := e.target
+    @_r.addEventListener \click, @el_c = (e) ~>
       if clicksrc == @_r and !@opt.lock =>
         e.stopPropagation!
         return @toggle false
@@ -101,9 +101,9 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     # for inline cover, click outside trigger dismissing.
     if @_r.classList.contains \inline =>
       if is-active =>
-        @h = (e) ~> if @_r.contains e.target => return else @toggle false
-        window.addEventListener \click, @h
-      else if @h => window.removeEventListener \click, @h
+        @el_h = (e) ~> if @_r.contains e.target => return else @toggle false
+        window.addEventListener \click, @el_h
+      else if @el_h => window.removeEventListener \click, @el_h
 
     # why setTimeout?
     # It seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse moving over them might
@@ -160,6 +160,13 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     return res!
   on: (n, cb) -> (if Array.isArray(n) => n else [n]).map (n) ~> @evt-handler.[][n].push cb
   fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
+  destroy: ->
+    <~ @toggle false .then _
+    if @_c =>
+      @_c.parentNode.insertBefore @_r, @_c
+      @_c.parentNode.removeChild @_c
+    @_r.removeEventListener \mousedown, @el_md
+    @_r.removeEventListener \click, @el_c
 
 ldcover <<< do
   popups: []

@@ -90,10 +90,10 @@
         this._r.style.display = 'none';
       }
       clicksrc = null;
-      this._r.addEventListener('mousedown', function(e){
+      this._r.addEventListener('mousedown', this.el_md = function(e){
         return clicksrc = e.target;
       });
-      return this._r.addEventListener('click', function(e){
+      return this._r.addEventListener('click', this.el_c = function(e){
         var tgt, action;
         if (clicksrc === this$._r && !this$.opt.lock) {
           e.stopPropagation();
@@ -193,14 +193,14 @@
         }
         if (this$._r.classList.contains('inline')) {
           if (isActive) {
-            this$.h = function(e){
+            this$.el_h = function(e){
               if (this$._r.contains(e.target)) {} else {
                 return this$.toggle(false);
               }
             };
-            window.addEventListener('click', this$.h);
-          } else if (this$.h) {
-            window.removeEventListener('click', this$.h);
+            window.addEventListener('click', this$.el_h);
+          } else if (this$.el_h) {
+            window.removeEventListener('click', this$.el_h);
           }
         }
         return setTimeout(function(){
@@ -286,6 +286,17 @@
         results$.push(cb.apply(this, v));
       }
       return results$;
+    },
+    destroy: function(){
+      var this$ = this;
+      return this.toggle(false).then(function(){
+        if (this$._c) {
+          this$._c.parentNode.insertBefore(this$._r, this$._c);
+          this$._c.parentNode.removeChild(this$._c);
+        }
+        this$._r.removeEventListener('mousedown', this$.el_md);
+        return this$._r.removeEventListener('click', this$.el_c);
+      });
     }
   });
   import$(ldcover, {
