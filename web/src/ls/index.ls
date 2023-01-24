@@ -31,13 +31,13 @@ view = new ldview do
 
 ldcv = {}
 ldcv.editbox = new ldcover root: view.get('ldcv-editbox'), zmgr: zmgr-float, resident: true
-ldcv.template = new ldcover root: view.get('ldcv-template'), zmgr: zmgr-float, in-place: false
+ldcv.template = new ldcover root: view.get('ldcv-template'), zmgr: zmgr-float, in-place: false, lock: true
 ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-float, in-place: false
 ldcv.hint = new ldcover root: view.get('ldcv-hint'), zmgr: zmgr-float, in-place: false
 ldcv.confirm = new ldcover root: view.get('ldcv-confirm'), zmgr: zmgr-modal, in-place: false
 ldcv.tos = new ldcover root: view.get('ldcv-tos'), zmgr: zmgr-modal, in-place: false
 ldcv.get-value = new ldcover root: view.get('ldcv-get-value'), zmgr: zmgr-modal
-ldcv.mini = new ldcover root: view.get('ldcv-mini'), zmgr: zmgr-modal
+ldcv.mini = new ldcover root: view.get('ldcv-mini'), zmgr: zmgr-modal, escape: false
 ldcv.mini.toggle true, zmgr: zmgr-modal
 
 ldcv.timeout.destroy!

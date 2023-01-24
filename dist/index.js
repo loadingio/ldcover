@@ -201,23 +201,26 @@
             window.addEventListener('click', this$.el_h);
           } else if (this$.el_h) {
             window.removeEventListener('click', this$.el_h);
+            this$.el_h = null;
           }
         }
+        if (!isActive && this$.el_esc) {
+          document.removeEventListener('keyup', this$.el_esc);
+          this$.el_esc = null;
+        }
         return setTimeout(function(){
-          var esc, idx;
+          var idx;
           this$._r.classList.toggle('active', isActive);
-          if (!this$.opt.lock && this$.opt.escape && isActive) {
-            esc = function(e){
+          if (!this$.opt.lock && this$.opt.escape && isActive && !this$.el_esc) {
+            this$.el_esc = function(e){
               var ref$;
               if (e.keyCode === 27) {
-                if ((ref$ = ldcover.popups)[ref$.length - 1] !== this$) {
-                  return;
+                if ((ref$ = ldcover.popups)[ref$.length - 1] === this$) {
+                  return this$.toggle(false);
                 }
-                this$.toggle(false);
-                return document.removeEventListener('keyup', esc);
               }
             };
-            document.addEventListener('keyup', esc);
+            document.addEventListener('keyup', this$.el_esc);
           }
           if (this$.opt.animation && this$.inner) {
             this$.inner.classList[isActive ? 'add' : 'remove'].apply(this$.inner.classList, this$.opt.animation.split(' '));

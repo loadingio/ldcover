@@ -55,7 +55,8 @@ ldcv.editbox = new ldcover({
 ldcv.template = new ldcover({
   root: view.get('ldcv-template'),
   zmgr: zmgrFloat,
-  inPlace: false
+  inPlace: false,
+  lock: true
 });
 ldcv.timeout = new ldcover({
   root: view.get('ldcv-timeout'),
@@ -83,7 +84,8 @@ ldcv.getValue = new ldcover({
 });
 ldcv.mini = new ldcover({
   root: view.get('ldcv-mini'),
-  zmgr: zmgrModal
+  zmgr: zmgrModal,
+  escape: false
 });
 ldcv.mini.toggle(true, {
   zmgr: zmgrModal

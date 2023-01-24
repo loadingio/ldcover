@@ -1,5 +1,11 @@
 # Change Logs
 
+## v3.3.2 (upcoming)
+
+ - remove escape listener once dialog is dismissed
+ - clear inline cover click event listener variable once dismiss
+
+
 ## v3.3.1
 
  - fix bug: nested `data-ldcv-*` in child ldcover should not be propagated to parent ldcover.

@@ -103,7 +103,13 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
       if is-active =>
         @el_h = (e) ~> if @_r.contains e.target => return else @toggle false
         window.addEventListener \click, @el_h
-      else if @el_h => window.removeEventListener \click, @el_h
+      else if @el_h =>
+        window.removeEventListener \click, @el_h
+        @el_h = null
+
+    if !is-active and @el_esc =>
+      document.removeEventListener \keyup, @el_esc
+      @el_esc = null
 
     # why setTimeout?
     # It seems even if element is not visible ( opacity = 0, visibility = hidden ), mouse moving over them might
@@ -125,12 +131,10 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     # Additionally, we should check if quickly toggle on / off will cause problem due to setTimeout.
     <~ setTimeout _, 50
     @_r.classList.toggle \active, is-active
-    if !@opt.lock and @opt.escape and is-active =>
-      esc = (e) ~> if e.keyCode == 27 =>
-        if ldcover.popups[* - 1] != @ => return
-        @toggle false
-        document.removeEventListener \keyup, esc
-      document.addEventListener \keyup, esc
+    if !@opt.lock and @opt.escape and is-active and !@el_esc =>
+      @el_esc = (e) ~> if e.keyCode == 27 =>
+        if ldcover.popups[* - 1] == @ => @toggle false
+      document.addEventListener \keyup, @el_esc
     if @opt.animation and @inner =>
       @inner.classList[if is-active => \add else \remove].apply @inner.classList, @opt.animation.split(' ')
     if is-active => ldcover.popups.push @
