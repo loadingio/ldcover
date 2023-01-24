@@ -96,14 +96,17 @@
       return this._r.addEventListener('click', function(e){
         var tgt, action;
         if (clicksrc === this$._r && !this$.opt.lock) {
+          e.stopPropagation();
           return this$.toggle(false);
         }
         if (parent(e.target, '*[data-ldcv-cancel]', this$._r)) {
+          e.stopPropagation();
           return this$.cancel();
         }
         tgt = parent(e.target, '*[data-ldcv-set]', this$._r);
         if (tgt && (action = tgt.getAttribute("data-ldcv-set")) != null) {
           if (!parent(tgt, '.disabled', this$._r)) {
+            e.stopPropagation();
             return this$.set(action);
           }
         }

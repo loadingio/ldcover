@@ -54,11 +54,17 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     clicksrc = null
     @_r.addEventListener \mousedown, (e) ~> clicksrc := e.target
     @_r.addEventListener \click, (e) ~>
-      if clicksrc == @_r and !@opt.lock => return @toggle false
-      if parent(e.target, '*[data-ldcv-cancel]', @_r) => return @cancel!
+      if clicksrc == @_r and !@opt.lock =>
+        e.stopPropagation!
+        return @toggle false
+      if parent(e.target, '*[data-ldcv-cancel]', @_r) =>
+        e.stopPropagation!
+        return @cancel!
       tgt = parent(e.target, '*[data-ldcv-set]', @_r)
       if tgt and (action = tgt.getAttribute("data-ldcv-set"))? =>
-        if !parent(tgt, '.disabled', @_r) => @set action
+        if !parent(tgt, '.disabled', @_r) =>
+          e.stopPropagation!
+          @set action
 
   zmgr: -> if it? => @_zmgr = it else @_zmgr
   # append element into ldcv. should be used for ldcv created without providing root.

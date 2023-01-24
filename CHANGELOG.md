@@ -1,5 +1,11 @@
 # Change Logs
 
+## v3.3.1
+
+ - fix bug: nested `data-ldcv-*` in child ldcover should not be propagated to parent ldcover.
+ - upgrade modules to fix dependencies vulnerability
+
+
 ## v3.3.0
 
  - add `toggled.on` and `toggled.off` event for post toggle event
