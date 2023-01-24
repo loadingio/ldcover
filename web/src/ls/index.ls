@@ -40,4 +40,10 @@ ldcv.get-value = new ldcover root: view.get('ldcv-get-value'), zmgr: zmgr-modal
 ldcv.mini = new ldcover root: view.get('ldcv-mini'), zmgr: zmgr-modal
 ldcv.mini.toggle true, zmgr: zmgr-modal
 
-setTimeout (-> ldcv.timeout.toggle! ), 1000
+ldcv.timeout.destroy!
+  .then -> ldcv.editbox.destroy!
+  .then ->
+    ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-float, in-place: false
+    ldcv.editbox = new ldcover root: view.get('ldcv-editbox'), zmgr: zmgr-float, resident: true
+  .then ->
+    setTimeout (-> ldcv.timeout.toggle! ), 1000

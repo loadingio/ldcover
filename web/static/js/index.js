@@ -88,6 +88,21 @@ ldcv.mini = new ldcover({
 ldcv.mini.toggle(true, {
   zmgr: zmgrModal
 });
-setTimeout(function(){
-  return ldcv.timeout.toggle();
-}, 1000);
+ldcv.timeout.destroy().then(function(){
+  return ldcv.editbox.destroy();
+}).then(function(){
+  ldcv.timeout = new ldcover({
+    root: view.get('ldcv-timeout'),
+    zmgr: zmgrFloat,
+    inPlace: false
+  });
+  return ldcv.editbox = new ldcover({
+    root: view.get('ldcv-editbox'),
+    zmgr: zmgrFloat,
+    resident: true
+  });
+}).then(function(){
+  return setTimeout(function(){
+    return ldcv.timeout.toggle();
+  }, 1000);
+});
