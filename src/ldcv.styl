@@ -30,9 +30,10 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
     vertical-align: middle
     /*
       `margin-right` seems to lead to a small gap in the left of the cover,
-      but we don't know why we added this. evaluate this before removing it.
+      but we don't know why we added this. remove it but keep this comment here.
+      expected to be removed in near future.
     */
-    margin-right: -0.25em
+    //margin-right: -0.25em
 
 //- z-index will be update by script. we ensure it will be greater than 0 here.
 .ldcv.running, .ldcv.active
