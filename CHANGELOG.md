@@ -1,9 +1,11 @@
 # Change Logs
 
-## v3.3.2 (upcoming)
+## v3.4.0
 
+ - support destroy function
  - remove escape listener once dialog is dismissed
  - clear inline cover click event listener variable once dismiss
+ - fix bug: small gap in the left hand side due to :after pseudo class margin
 
 
 ## v3.3.1
