@@ -105,6 +105,10 @@ one can decorate ldcover widgets by adding classes over the outmost element. fol
  * .ldcv.lg, .ldcv.md
    - different size of panel. instead of using this, you could also set size directly on .base element.
  * .ldcv.full - fullscreen modal.
+ * .ldcv.full-sm, .ldcv.full-md, .ldcv.full-lg - conditional fullscreen modal. break point:
+   - `sm`: < 576px
+   - `md`: < 768px
+   - `lg`: < 960px
  * .ldcv.light - light overlay bk
  * .ldcv.mini - non-blocking, float style dialog with following position available:
    - .ldcv.mini.left

@@ -212,3 +212,45 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
     position: absolute
     top: 0
     left: 0
+
+@media (max-width: 960px)
+  .ldcv.full-lg
+    padding: 0!important
+    & > .base
+      min-width: 100%
+      height: 100%!important
+      & > .inner
+        border-radius: 0
+  .ldcv.full-lg.scroll
+    & > .base
+      overflow: scroll
+      & > .inner
+        height: auto
+
+@media (max-width: 576px)
+  .ldcv.full-sm
+    padding: 0!important
+    & > .base
+      min-width: 100%
+      height: 100%!important
+      & > .inner
+        border-radius: 0
+  .ldcv.full-sm.scroll
+    & > .base
+      overflow: scroll
+      & > .inner
+        height: auto
+
+@media (max-width: 768px)
+  .ldcv.full-md
+    padding: 0!important
+    & > .base
+      min-width: 100%
+      height: 100%!important
+      & > .inner
+        border-radius: 0
+  .ldcv.full-md.scroll
+    & > .base
+      overflow: scroll
+      & > .inner
+        height: auto
