@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.5.1
+
+ - tweak fullscreen classes responsive settings
+
+
 ## v3.5.0
 
  - support conditional fullscreen class
