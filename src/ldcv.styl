@@ -213,6 +213,14 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
     top: 0
     left: 0
 
+.ldcv.autogap > .base > .inner
+  padding: 2em
+
+@media (max-width: 767px) {
+  .ldcv.autogap > .base { max-width: calc(100% - 4px); width: 100% }
+  .ldcv.autogap > .base > .inner { padding: 2em .75em }
+}
+
 @media (max-width: 959px)
   .ldcv.full-lg
     padding: 0!important

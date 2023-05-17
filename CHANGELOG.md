@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.5.2
+
+ - add `autogap` class for automatically prepare padding / gapping between window boundary
+
+
 ## v3.5.1
 
  - tweak fullscreen classes responsive settings
