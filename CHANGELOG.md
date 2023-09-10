@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.5.3
+
+ - tweak style about gapping with `scroll` + `autogap` settings.
+ 
+
 ## v3.5.2
 
  - add `autogap` class for automatically prepare padding / gapping between window boundary

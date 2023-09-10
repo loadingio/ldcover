@@ -116,6 +116,9 @@
   background: rgba(0,0,0,0.5);
   overflow-y: scroll;
   overflow-x: hidden;
+/* padding top/bottom make it look better in desktop view,
+  but leave a strange hole in mobile view especially with `autogap`.
+  thus we will cancel these styles if `autogap` is set.  */
   padding-top: 50px;
   padding-bottom: 50px;
 }
@@ -223,11 +226,19 @@
 }
 @media (max-width: 767px) {
   .ldcv.autogap > .base {
+/* leave 2px gap in both side. see `padding-top` below */
     max-width: calc(100% - 4px);
     width: 100%;
   }
   .ldcv.autogap > .base > .inner {
     padding: 2em 0.75em;
+  }
+  .ldcv.autogap.scroll {
+/* with `autogap` in mobile view, we want a panel close to fullscreen.
+    thus we remove padding from `scroll` here.
+    `2px` is to align the gap in width, see `max-width` above. */
+    padding-top: 2px;
+    padding-bottom: 2px;
   }
 }
 @media (max-width: 959px) {
