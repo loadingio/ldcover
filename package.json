@@ -3,7 +3,7 @@
   "name": "ldcover",
   "license": "MIT",
   "description": "tiny popup / dialog library",
-  "version": "3.5.3",
+  "version": "3.5.4",
   "style": "dist/index.min.css",
   "browser": "dist/index.min.js",
   "main": "dist/index.min.js",
@@ -23,19 +23,19 @@
     "start": "npx server -r web -o true"
   },
   "devDependencies": {
-    "@loadingio/bootstrap.ext": "^0.0.7",
+    "@loadingio/bootstrap.ext": "^0.0.11",
     "@loadingio/debounce.js": "1.0.1",
-    "@loadingio/ldquery": "^3.0.3",
-    "@zbryikt/template": "^2.3.37",
+    "@loadingio/ldquery": "^3.0.5",
+    "@zbryikt/template": "^2.3.45",
     "bootstrap": "^4.5.3",
-    "fedep": "^1.1.7",
-    "ldloader": "^3.0.1",
-    "ldview": "^1.1.1",
+    "fedep": "^1.1.12",
+    "ldloader": "^3.0.3",
+    "ldview": "^1.4.0",
     "livescript": "^1.6.0",
     "stylus": "^0.55.0",
     "uglify-js": "^3.13.1",
     "uglifycss": "^0.0.29",
-    "zmgr": "^2.2.1"
+    "zmgr": "^2.2.3"
   },
   "frontendDependencies": {
     "root": "web/static/assets/lib",

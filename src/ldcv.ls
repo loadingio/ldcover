@@ -164,10 +164,10 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     return res!
   on: (n, cb) -> (if Array.isArray(n) => n else [n]).map (n) ~> @evt-handler.[][n].push cb
   fire: (n, ...v) -> for cb in (@evt-handler[n] or []) => cb.apply @, v
-  destroy: ->
+  destroy: (o={}) ->
     <~ @toggle false .then _
     if @_c =>
-      @_c.parentNode.insertBefore @_r, @_c
+      if !o.remove-node => @_c.parentNode.insertBefore @_r, @_c
       @_c.parentNode.removeChild @_c
     @_r.removeEventListener \mousedown, @el_md
     @_r.removeEventListener \click, @el_c

@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.5.4
+
+ - support DOM removal by `removeNode` option in  `destroyer` API.
+
+
 ## v3.5.3
 
  - tweak style about gapping with `scroll` + `autogap` settings.

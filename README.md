@@ -72,6 +72,10 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
      set `baseZ` to 0 for zmgr to correct work with lower values.
  - `append(node)`: insert `node` in the base node of this cover.
    - useful if this ldcover is created without root.
+ - `destroy(opt)`: object destroyer. `opt` is an option object with following fields:
+   - `removeNode`: should ldcover remove DOM of this cover. default false
+     - by default, DOM of this cover will be inserted back in DOM after this ldcover object been destroyed.
+     - to also wipe out the DOM element, set `removeNode` to true.
 
 
 ## Class Method

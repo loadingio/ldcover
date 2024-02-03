@@ -290,11 +290,14 @@
       }
       return results$;
     },
-    destroy: function(){
+    destroy: function(o){
       var this$ = this;
+      o == null && (o = {});
       return this.toggle(false).then(function(){
         if (this$._c) {
-          this$._c.parentNode.insertBefore(this$._r, this$._c);
+          if (!o.removeNode) {
+            this$._c.parentNode.insertBefore(this$._r, this$._c);
+          }
           this$._c.parentNode.removeChild(this$._c);
         }
         this$._r.removeEventListener('mousedown', this$.el_md);
