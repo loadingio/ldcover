@@ -132,6 +132,11 @@ one can decorate ldcover widgets by adding classes over the outmost element. fol
  * .ldcv.scroll:
    - add `scroll` class on the ldcv node when you expect the modal content to longer than a screen's height. It makes the modal scrollable by users.
 
+ * .ldcv.autogap:
+   - add `autogap` class on the ldcv node to automatically adjust cover padding and margin along with responsive scenario, with two additional classes:
+   - `.outer-gap`: only apply margin style. Used alone without `autogap`
+   - `.autogap.nested-gap`: apply padding style in nested div. Used along with `autogap`
+
  * alternative transition
    - you can use alternative transition by adding additional class in .ldcv, including following classes:
      - ldcv-scale

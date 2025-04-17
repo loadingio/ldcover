@@ -224,8 +224,15 @@
 .ldcv.autogap > .base > .inner {
   padding: 2em;
 }
+.ldcv.nested-gap > .base > .inner > div {
+  padding: 1em;
+}
+.ldcv.nested-gap.autogap > .base > .inner {
+  padding: 0;
+}
 @media (max-width: 767px) {
-  .ldcv.autogap > .base {
+  .ldcv.autogap > .base,
+  .ldcv.outer-gap > .base {
 /* leave 2px gap in both side. see `padding-top` below */
     max-width: calc(100% - 4px);
     width: 100%;
@@ -233,7 +240,11 @@
   .ldcv.autogap > .base > .inner {
     padding: 2em 0.75em;
   }
-  .ldcv.autogap.scroll {
+  .ldcv.nested-gap.autogap > .base > .inner {
+    padding: 0;
+  }
+  .ldcv.autogap.scroll,
+  .ldcv.outer-gap.scroll {
 /* with `autogap` in mobile view, we want a panel close to fullscreen.
     thus we remove padding from `scroll` here.
     `2px` is to align the gap in width, see `max-width` above. */
