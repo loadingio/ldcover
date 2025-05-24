@@ -1,5 +1,10 @@
 # Change Logs
 
+## v3.5.6
+
+ - use `auto` instead of `scroll` in `.scroll` class to prevent scroll bar if scrolling is not necessary.
+
+
 ## v3.5.5
 
  - add `outer-gap` and `nested-gap` classes for more control about cover gapping

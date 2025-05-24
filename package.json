@@ -3,7 +3,7 @@
   "name": "ldcover",
   "license": "MIT",
   "description": "tiny popup / dialog library",
-  "version": "3.5.5",
+  "version": "3.5.6",
   "style": "dist/index.min.css",
   "browser": "dist/index.min.js",
   "main": "dist/index.min.js",
