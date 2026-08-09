@@ -1,5 +1,5 @@
 (function(){
-  var parent, ldcover;
+  var parent, ldcover, normOpt;
   parent = function(r, s, e){
     var n;
     e == null && (e = document);
@@ -305,6 +305,343 @@
       });
     }
   });
+  ldcover.dialog = function(opt){
+    opt == null && (opt = {});
+    return new Promise(function(res, rej){
+      var addCls, rmCls, themeName, theme, escapable, options, fields, root, inner, tel, mel, fwrap, owrap, inputOf, hasRequired, i$, len$, f, fel, lel, iel, eel, collect, validate, btnEls, di, i, b, ref$, defaultBtn, cls, cov, focusTarget;
+      addCls = function(el, cls){
+        if (cls) {
+          return el.classList.add.apply(el.classList, String(cls).split(/\s+/));
+        }
+      };
+      rmCls = function(el, cls){
+        if (cls) {
+          return el.classList.remove.apply(el.classList, String(cls).split(/\s+/));
+        }
+      };
+      themeName = String(opt.theme || ldcover.dialog.theme());
+      theme = ldcover.dialog.themes[themeName] || {};
+      escapable = opt.escape != null ? !!opt.escape : true;
+      options = opt.options || [{
+        label: 'OK',
+        value: 'ok',
+        variant: 'primary',
+        focus: true
+      }];
+      fields = opt.fields || [];
+      root = ldcover.dialog.dom();
+      inner = root.querySelector('.inner');
+      tel = root.querySelector('.title');
+      mel = root.querySelector('.msg');
+      fwrap = root.querySelector('.fields');
+      owrap = root.querySelector('.options');
+      if (opt.title) {
+        tel.textContent = opt.title;
+        addCls(tel, theme.title);
+      } else if (tel && tel.parentNode) {
+        tel.parentNode.removeChild(tel);
+      }
+      if (opt.msg && opt.msg.nodeType) {
+        mel.appendChild(opt.msg);
+      } else if (opt.msg != null) {
+        mel.textContent = opt.msg;
+      } else if (mel && mel.parentNode) {
+        mel.parentNode.removeChild(mel);
+      }
+      if (opt.msg != null) {
+        addCls(mel, theme.msg);
+      }
+      inputOf = {};
+      hasRequired = false;
+      if (!fields.length) {
+        if (fwrap && fwrap.parentNode) {
+          fwrap.parentNode.removeChild(fwrap);
+        }
+      } else {
+        addCls(fwrap, theme.fields);
+        for (i$ = 0, len$ = fields.length; i$ < len$; ++i$) {
+          f = fields[i$];
+          fel = document.createElement('div');
+          fel.className = 'field';
+          addCls(fel, theme.field);
+          fwrap.appendChild(fel);
+          if (f.label) {
+            lel = document.createElement('label');
+            lel.textContent = f.label;
+            addCls(lel, theme.label);
+            fel.appendChild(lel);
+          }
+          if (f.type === 'textarea') {
+            iel = document.createElement('textarea');
+            addCls(iel, theme.textarea);
+          } else {
+            iel = document.createElement('input');
+            iel.type = f.type || 'text';
+            addCls(iel, theme.input);
+          }
+          if (f.placeholder) {
+            iel.placeholder = f.placeholder;
+          }
+          if (f.value != null) {
+            iel.value = f.value;
+          }
+          addCls(iel, f.cls);
+          if (f.isRequired) {
+            hasRequired = true;
+          }
+          fel.appendChild(iel);
+          eel = document.createElement('div');
+          eel.className = 'error';
+          addCls(eel, theme.error);
+          fel.appendChild(eel);
+          inputOf[f.name] = iel;
+        }
+      }
+      collect = function(){
+        var ret, k, ref$, el;
+        ret = {};
+        for (k in ref$ = inputOf) {
+          el = ref$[k];
+          ret[k] = el.value;
+        }
+        return ret;
+      };
+      validate = function(){
+        var ok, i$, ref$, len$, f, iel, fel, err;
+        ok = true;
+        for (i$ = 0, len$ = (ref$ = fields).length; i$ < len$; ++i$) {
+          f = ref$[i$];
+          iel = inputOf[f.name];
+          fel = iel.parentNode;
+          err = fel.querySelector('.error');
+          if (f.isRequired && !String(iel.value || '').trim()) {
+            err.textContent = f.error || 'This field is required.';
+            fel.classList.add('has-error');
+            addCls(iel, theme.invalid);
+            if (ok) {
+              iel.focus();
+            }
+            ok = false;
+          } else {
+            err.textContent = '';
+            fel.classList.remove('has-error');
+            rmCls(iel, theme.invalid);
+          }
+        }
+        return ok;
+      };
+      addCls(owrap, theme.options);
+      btnEls = options.map(function(b){
+        var bel;
+        bel = document.createElement('button');
+        bel.type = 'button';
+        bel.classList.add(b.variant || 'default');
+        addCls(bel, typeof theme.button === 'string'
+          ? theme.button
+          : (theme.button || {})[b.variant || 'default']);
+        addCls(bel, b.cls);
+        bel.textContent = b.label;
+        owrap.appendChild(bel);
+        return bel;
+      });
+      di = -1;
+      for (i$ = 0, len$ = options.length; i$ < len$; ++i$) {
+        i = i$;
+        b = options[i$];
+        if (b.focus) {
+          di = i;
+          break;
+        }
+      }
+      if (di < 0) {
+        for (i$ = 0, len$ = options.length; i$ < len$; ++i$) {
+          i = i$;
+          b = options[i$];
+          if ((ref$ = b.variant) === 'primary' || ref$ === 'danger') {
+            di = i;
+          }
+        }
+      }
+      if (di < 0 && options.length) {
+        di = options.length - 1;
+      }
+      defaultBtn = di >= 0 ? btnEls[di] : null;
+      options.forEach(function(b, i){
+        return btnEls[i].addEventListener('click', function(){
+          if (b.action) {
+            return b.action.call(cov, {
+              fields: collect()
+            });
+          }
+          if (hasRequired && b.value != null && !b.novalidate && !validate()) {
+            return;
+          }
+          return cov.set({
+            value: b.value,
+            fields: collect()
+          });
+        });
+      });
+      inner.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+          e.preventDefault();
+          if (defaultBtn) {
+            return defaultBtn.click();
+          }
+        }
+      });
+      cls = ['builtin', 'autogap', 'scroll'];
+      cls.push(themeName);
+      if ((ref$ = opt.size) === 'sm' || ref$ === 'md' || ref$ === 'lg') {
+        cls.push(opt.size);
+      }
+      if (opt.cls) {
+        cls = cls.concat(String(opt.cls).split(/\s+/));
+      }
+      cov = new ldcover({
+        root: root,
+        escape: escapable,
+        lock: !escapable,
+        type: cls
+      });
+      focusTarget = function(){
+        var tgt;
+        tgt = fields.length ? inputOf[fields[0].name] : defaultBtn;
+        if (tgt && document.activeElement !== tgt) {
+          return tgt.focus();
+        }
+      };
+      cov.on(['toggle.on', 'toggled.on'], focusTarget);
+      cov.on('toggled.off', function(){
+        return setTimeout(function(){
+          return cov.destroy();
+        }, 0);
+      });
+      return cov.get().then(function(v){
+        return res(v === undefined ? {
+          value: null,
+          fields: collect()
+        } : v);
+      })['catch'](function(){
+        return res({
+          value: null,
+          fields: collect()
+        });
+      });
+    });
+  };
+  ldcover.dialog.dom = function(){
+    var root;
+    root = document.createElement('div');
+    root.innerHTML = '<div class="base"><div class="inner"><div class="title"></div><div class="msg"></div><div class="fields"></div><div class="options"></div></div></div>';
+    return root;
+  };
+  ldcover.dialog.theme = function(it){
+    if (it != null) {
+      return ldcover.dialog._theme = it;
+    } else {
+      return ldcover.dialog._theme || 'generic';
+    }
+  };
+  ldcover.dialog.themes = {
+    bootstrap: {
+      title: 'h5',
+      input: 'form-control',
+      textarea: 'form-control',
+      invalid: 'is-invalid',
+      error: 'text-danger small',
+      button: {
+        'default': 'btn btn-outline-secondary',
+        primary: 'btn btn-primary',
+        danger: 'btn btn-danger'
+      }
+    }
+  };
+  normOpt = function(msg, opt){
+    if (msg && typeof msg === 'object' && !msg.nodeType) {
+      return import$(import$({}, msg), opt || {});
+    } else {
+      return import$({
+        msg: msg
+      }, opt || {});
+    }
+  };
+  ldcover.alert = function(msg, opt){
+    var o;
+    o = normOpt(msg, opt);
+    return ldcover.dialog({
+      title: o.title,
+      msg: o.msg,
+      size: o.size,
+      cls: o.cls,
+      theme: o.theme,
+      options: [{
+        label: o.okText || 'OK',
+        value: 'ok',
+        variant: o.variant || 'primary',
+        focus: true
+      }]
+    }).then(function(){});
+  };
+  ldcover.confirm = function(msg, opt){
+    var o;
+    o = normOpt(msg, opt);
+    return ldcover.dialog({
+      title: o.title,
+      msg: o.msg,
+      size: o.size,
+      cls: o.cls,
+      theme: o.theme,
+      options: [
+        {
+          label: o.cancelText || 'Cancel',
+          value: null
+        }, {
+          label: o.okText || 'OK',
+          value: true,
+          variant: o.variant || 'primary',
+          focus: true
+        }
+      ]
+    }).then(function(r){
+      return r.value === true;
+    });
+  };
+  ldcover.prompt = function(msg, opt){
+    var o;
+    o = normOpt(msg, opt);
+    return ldcover.dialog({
+      title: o.title,
+      msg: o.msg,
+      size: o.size,
+      cls: o.cls,
+      theme: o.theme,
+      fields: [{
+        name: 'value',
+        type: o.type || 'text',
+        placeholder: o.placeholder,
+        value: o.value,
+        isRequired: o.isRequired
+      }],
+      options: [
+        {
+          label: o.cancelText || 'Cancel',
+          value: null
+        }, {
+          label: o.okText || 'OK',
+          value: 'ok',
+          variant: o.variant || 'primary',
+          focus: true
+        }
+      ]
+    }).then(function(r){
+      if (r.value === 'ok') {
+        return r.fields.value;
+      } else {
+        return null;
+      }
+    });
+  };
   import$(ldcover, {
     popups: [],
     _zmgr: {

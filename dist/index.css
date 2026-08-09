@@ -230,6 +230,116 @@
 .ldcv.nested-gap.autogap > .base > .inner {
   padding: 0;
 }
+/*
+builtin dialog helper ( ldcover.alert / confirm / prompt / dialog ).
+
+   .ldcv.builtin carries structural styles only ( layout / spacing / sizes ).
+   visual styles live in theme classes, picked by the `theme` option:
+     .ldcv.builtin.default   - bundled standalone look ( below )
+     .ldcv.builtin.bootstrap - no css here; bootstrap's own classes ( form-control,
+                               btn btn-primary... ) are injected by script instead,
+                               see ldcover.dialog.themes
+     .ldcv.builtin.generic   - no visual at all; host styles it ( the default )
+
+*/
+.ldcv.builtin > .base {
+  width: 90%;
+  max-width: 28rem;
+  height: auto;
+}
+.ldcv.builtin.sm > .base {
+  max-width: 20rem;
+}
+.ldcv.builtin.md > .base {
+  width: 90%;
+  max-width: 28rem;
+  height: auto;
+}
+.ldcv.builtin.lg > .base {
+  width: 90%;
+  max-width: 40rem;
+  height: auto;
+}
+.ldcv.builtin > .base > .inner {
+  height: auto;
+  padding: 1.25rem;
+  text-align: left;
+}
+.ldcv.builtin > .base > .inner .title {
+  margin-bottom: 0.75rem;
+}
+.ldcv.builtin > .base > .inner .msg {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  margin-bottom: 1rem;
+}
+.ldcv.builtin > .base > .inner .fields {
+  margin-bottom: 1rem;
+}
+.ldcv.builtin > .base > .inner .fields .field {
+  margin-bottom: 0.75rem;
+}
+.ldcv.builtin > .base > .inner .fields .field:last-child {
+  margin-bottom: 0;
+}
+.ldcv.builtin > .base > .inner .fields .field label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.ldcv.builtin > .base > .inner .fields .field input,
+.ldcv.builtin > .base > .inner .fields .field textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+.ldcv.builtin > .base > .inner .fields .field .error {
+  margin-top: 0.25rem;
+}
+.ldcv.builtin > .base > .inner .fields .field .error:empty {
+  display: none;
+}
+.ldcv.builtin > .base > .inner .options {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.ldcv.builtin > .base > .inner .options button {
+  font: inherit;
+  cursor: pointer;
+}
+.ldcv.builtin.default > .base > .inner .title {
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+.ldcv.builtin.default > .base > .inner .fields .field .error {
+  font-size: 0.8em;
+  color: #c0392b;
+}
+.ldcv.builtin.default > .base > .inner .fields .field.has-error input,
+.ldcv.builtin.default > .base > .inner .fields .field.has-error textarea {
+  border-color: #c0392b;
+  outline-color: #c0392b;
+}
+.ldcv.builtin.default > .base > .inner .options button {
+  padding: 0.375rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  background: transparent;
+}
+.ldcv.builtin.default > .base > .inner .options button.default {
+  border-color: #ccc;
+  background: #fff;
+}
+.ldcv.builtin.default > .base > .inner .options button.primary {
+  border-color: #333;
+  background: #333;
+  color: #fff;
+}
+.ldcv.builtin.default > .base > .inner .options button.danger {
+  border-color: #c0392b;
+  background: #c0392b;
+  color: #fff;
+}
 @media (max-width: 767px) {
   .ldcv.autogap > .base,
   .ldcv.outer-gap > .base {

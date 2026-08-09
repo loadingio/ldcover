@@ -172,6 +172,121 @@ use get function to wait for the return value:
     ldcv.get!then -> if it == "1" => "OK" else "Cancel"
 
 
+## Dialog
+
+promise-based dialog helpers as drop-in replacements for the browser native `alert()` / `confirm()` / `prompt()`:
+
+    await ldcover.alert('hi');                  // resolves after OK is clicked
+    ok = await ldcover.confirm('are you sure?') // true ( OK ) / false ( cancel / escape )
+    name = await ldcover.prompt('your name?')   // string ( OK ) / null ( cancel / escape )
+
+the first argument can be a message ( string / DOM node ) or an option object with `msg` inside; an additional option object can also be passed as the 2nd argument:
+
+    await ldcover.confirm({title: 'Delete', msg: 'are you sure?', danger: true});
+    await ldcover.confirm('are you sure?', {danger: true});  // same thing
+
+common options for `alert` / `confirm` / `prompt` ( all optional ):
+
+ - `title`: dialog title.
+ - `msg`: message. plain text ( rendered with `pre-wrap`, so newlines work ) or a DOM node.
+ - `okText`: label of the OK button. default `OK`.
+ - `cancelText`: label of the cancel button. default `Cancel`.
+ - `variant`: variant of the OK option. default `primary`; use `danger` for destructive confirms. any string works - it lands as a semantic class on the button and is looked up in the theme's `button` map ( see Theming ).
+ - `size`: `sm` / `md` / `lg`. default `md`.
+ - `cls`: additional classes added on the `.ldcv` root, for theming.
+
+i18n is left to the caller - pass localized `okText` / `cancelText` / `msg` yourself.
+
+`prompt` additionally supports:
+
+ - `placeholder`: input placeholder.
+ - `value`: default value.
+ - `type`: input type. default `text`.
+ - `isRequired`: if true, OK won't resolve until the field is filled.
+
+
+### ldcover.dialog(opt)
+
+generic method behind the helpers above. returns a Promise resolving `{value, fields}` where `value` is the value of the clicked option ( button ) and `fields` is an object of input values keyed by field name. closing by escape / backdrop click always resolves with `value: null`.
+
+ - `title`: optional title.
+ - `msg`: message. plain text ( `pre-wrap` ) or a DOM node.
+ - `fields`: optional input fields: `[{name, label?, type='text', placeholder?, value?, isRequired?, error?, cls?}]`.
+   - `type: 'textarea'` renders a textarea.
+   - `error`: message shown when `isRequired` validation fails. default `This field is required.`.
+   - `cls`: additional classes added on the input / textarea element.
+ - `options`: buttons: `[{label, value, variant?, focus?, novalidate?, action?, cls?}]`.
+   - `variant`: semantic variant of this option, added as a class on the button in every theme. bundled ( styled by bundled themes ): `default` / `primary` / `danger`; any other string also works - style it yourself, or map it in your theme's `button` map.
+   - `focus`: focused on open ( when no fields ); also triggered by Enter in input fields.
+   - `novalidate`: skip required validation for this option. options with `value: null` ( cancel-ish ) skip validation automatically.
+   - `action`: `({fields}) -> ...` - clicking this option runs the callback and keeps the dialog open, instead of resolving. useful for opening nested dialogs or custom in-dialog behavior.
+   - `cls`: additional classes added on the button element.
+ - `escape`: allow closing by escape key / backdrop click. default true.
+ - `size`: `sm` / `md` / `lg`.
+ - `theme`: visual theme, added as a class on the `.ldcv` root. bundled: `default` / `bootstrap` / `generic`. defaults to `ldcover.dialog.theme()` ( initially `generic` ). see Theming below.
+ - `cls`: additional classes added on the `.ldcv` root.
+
+example:
+
+    ldcover.dialog({
+      title: 'Rename',
+      msg: 'enter a new name:',
+      fields: [{name: 'name', isRequired: true}],
+      options: [
+        {label: 'Cancel', value: null},
+        {label: 'Rename', value: 'ok', variant: 'primary', focus: true}
+      ]
+    }).then(function(r) { if (r.value == 'ok') { console.log(r.fields.name); } });
+
+dialogs can be stacked; z-index is managed by the same autoZ mechanism used by ldcover instances. each call builds its own cover, which is destroyed and removed from DOM automatically after dismissed.
+
+
+### Theming
+
+structural styles ( layout / spacing / sizes ) always apply under `.ldcv.builtin`; all visual styles ( font size / color / background / border ) live in a separate theme class on the root, picked by the `theme` option:
+
+ - `generic` ( the default ): no visual styles at all. the dialog is structurally correct but unstyled - style it yourself via the class hooks below.
+ - `default`: bundled standalone look. neutral colors, no dependency.
+ - `bootstrap`: applies bootstrap's own classes onto the elements while building the dialog - `form-control` on inputs / textareas, `btn btn-primary` for OK, `btn btn-outline-secondary` for cancel, `btn btn-danger` for danger, `is-invalid` on inputs failing required validation. requires bootstrap css to be loaded on the page.
+
+set a session-wide default once instead of passing `theme` on every call ( call with no argument to read it back ):
+
+    ldcover.dialog.theme('bootstrap');
+
+themes that inject element classes ( like `bootstrap` ) are defined in the `ldcover.dialog.themes` registry - register your own for utility-css frameworks ( e.g. tailwind ):
+
+    ldcover.dialog.themes.tailwind = {
+      input: 'border rounded px-3 py-2 w-full',
+      textarea: 'border rounded px-3 py-2 w-full',
+      invalid: 'border-red-500',
+      error: 'text-red-600 text-sm',
+      button: {
+        "default": 'px-4 py-2 rounded border',
+        primary: 'px-4 py-2 rounded bg-blue-600 text-white',
+        danger: 'px-4 py-2 rounded bg-red-600 text-white'
+      }
+    };
+    ldcover.dialog.theme('tailwind');
+
+a theme entry may define `title` / `msg` / `fields` / `field` / `label` / `input` / `textarea` / `error` / `options` / `button` ( string, or a per-variant map ) / `invalid` ( toggled on inputs by required validation ).
+
+the theme name also lands as a class on the `.ldcv` root ( `.ldcv.builtin.my-theme` ), so a custom theme can also just be visual css defined under it:
+
+    .ldcv.builtin        // dialog root; .sm / .md / .lg for size.
+                         // .autogap and .scroll are also added by default,
+                         // for rwd gapping and long-content scrolling
+      .base .inner
+        .title
+        .msg             // pre-wrap
+        .fields
+          .field         // label + input/textarea + .error
+                         // .has-error is added when required validation fails
+        .options
+          button         // with variant class: .default / .primary / .danger
+
+the skeleton itself can also be replaced by overriding `ldcover.dialog.dom`, a function returning the root element of a dialog. keep the `.base` / `.inner` structure and the `.title` / `.msg` / `.fields` / `.options` hooks inside `.inner`; user provided content is applied onto the skeleton via DOM api ( no innerHTML ), so the skeleton should contain static markup only.
+
+
 ## Todo
 
  - implement all this nice transitional effect:

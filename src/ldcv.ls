@@ -172,6 +172,199 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     @_r.removeEventListener \mousedown, @el_md
     @_r.removeEventListener \click, @el_c
 
+# promise-based dialog helpers ( alert / confirm / prompt / dialog ).
+# structure-only styling; theme via `cls` opt or the nested class hooks under .ldcv.builtin.
+ldcover.dialog = (opt = {}) -> new Promise (res, rej) ->
+  add-cls = (el, cls) -> if cls => el.classList.add.apply el.classList, String(cls).split(/\s+/)
+  rm-cls = (el, cls) -> if cls => el.classList.remove.apply el.classList, String(cls).split(/\s+/)
+  theme-name = String(opt.theme or ldcover.dialog.theme!)
+  theme = ldcover.dialog.themes[theme-name] or {}
+  escapable = if opt.escape? => !!opt.escape else true
+  options = opt.options or [{label: 'OK', value: \ok, variant: \primary, focus: true}]
+  fields = opt.fields or []
+  root = ldcover.dialog.dom!
+  inner = root.querySelector '.inner'
+  tel = root.querySelector '.title'
+  mel = root.querySelector '.msg'
+  fwrap = root.querySelector '.fields'
+  owrap = root.querySelector '.options'
+  # customize the prebuilt skeleton with DOM api only - no user input goes into innerHTML.
+  if opt.title =>
+    tel.textContent = opt.title
+    add-cls tel, theme.title
+  else if tel and tel.parentNode => tel.parentNode.removeChild tel
+  if opt.msg and opt.msg.nodeType => mel.appendChild opt.msg
+  else if opt.msg? => mel.textContent = opt.msg
+  else if mel and mel.parentNode => mel.parentNode.removeChild mel
+  if opt.msg? => add-cls mel, theme.msg
+  input-of = {}
+  has-required = false
+  if !fields.length =>
+    if fwrap and fwrap.parentNode => fwrap.parentNode.removeChild fwrap
+  else
+    add-cls fwrap, theme.fields
+    for f in fields
+      fel = document.createElement \div
+      fel.className = \field
+      add-cls fel, theme.field
+      fwrap.appendChild fel
+      if f.label =>
+        lel = document.createElement \label
+        lel.textContent = f.label
+        add-cls lel, theme.label
+        fel.appendChild lel
+      if f.type == \textarea =>
+        iel = document.createElement \textarea
+        add-cls iel, theme.textarea
+      else
+        iel = document.createElement \input
+        iel.type = f.type or \text
+        add-cls iel, theme.input
+      if f.placeholder => iel.placeholder = f.placeholder
+      if f.value? => iel.value = f.value
+      add-cls iel, f.cls
+      if f.is-required => has-required = true
+      fel.appendChild iel
+      eel = document.createElement \div
+      eel.className = \error
+      add-cls eel, theme.error
+      fel.appendChild eel
+      input-of[f.name] = iel
+  collect = ->
+    ret = {}
+    for k, el of input-of => ret[k] = el.value
+    ret
+  validate = ->
+    ok = true
+    for f in fields
+      iel = input-of[f.name]
+      fel = iel.parentNode
+      err = fel.querySelector '.error'
+      if f.is-required and !String(iel.value or '').trim!
+        err.textContent = f.error or 'This field is required.'
+        fel.classList.add \has-error
+        add-cls iel, theme.invalid
+        if ok => iel.focus!
+        ok = false
+      else
+        err.textContent = ''
+        fel.classList.remove \has-error
+        rm-cls iel, theme.invalid
+    ok
+  add-cls owrap, theme.options
+  btn-els = options.map (b) ->
+    bel = document.createElement \button
+    bel.type = \button
+    bel.classList.add (b.variant or \default)
+    add-cls bel, (if typeof(theme.button) == \string => theme.button else (theme.button or {})[b.variant or \default])
+    add-cls bel, b.cls
+    bel.textContent = b.label
+    owrap.appendChild bel
+    bel
+  # default button ( triggered by Enter in input fields ): focus > primary/danger > last
+  di = -1
+  for b, i in options => if b.focus => di = i; break
+  if di < 0 => for b, i in options => if b.variant in <[primary danger]> => di = i
+  if di < 0 and options.length => di = options.length - 1
+  default-btn = if di >= 0 => btn-els[di] else null
+  options.forEach (b, i) ->
+    btn-els[i].addEventListener \click, ->
+      # options with `action` run the callback and keep the dialog open -
+      # handy for opening nested dialogs or custom in-dialog behavior.
+      if b.action => return b.action.call cov, {fields: collect!}
+      # null-value ( cancel-ish ) or novalidate options bypass required validation
+      if has-required and b.value? and !b.novalidate and !validate! => return
+      cov.set {value: b.value, fields: collect!}
+  inner.addEventListener \keydown, (e) ->
+    if e.key == \Enter and e.target.tagName == \INPUT =>
+      e.preventDefault!
+      if default-btn => default-btn.click!
+  # autogap / scroll by default: rwd-friendly gapping + scrollable when content is long
+  cls = <[builtin autogap scroll]>
+  # theme class on the .ldcv root. bundled: default / bootstrap / generic ( unstyled ).
+  # any other string works too - define your own .ldcv.builtin.<theme> css
+  # and / or register element classes in ldcover.dialog.themes.
+  cls.push theme-name
+  if opt.size in <[sm md lg]> => cls.push opt.size
+  if opt.cls => cls = cls ++ String(opt.cls).split(/\s+/)
+  cov = new ldcover root: root, escape: escapable, lock: !escapable, type: cls
+  # focus may not apply while the cover's visibility transition is still running,
+  # so try on toggle.on for instant response and retry on toggled.on to be sure.
+  focus-target = ->
+    tgt = if fields.length => input-of[fields.0.name] else default-btn
+    if tgt and document.activeElement != tgt => tgt.focus!
+  cov.on <[toggle.on toggled.on]>, focus-target
+  # recycle the underlying cover ( and its DOM ) once dismissed
+  cov.on \toggled.off, -> setTimeout (-> cov.destroy!), 0
+  cov.get!
+    # escape / backdrop close resolves `get` with undefined; map value to null
+    # instead of rejecting so hosts don't have to try/catch every call.
+    .then (v) -> res(if v == undefined => {value: null, fields: collect!} else v)
+    .catch -> res {value: null, fields: collect!}
+
+# prebuilt dialog skeleton. override to customize structure but keep the
+# .title / .msg / .fields / .options hooks under .inner.
+# static markup only; user provided content is applied later via DOM api to avoid xss.
+ldcover.dialog.dom = ->
+  root = document.createElement \div
+  root.innerHTML = '<div class="base"><div class="inner"><div class="title"></div><div class="msg"></div><div class="fields"></div><div class="options"></div></div></div>'
+  root
+
+# get / set the default theme for dialogs without an explicit `theme` opt.
+# e.g., `ldcover.dialog.theme('bootstrap')` once to apply globally.
+# bundled: 'default' / 'bootstrap' / 'generic' ( unstyled, for host styling ).
+ldcover.dialog.theme = -> if it? => ldcover.dialog._theme = it else (ldcover.dialog._theme or \generic)
+
+# per-theme element classes, applied onto dialog elements while building.
+# a theme entry may define: title / msg / fields / field / label / input / textarea /
+# error / options / button ( string, or per-variant map ) / invalid ( added on
+# input & textarea when required validation fails ).
+# hosts can register their own theme here ( e.g. tailwind utility classes ).
+ldcover.dialog.themes =
+  bootstrap:
+    title: \h5
+    input: \form-control
+    textarea: \form-control
+    invalid: \is-invalid
+    error: 'text-danger small'
+    button:
+      default: 'btn btn-outline-secondary'
+      primary: 'btn btn-primary'
+      danger: 'btn btn-danger'
+
+# msg can be a string / DOM node, or an option object with `msg` inside.
+norm-opt = (msg, opt) ->
+  if msg and typeof(msg) == \object and !msg.nodeType => {} <<< msg <<< (opt or {})
+  else {msg: msg} <<< (opt or {})
+
+ldcover.alert = (msg, opt) ->
+  o = norm-opt msg, opt
+  ldcover.dialog do
+    title: o.title, msg: o.msg, size: o.size, cls: o.cls, theme: o.theme
+    options: [{label: o.ok-text or 'OK', value: \ok, variant: (o.variant or \primary), focus: true}]
+  .then -> return
+
+ldcover.confirm = (msg, opt) ->
+  o = norm-opt msg, opt
+  ldcover.dialog do
+    title: o.title, msg: o.msg, size: o.size, cls: o.cls, theme: o.theme
+    options: [
+      {label: o.cancel-text or 'Cancel', value: null}
+      {label: o.ok-text or 'OK', value: true, variant: (o.variant or \primary), focus: true}
+    ]
+  .then (r) -> r.value == true
+
+ldcover.prompt = (msg, opt) ->
+  o = norm-opt msg, opt
+  ldcover.dialog do
+    title: o.title, msg: o.msg, size: o.size, cls: o.cls, theme: o.theme
+    fields: [{name: \value, type: o.type or \text, placeholder: o.placeholder, value: o.value, is-required: o.is-required}]
+    options: [
+      {label: o.cancel-text or 'Cancel', value: null}
+      {label: o.ok-text or 'OK', value: \ok, variant: (o.variant or \primary), focus: true}
+    ]
+  .then (r) -> if r.value == \ok => r.fields.value else null
+
 ldcover <<< do
   popups: []
   _zmgr: do

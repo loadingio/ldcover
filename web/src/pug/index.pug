@@ -18,6 +18,7 @@ html
     .ldcv(ld="ldcv-timeout"): .base: .inner.p-4: .p-4
       h1 Timeout Popup
       p this is a popup that will be triggered after you open this website.
+      .text-right.mt-4: .btn.btn-lg.btn-outline-secondary(data-ldcv-set="") Close
 
     .ldcv(ld="ldcv-hint"): .base: .inner.p-4: .p-4
       h1 Just a Hint
@@ -56,17 +57,57 @@ html
           a.btn.btn-outline-primary.mr-2.flex-grow-1(href="http://info.cern.ch") I don't agree
           .btn.btn-primary.ml-2.flex-grow-1(ld="agree") I agree
 
-    .w-100.h-100.d-flex.align-items-center.justify-content-center.flex-column
-      .m-4
-        .btn.btn-lg.btn-primary(ld="show-editbox") Show Edit Box
-        .ldcv.inline(ld="ldcv-editbox"): .base: .inner.p-2
-          textarea.form-control.mb-2(rows="5")
-          .btn.btn-primary(data-ldcv-set="") OK
+    .w-1024.rwd.mx-auto.p-4
+      .mb-4
+        h1.mb-0: .text-sm Dialog Gallery
+        .text-muted Here we demonstrate various dialogs with different purposes and usage.
 
-      .btn.btn-lg.btn-primary.m-4(ld="show-tos") Show Term of Use
-      .btn.btn-lg.btn-primary.m-4(ld="get-value") Get Value
-      .btn.btn-lg.btn-primary.m-4(ld="show-hint") Show Hint
-      .btn.btn-lg.btn-primary.m-4(ld="show-template") Show Template
+      .my-4: hr
+
+      .mb-5
+        .mb-2
+          h2.mb-0: .text-sm Customized Dialog
+          .text-muted these dialogs are built with customized DOM
+        .d-flex.g-2.flex-wrap
+          .d-inline-block
+            .btn.btn-outline-primary(ld="show-editbox") Show Edit Box
+            .ldcv.inline(ld="ldcv-editbox"): .base: .inner.p-2
+              textarea.form-control.mb-2(rows="5")
+              .btn.btn-primary(data-ldcv-set="") OK
+          .btn.btn-outline-primary(ld="show-tos") Show Term of Use
+          .btn.btn-outline-primary(ld="get-value") Get Value
+          .btn.btn-outline-primary(ld="show-hint") Show Hint
+          .btn.btn-outline-primary(ld="show-template") Show Template
+
+      .mb-5
+        .mb-2
+          h2.mb-0: .text-sm Builtin Dialog
+          .text-muted these dialogs are triggered with configs only. No customized DOM required.
+        .d-flex.g-2.align-items-center.mb-4
+          .btn.btn-outline-primary(ld="demo-alert") alert
+          .btn.btn-outline-primary(ld="demo-confirm") confirm
+          .btn.btn-outline-danger(ld="demo-confirm-danger") confirm ( danger )
+          .btn.btn-outline-primary(ld="demo-prompt") prompt
+          .btn.btn-outline-primary(ld="demo-dialog") dialog
+          //- sets the global default via ldcover.dialog.theme(...)
+          select.form-control.ml-3(ld="demo-theme", style="width:auto")
+            option(value="default", selected) theme: default
+            option(value="bootstrap") theme: bootstrap
+            option(value="generic") theme: generic
+        div(style="max-width:32em")
+          .text-muted.mb-2 Try also customized title / description then trigger a dialog:
+          .d-flex.g-2
+            div(style="flex:2 0 30%"): input.form-control.mb-2(ld="dlg-title", placeholder="title ( optional )")
+            div(style="flex:1 0 30%")
+              select.form-control.mb-2(ld="dlg-theme")
+                option(value="bootstrap", selected) theme: bootstrap
+                option(value="default") theme: default
+                option(value="generic") theme: generic ( unstyled )
+          textarea.form-control.mb-2(ld="dlg-msg", rows="3", placeholder="description / message")
+          .text-right
+            .btn.btn-outline-primary.mr-2(ld="test-alert") alert
+            .btn.btn-outline-primary(ld="test-confirm") confirm
+
     +script([
       {name: "ldview"},
       {name: "ldloader"},

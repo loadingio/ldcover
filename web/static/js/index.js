@@ -4,6 +4,7 @@ zmgrFloat = zmgr.scope('float');
 zmgrModal = zmgr.scope('modal');
 zmgrSplash = zmgr.scope('splash');
 ldcover.zmgr(zmgrModal);
+ldcover.dialog.theme('default');
 ldloader.zmgr(zmgrSplash);
 ldld = new ldloader({
   className: "full ldld",
@@ -42,9 +43,95 @@ view = new ldview({
         }).then(function(){
           return ldcv.tos.toggle(false);
         });
+      },
+      "test-alert": function(){
+        return ldcover.alert({
+          title: view.get('dlg-title').value || void 8,
+          msg: view.get('dlg-msg').value,
+          theme: view.get('dlg-theme').value
+        }).then(function(){
+          return console.log('alert dismissed');
+        });
+      },
+      "test-confirm": function(){
+        return ldcover.confirm({
+          title: view.get('dlg-title').value || void 8,
+          msg: view.get('dlg-msg').value,
+          theme: view.get('dlg-theme').value
+        }).then(function(it){
+          return console.log("confirm result: ", it);
+        });
+      },
+      "demo-alert": function(){
+        return ldcover.alert('hi, this is an alert.\nmsg is rendered with pre-wrap,\nso simple formatting works.').then(function(){
+          return console.log('alert dismissed');
+        });
+      },
+      "demo-confirm": function(){
+        return ldcover.confirm('are you sure?', {
+          title: 'Confirm'
+        }).then(function(it){
+          return console.log("confirm result: ", it);
+        });
+      },
+      "demo-confirm-danger": function(){
+        return ldcover.confirm('delete this item?', {
+          title: 'Delete',
+          variant: 'danger'
+        }).then(function(it){
+          return console.log("confirm ( danger ) result: ", it);
+        });
+      },
+      "demo-prompt": function(){
+        return ldcover.prompt('what is your name?', {
+          placeholder: 'your name',
+          isRequired: true
+        }).then(function(it){
+          return console.log("prompt result: ", it);
+        });
+      },
+      "demo-dialog": function(){
+        return ldcover.dialog({
+          title: 'Custom Dialog',
+          msg: 'dialogs can be nested - try the buttons below.',
+          fields: [
+            {
+              name: 'email',
+              label: 'Email',
+              type: 'email',
+              placeholder: 'me@example.com',
+              isRequired: true
+            }, {
+              name: 'note',
+              label: 'Note',
+              type: 'textarea'
+            }
+          ],
+          options: [
+            {
+              label: 'Nest another',
+              action: function(){
+                return ldcover.confirm('a nested confirm, stacked above. z-index should be correct.');
+              }
+            }, {
+              label: 'Cancel',
+              value: null
+            }, {
+              label: 'Submit',
+              value: 'submit',
+              variant: 'primary',
+              focus: true
+            }
+          ]
+        }).then(function(r){
+          return console.log("dialog result: ", r);
+        });
       }
     }
   }
+});
+view.get('demo-theme').addEventListener('change', function(e){
+  return ldcover.dialog.theme(e.target.value);
 });
 ldcv = {};
 ldcv.editbox = new ldcover({

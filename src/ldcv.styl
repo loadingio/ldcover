@@ -223,6 +223,99 @@ order = 0 1 2 ldcv ldcv-bg ldcv-base ldcv-inner
 .ldcv.nested-gap.autogap > .base > .inner
   padding: 0
 
+/*
+builtin dialog helper ( ldcover.alert / confirm / prompt / dialog ).
+
+   .ldcv.builtin carries structural styles only ( layout / spacing / sizes ).
+   visual styles live in theme classes, picked by the `theme` option:
+     .ldcv.builtin.default   - bundled standalone look ( below )
+     .ldcv.builtin.bootstrap - no css here; bootstrap's own classes ( form-control,
+                               btn btn-primary... ) are injected by script instead,
+                               see ldcover.dialog.themes
+     .ldcv.builtin.generic   - no visual at all; host styles it ( the default )
+
+*/
+
+.ldcv.builtin
+  & > .base
+    width: 90%
+    max-width: 28rem
+    height: auto
+  &.sm > .base
+    max-width: 20rem
+  &.md > .base
+    width: 90%
+    max-width: 28rem
+    height: auto
+  &.lg > .base
+    width: 90%
+    max-width: 40rem
+    height: auto
+  & > .base > .inner
+    height: auto
+    padding: 1.25rem
+    text-align: left
+    .title
+      margin-bottom: .75rem
+    .msg
+      white-space: pre-wrap
+      overflow-wrap: break-word
+      margin-bottom: 1rem
+    .fields
+      margin-bottom: 1rem
+      .field
+        margin-bottom: .75rem
+        &:last-child
+          margin-bottom: 0
+        label
+          display: block
+          margin-bottom: .25rem
+        input, textarea
+          display: block
+          width: 100%
+          box-sizing: border-box
+        .error
+          margin-top: .25rem
+          &:empty
+            display: none
+    .options
+      display: flex
+      justify-content: flex-end
+      gap: .5rem
+      button
+        font: inherit
+        cursor: pointer
+
+//- bundled standalone theme
+.ldcv.builtin.default > .base > .inner
+  .title
+    font-weight: bold
+    font-size: 1.125rem
+  .fields .field
+    .error
+      font-size: .8em
+      color: #c0392b
+    &.has-error
+      input, textarea
+        border-color: #c0392b
+        outline-color: #c0392b
+  .options button
+    padding: .375rem 1rem
+    border: 1px solid transparent
+    border-radius: .25rem
+    background: transparent
+    &.default
+      border-color: #ccc
+      background: #fff
+    &.primary
+      border-color: #333
+      background: #333
+      color: #fff
+    &.danger
+      border-color: #c0392b
+      background: #c0392b
+      color: #fff
+
 @media (max-width: 767px) {
   .ldcv.autogap > .base, .ldcv.outer-gap > .base {
     /* leave 2px gap in both side. see `padding-top` below */

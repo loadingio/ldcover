@@ -1,5 +1,13 @@
 # Change Logs
 
+## v3.6.0
+
+ - add promise-based dialog helpers: `ldcover.alert`, `ldcover.confirm`, `ldcover.prompt` and the generic `ldcover.dialog`, as drop-in replacements for browser native dialogs.
+ - add minimal structural styles for dialogs ( nested class hooks under `.ldcv.builtin` ) for host theming.
+ - dialog visual styles are separated into themes, picked by the `theme` opt ( or the `ldcover.dialog.theme` session default ): `default` ( bundled look ), `bootstrap` ( injects bootstrap's own classes onto elements ), `generic` ( unstyled, the default ). custom themes via the `ldcover.dialog.themes` registry.
+ - dialog skeleton can be customized by overriding `ldcover.dialog.dom`.
+
+
 ## v3.5.6
 
  - use `auto` instead of `scroll` in `.scroll` class to prevent scroll bar if scrolling is not necessary.
