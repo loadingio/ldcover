@@ -39,6 +39,13 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
  - `resident`: default false. if set to true, DOM for this cover will always attached under document. otherwise false.
    - not resident node will be attached under `container` or document.body.
  - `inPlace`: default true. if set to false, root will be removed from original parent and re-added under body.
+   - stacking order is not a reason to change this: `autoZ` / `zmgr` already keep a
+     newly toggled cover above the others wherever its DOM lives.
+   - what does call for `false` is a root trapped in an ancestor that breaks fixed
+     positioning or clips it - `overflow: hidden`, `transform`, `filter`, or any
+     other element that establishes a containing block. a cover nested inside
+     another cover's markup is the common case: it stays inside that dialog and
+     its backdrop only covers what the ancestor spans, so it has to be lifted out.
  - `container`: container for non-resident cover. by default parent of DOM or document.body
    - by default, non-resident cover is inserted to the location we find it. Set `container` to change this behavior.
      - when `container` is null, `root` is appended at the end of `document.body` when toggled.
@@ -54,11 +61,16 @@ include required files ( `index.js` and `index.css` ), and create a ldcover obje
    - `data`: see `toggle` above.
  - `set(v, hide=true)`: set value, which resolve promises from get, and hide ldcover if hide = true.
    - use `data-ldcv-set` on elements to automatically set value when elements are clicked.
+   - there is no `set` event: `set` only resolves pending promises, so the value is
+     read by awaiting `get()`, never by listening.
  - `cancel(err, hide=true)`: reject promise returned by `get` with given error `err`.
    - a default `Error` object with `{name: 'lderror', id: 999}` will be used if `err` is omitted.
    - ldcover is hidden if `hide` = true. true by default.
    - use `data-ldcv-cancel` on elements to automatically cancel when clicked.
  - `on(event, cb)`: listen to certain event. evnets:
+   - `data`: when a cover is toggled on with data. the payload passed to
+     `get(data)` / `toggle(true, data)` is handed over here, which is how content
+     inside a cover learns what it was opened for.
    - `toggle.on`: when ldcover is toggled on. may fired before shown.
    - `toggle.off`: when ldcover is toggled off. may fired before hidden.
    - `toggled.on`: when ldcover is toggled on. fired after shown.
