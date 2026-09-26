@@ -164,7 +164,7 @@
     toggle: function(v, p){
       var this$ = this;
       return new Promise(function(res, rej){
-        var isActive;
+        var cur, isActive, seq;
         if (!this$.inited) {
           this$.init();
         }
@@ -174,12 +174,16 @@
         if (!(v != null) && this$._r.classList.contains('running')) {
           return res();
         }
-        if (v != null && this$._r.classList.contains('active') === !!v) {
+        cur = this$._r.classList.contains('running')
+          ? this$._target
+          : this$._r.classList.contains('active');
+        if (v != null && cur === !!v) {
           return res();
         }
-        isActive = v != null
-          ? v
-          : !this$._r.classList.contains('active');
+        this$._target = isActive = v != null
+          ? !!v
+          : !cur;
+        this$._seq = seq = (this$._seq || 0) + 1;
         if (isActive && !this$._r.parentNode) {
           if (!(this$.container != null) && this$._c && this$._c.parentNode) {
             this$._c.parentNode.insertBefore(this$._r, this$._c);
@@ -191,19 +195,6 @@
         if (this$.opt.byDisplay) {
           this$._r.style.display = 'block';
         }
-        if (this$._r.classList.contains('inline')) {
-          if (isActive) {
-            this$.el_h = function(e){
-              if (this$._r.contains(e.target)) {} else {
-                return this$.toggle(false);
-              }
-            };
-            window.addEventListener('click', this$.el_h);
-          } else if (this$.el_h) {
-            window.removeEventListener('click', this$.el_h);
-            this$.el_h = null;
-          }
-        }
         if (!isActive && this$.el_esc) {
           document.removeEventListener('keyup', this$.el_esc);
           this$.el_esc = null;
@@ -211,6 +202,40 @@
         return setTimeout(function(){
           var idx;
           this$._r.classList.toggle('active', isActive);
+          setTimeout(function(){
+            if (this$._seq !== seq) {
+              return;
+            }
+            this$._r.classList.remove('running');
+            if (this$.opt.transformFix && isActive) {
+              this$._r.classList.add('shown');
+            }
+            if (!isActive && this$.opt.byDisplay) {
+              this$._r.style.display = 'none';
+            }
+            if (!isActive && this$._r.parentNode && !this$.resident) {
+              this$._r.parentNode.removeChild(this$._r);
+            }
+            if (!isActive && this$.opt.autoZ) {
+              this$._r.style.zIndex = "";
+            }
+            return this$.fire("toggled." + (isActive ? 'on' : 'off'));
+          }, this$.opt.delay);
+          if (this$._r.classList.contains('inline')) {
+            if (isActive) {
+              if (!this$.el_h) {
+                this$.el_h = function(e){
+                  if (this$._r.contains(e.target)) {} else {
+                    return this$.toggle(false);
+                  }
+                };
+                window.addEventListener('click', this$.el_h);
+              }
+            } else if (this$.el_h) {
+              window.removeEventListener('click', this$.el_h);
+              this$.el_h = null;
+            }
+          }
           if (!this$.opt.lock && this$.opt.escape && isActive && !this$.el_esc) {
             this$.el_esc = function(e){
               var ref$;
@@ -244,22 +269,6 @@
           if (this$.opt.transformFix && !isActive) {
             this$._r.classList.remove('shown');
           }
-          setTimeout(function(){
-            this$._r.classList.remove('running');
-            if (this$.opt.transformFix && isActive) {
-              this$._r.classList.add('shown');
-            }
-            if (!isActive && this$.opt.byDisplay) {
-              this$._r.style.display = 'none';
-            }
-            if (!isActive && this$._r.parentNode && !this$.resident) {
-              this$._r.parentNode.removeChild(this$._r);
-            }
-            if (!isActive && this$.opt.autoZ) {
-              this$._r.style.zIndex = "";
-            }
-            return this$.fire("toggled." + (isActive ? 'on' : 'off'));
-          }, this$.opt.delay);
           if (this$.promises.length && !isActive) {
             this$.set(undefined, false);
           }

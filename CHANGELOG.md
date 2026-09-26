@@ -1,5 +1,12 @@
 # Change Logs
 
+## v3.6.1
+
+ - fix `toggle`: a toggle issued within 50ms of a previous one was dropped and reported as done, since the no-op check read the `active` class, which is only applied after that break. a quick on / off pair thus left the cover stuck open. compare against the intended state instead.
+ - fix `toggle`: transitions can now overlap, so only the last one settles the state. an older one's cleanup would otherwise undo the newer one - hiding and detaching a cover that was just turned back on - or emit a second `toggled.on` / `toggled.off` for a state it never settled in.
+ - behavior change: `toggled.on` / `toggled.off` now fire only for the transition that actually settles. a toggle reversed within `delay` ( 300ms ) no longer emits the event for the state it passed through. `toggle.on` / `toggle.off` still fire per call, as before.
+
+
 ## v3.6.0
 
  - add promise-based dialog helpers: `ldcover.alert`, `ldcover.confirm`, `ldcover.prompt` and the generic `ldcover.dialog`, as drop-in replacements for browser native dialogs.
