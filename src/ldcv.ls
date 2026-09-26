@@ -88,8 +88,14 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     # p is for passing additional parameter to ldcv host
     if v and p? => @fire \data, p
     if !(v?) and @_r.classList.contains \running => return res!
-    if v? and @_r.classList.contains(\active) == !!v => return res!
-    is-active = if v? => v else !@_r.classList.contains(\active)
+    # `active` is only written after the 50ms break below, so it is stale while
+    # a transition is in flight. `running` marks exactly that window, and
+    # `_target` carries the intended state across it; once settled, the dom is
+    # the truth again - nothing here outlives a transition.
+    cur = if @_r.classList.contains \running => @_target else @_r.classList.contains \active
+    if v? and cur == !!v => return res!
+    @_target = is-active = (if v? => !!v else !cur)
+    @_seq = seq = (@_seq or 0) + 1
     if is-active and !@_r.parentNode =>
       # insert into original place if no container defined. default behavior ( `container` not provided )
       if !(@container?) and @_c and @_c.parentNode => @_c.parentNode.insertBefore @_r, @_c
@@ -97,15 +103,6 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
       else (@container or document.body).appendChild @_r
     @_r.classList.add \running
     if @opt.by-display => @_r.style.display = \block
-
-    # for inline cover, click outside trigger dismissing.
-    if @_r.classList.contains \inline =>
-      if is-active =>
-        @el_h = (e) ~> if @_r.contains e.target => return else @toggle false
-        window.addEventListener \click, @el_h
-      else if @el_h =>
-        window.removeEventListener \click, @el_h
-        @el_h = null
 
     if !is-active and @el_esc =>
       document.removeEventListener \keyup, @el_esc
@@ -125,12 +122,39 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
     #
     # Thus, we first set `block` here, give it a break by `setTimeout`, then set `active` class immediately
     #
-    # if we want to remove thie setTimeout, either we have to use css animation to force animation, or we just
+    # if we want to remove this setTimeout, either we have to use css animation to force animation, or we just
     # setTimeout for adding active class only.
     #
     # Additionally, we should check if quickly toggle on / off will cause problem due to setTimeout.
     <~ setTimeout _, 50
     @_r.classList.toggle \active, is-active
+    # scheduled here, next to the flip it settles, so nothing between the two
+    # can leave `running` on forever by throwing.
+    setTimeout (~>
+      # superseded by a newer toggle - only the last one settles the state,
+      # so that `toggled.*` fires once and `running` outlives every transition.
+      if @_seq != seq => return
+      @_r.classList.remove \running
+      if @opt.transform-fix and is-active => @_r.classList.add \shown
+      if !is-active and @opt.by-display => @_r.style.display = \none
+      if !is-active and @_r.parentNode and !@resident => @_r.parentNode.removeChild @_r
+      # clear z-index until hidden so we can fade away smoothly
+      # otherwise if there are relative element with some z-index
+      # we will fall immediately behind them.
+      if !is-active and @opt.auto-z => @_r.style.zIndex = ""
+      @fire "toggled.#{if is-active => \on else \off}"
+    ), @opt.delay
+    # for inline cover, click outside trigger dismissing. registered after the
+    # break above: the click that opens the cover is still bubbling before it,
+    # and would reach this handler and close it right back.
+    if @_r.classList.contains \inline =>
+      if is-active =>
+        if !@el_h =>
+          @el_h = (e) ~> if @_r.contains e.target => return else @toggle false
+          window.addEventListener \click, @el_h
+      else if @el_h =>
+        window.removeEventListener \click, @el_h
+        @el_h = null
     if !@opt.lock and @opt.escape and is-active and !@el_esc =>
       @el_esc = (e) ~> if e.keyCode == 27 =>
         if ldcover.popups[* - 1] == @ => @toggle false
@@ -148,17 +172,6 @@ ldcover.prototype = Object.create(Object.prototype) <<< do
         (@_zmgr or ldcover._zmgr).remove @z
         delete @z # must delete z to prevent some modal being toggled off twice.
     if @opt.transform-fix and !is-active => @_r.classList.remove \shown
-    setTimeout (~>
-      @_r.classList.remove \running
-      if @opt.transform-fix and is-active => @_r.classList.add \shown
-      if !is-active and @opt.by-display => @_r.style.display = \none
-      if !is-active and @_r.parentNode and !@resident => @_r.parentNode.removeChild @_r
-      # clear z-index until hidden so we can fade away smoothly
-      # otherwise if there are relative element with some z-index
-      # we will fall immediately behind them.
-      if !is-active and @opt.auto-z => @_r.style.zIndex = ""
-      @fire "toggled.#{if is-active => \on else \off}"
-    ), @opt.delay
     if @promises.length and !is-active => @set undefined, false
     @fire "toggle.#{if is-active => \on else \off}"
     return res!

@@ -57,6 +57,11 @@ html
           a.btn.btn-outline-primary.mr-2.flex-grow-1(href="http://info.cern.ch") I don't agree
           .btn.btn-primary.ml-2.flex-grow-1(ld="agree") I agree
 
+    .ldcv(ld="ldcv-quick"): .base: .inner.p-4: .p-4
+      h1 Quick On / Off
+      p if you can see this after the test finishes, the cover is stuck open.
+      .text-right.mt-4: .btn.btn-lg.btn-outline-secondary(data-ldcv-set="") Close
+
     .w-1024.rwd.mx-auto.p-4
       .mb-4
         h1.mb-0: .text-sm Dialog Gallery
@@ -107,6 +112,14 @@ html
           .text-right
             .btn.btn-outline-primary.mr-2(ld="test-alert") alert
             .btn.btn-outline-primary(ld="test-confirm") confirm
+
+      .mb-5
+        .mb-2
+          h2.mb-0: .text-sm Regression Test
+          .text-muted toggle on then off in the same tick; the cover should end up closed.
+        .d-flex.g-2.align-items-center
+          .btn.btn-outline-primary(ld="test-quick") Quick On / Off
+          .text-muted(ld="test-quick-result")
 
     +script([
       {name: "ldview"},

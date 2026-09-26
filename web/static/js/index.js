@@ -27,6 +27,21 @@ view = new ldview({
       "show-template": function(){
         return ldcv.template.toggle(true);
       },
+      "test-quick": function(){
+        var node;
+        node = view.get('test-quick-result');
+        node.textContent = 'running ...';
+        ldcv.quick.toggle(true);
+        return debounce(10).then(function(){
+          ldcv.quick.toggle(false);
+          return debounce(600);
+        }).then(function(){
+          var ok;
+          ok = !ldcv.quick.isOn();
+          node.textContent = ok ? 'PASS: closed' : 'FAIL: stuck open';
+          return node.className = ok ? 'text-success' : 'text-danger';
+        });
+      },
       "get-value": function(){
         return ldcv.getValue.get().then(function(){
           return console.log('ok');
@@ -152,6 +167,11 @@ ldcv.timeout = new ldcover({
 });
 ldcv.hint = new ldcover({
   root: view.get('ldcv-hint'),
+  zmgr: zmgrFloat,
+  inPlace: false
+});
+ldcv.quick = new ldcover({
+  root: view.get('ldcv-quick'),
   zmgr: zmgrFloat,
   inPlace: false
 });

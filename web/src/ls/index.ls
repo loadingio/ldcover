@@ -19,6 +19,19 @@ view = new ldview do
     "show-tos": -> ldcv.tos.toggle true
     "show-hint": -> ldcv.hint.toggle true
     "show-template": -> ldcv.template.toggle true
+    # both toggles land inside the 50ms break; before v3.6.1 the second was a no-op
+    "test-quick": ->
+      node = view.get \test-quick-result
+      node.textContent = 'running ...'
+      ldcv.quick.toggle true
+      debounce 10
+        .then ->
+          ldcv.quick.toggle false
+          debounce 600
+        .then ->
+          ok = !ldcv.quick.is-on!
+          node.textContent = if ok => 'PASS: closed' else 'FAIL: stuck open'
+          node.className = if ok => \text-success else \text-danger
     "get-value": ->
       ldcv.get-value.get!
         .then -> console.log \ok
@@ -73,6 +86,7 @@ ldcv.editbox = new ldcover root: view.get('ldcv-editbox'), zmgr: zmgr-float, res
 ldcv.template = new ldcover root: view.get('ldcv-template'), zmgr: zmgr-float, in-place: false, lock: true
 ldcv.timeout = new ldcover root: view.get('ldcv-timeout'), zmgr: zmgr-float, in-place: false
 ldcv.hint = new ldcover root: view.get('ldcv-hint'), zmgr: zmgr-float, in-place: false
+ldcv.quick = new ldcover root: view.get('ldcv-quick'), zmgr: zmgr-float, in-place: false
 ldcv.confirm = new ldcover root: view.get('ldcv-confirm'), zmgr: zmgr-modal, in-place: false
 ldcv.tos = new ldcover root: view.get('ldcv-tos'), zmgr: zmgr-modal, in-place: false
 ldcv.get-value = new ldcover root: view.get('ldcv-get-value'), zmgr: zmgr-modal
